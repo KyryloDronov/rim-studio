@@ -172,7 +172,7 @@ export function PricingSection() {
               "--tabs-notch-width": TAB_NOTCH_WIDTH,
               "--tabs-notch-height": TAB_NOTCH_HEIGHT,
               "--table-notch-height": `calc(${TAB_NOTCH_HEIGHT} / 3)`,
-            } satisfies CSSProperties
+            } as CSSProperties
           }
         >
           <Tabs
