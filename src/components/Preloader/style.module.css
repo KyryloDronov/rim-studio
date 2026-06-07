@@ -1,0 +1,193 @@
+/* ===========================================================
+   Preloader — full-viewport intro reveal
+   -----------------------------------------------------------
+   Visual rhythm (orchestrated by GSAP in `index.tsx`):
+
+   1. .plate  (white behind cutout)       ─┐
+      .bg    (orange fill, scaleX 0→1)    │  Phase 1: bar fills
+      .logo  (ink wordmark, slot roll)   │  inside a centred
+        .reveal (dark frame, rect cutout)  ─┘  rounded-pill window.
+
+     2. Text fades out, then the cutout MORPHS from a horizontal
+        pill (5:1) to a small centred circle (1:1) — the orange
+        you see is the .bg painted *through* the shrinking cutout,
+        so it visually gathers from a bar into a dot.
+
+     3. The plate + bg fade to transparent and the cutout EXPANDS
+        from the centred dot to past the viewport — the dark
+        frame around the cutout is pushed off all four edges and
+        the page below the preloader is revealed through the
+        growing window.
+
+   The "dark frame around the cutout" is implemented as a giant
+   box-shadow on `.cutout` itself (rather than CSS `mask-composite`
+   like before): box-shadow lets us smoothly animate `width`,
+   `height`, and `border-radius` of the cutout — which is what
+   drives the rect→circle morph and the scale-out wipe — without
+   the SVG-data-URL mask churn.
+   =========================================================== */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  /* Clip the giant box-shadow on `.cutout` so it never extends
+     beyond the viewport (saves the compositor a lot of work). */
+  overflow: hidden;
+}
+
+/* ---------- Bar plate + fill ---------- */
+
+.plate,
+.bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  pointer-events: none;
+}
+
+.plate {
+  z-index: 100;
+  /* Visible through the pill cutout before the orange `.bg` sweeps in;
+     frame around the cutout is still `--brand-ink-700` from `.cutout`
+     box-shadow. */
+  background-color: #fff;
+}
+
+.bg {
+  z-index: 100;
+  /* Brand orange — replaces the previous white fill. The black
+     wordmark on top reads cleanly against this without needing
+     any blend-mode tricks. */
+  background-color: var(--brand-accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+  will-change: transform, opacity;
+}
+
+/* ---------- Centre-aligned wordmark ---------- */
+
+.logo {
+  position: fixed;
+  inset: 0;
+  z-index: 101;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.logoText {
+  margin: 0;
+  text-align: center;
+  /* Black brand ink — the bar fill underneath is bright orange so
+     the contrast works without needing `mix-blend-mode`. The
+     trade-off: glyphs only become visible once the orange fill
+     sweeps past them, which actually reads as "the bar is
+     painting in the wordmark" — a happy accident that ties the
+     two animations together. */
+  color: var(--brand-ink-700);
+  /* Sized to comfortably fit inside the rectangular cutout below.
+     The cutout's height is `--cutout-w / 5` so we keep the type
+     at ~55 % of that for a balanced inset. */
+  font-size: clamp(2.25rem, 6vw, 4.25rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-family: inherit;
+  display: inline-flex;
+  /* GSAP flips this to `visible` at the start of the timeline so
+     there's no FOUC of yPercent: 0 chars before the snap-to-(-100). */
+  visibility: hidden;
+}
+
+/* ---------- Slot-machine char roll ---------- *
+ *
+ * Per-glyph nesting:
+ *   .charMask   overflow: hidden — clips the roll to the line box
+ *     .char     animated by GSAP (`yPercent: -100 → 0`, one slow pass)
+ *       .charOg   the real glyph at its natural baseline
+ *       .charDup  duplicate translated `100%` below the original; at
+ *                 yPercent: -100 the dup is the visible glyph, at
+ *                 yPercent: 0 it's hidden below the mask edge
+ */
+
+.charMask {
+  display: inline-block;
+  overflow: hidden;
+  /* `vertical-align: top` keeps every glyph on a shared baseline even
+     when they roll independently. */
+  vertical-align: top;
+  line-height: 1;
+}
+
+.char {
+  display: inline-block;
+  position: relative;
+  will-change: transform;
+}
+
+.charOg {
+  display: inline-block;
+}
+
+.charDup {
+  position: absolute;
+  inset: 0;
+  display: inline-block;
+  /* Sits one full height below the original; rolls into view when the
+     parent `.char` snaps to `yPercent: -100`. */
+  transform: translateY(100%);
+}
+
+/* ---------- Reveal cutout (rect → circle → wipe) ---------- */
+
+/* `.reveal` is just a positioning anchor — the visible "dark frame
+   around the cutout" is painted by the `.cutout`'s box-shadow. */
+.reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 102;
+  pointer-events: none;
+}
+
+/* The cutout is a transparent box with a massive box-shadow that
+   paints the dark frame on every side. Animating its `width` /
+   `height` / `border-radius` re-shapes the visible window AND
+   the surrounding frame in lockstep — that's the whole trick.
+   `transform: translate(-50%, -50%)` keeps it dead-centre while
+   width/height grow. */
+.cutout {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Phase 1 initial dimensions — same horizontal pill as before,
+     locked to a 5:1 aspect ratio so the wordmark sits snug inside. */
+  width: clamp(22rem, 60vw, 40rem);
+  height: calc(clamp(22rem, 60vw, 40rem) / 5);
+  /* `999px` is clamped by the browser to half of the smaller side,
+     i.e. always a full-pill rounding regardless of the current
+     width / height. As the box morphs from 5:1 pill → 1:1 square
+     the corners stay perfectly rounded → it lands as a circle
+     without us needing to animate the radius itself. */
+  border-radius: 999px;
+
+  background: transparent;
+  /* `200vmax` spread guarantees the dark frame extends past the
+     viewport on every side, even after the cutout grows to
+     `300vmax`. `--brand-ink-700` is the darkest brand tone — it's
+     what gets pushed off-screen during the wipe. */
+  box-shadow: 0 0 0 200vmax var(--brand-ink-700);
+
+  pointer-events: none;
+  /* GSAP animates `width` / `height` / opacity — flag them so the
+     compositor reserves a layer for the cutout. */
+  will-change: width, height, opacity;
+}

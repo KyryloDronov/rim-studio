@@ -1,0 +1,187 @@
+/* ===========================================================
+   ScrollDown — "mouse + dot" hint
+   -----------------------------------------------------------
+   Sizing is driven entirely by the `--scroll-hint-*` token block
+   on `.root`, so size variants only need to override the tokens.
+   Colour is a single token (`--scroll-hint-fg`) so callers can
+   retint the whole component (outline + dot + label) at once.
+   =========================================================== */
+
+.root {
+  --scroll-hint-fg: var(--brand-white);
+  --scroll-hint-mouse-w: 1.625rem; /* 26px */
+  --scroll-hint-mouse-h: 2.625rem; /* 42px */
+  --scroll-hint-dot-size: 0.25rem; /* 4px */
+  --scroll-hint-border: 1.5px;
+  --scroll-hint-radius: 1rem;
+  --scroll-hint-gap: 0.625rem;
+  --scroll-hint-label-size: 0.6875rem;
+  --scroll-hint-label-spacing: 0.16em;
+  --scroll-hint-opacity: 0.7;
+  /* Travel distance for the dot — mouse height minus padding (top/bottom)
+     and dot diameter. Recomputed off the tokens so size variants stay
+     in sync without re-deriving the keyframe. */
+  --scroll-hint-travel: calc(
+    var(--scroll-hint-mouse-h) - var(--scroll-hint-dot-size) - 0.875rem
+  );
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--scroll-hint-gap);
+  /* Component is colour-agnostic; opacity gives the subtle "hint" feel
+     without baking transparency into individual rules. */
+  opacity: var(--scroll-hint-opacity);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---------- Sizes ---------- */
+/* `md` is the default — declared on `.root`. */
+.size-md {
+}
+
+.size-sm {
+  --scroll-hint-mouse-w: 1.375rem;
+  --scroll-hint-mouse-h: 2.25rem;
+  --scroll-hint-dot-size: 0.1875rem;
+  --scroll-hint-border: 1.25px;
+  --scroll-hint-radius: 0.875rem;
+  --scroll-hint-gap: 0.5rem;
+  --scroll-hint-label-size: 0.625rem;
+}
+
+.size-lg {
+  --scroll-hint-mouse-w: 2rem;
+  --scroll-hint-mouse-h: 3.25rem;
+  --scroll-hint-dot-size: 0.3125rem;
+  --scroll-hint-border: 2px;
+  --scroll-hint-radius: 1.25rem;
+  --scroll-hint-gap: 0.75rem;
+  --scroll-hint-label-size: 0.75rem;
+}
+
+/* ---------- Mouse outline ---------- */
+.mouse {
+  position: relative;
+  display: block;
+  width: var(--scroll-hint-mouse-w);
+  height: var(--scroll-hint-mouse-h);
+  border: var(--scroll-hint-border) solid var(--scroll-hint-fg);
+  border-radius: var(--scroll-hint-radius);
+  /* Hide the dot's overshoot at the bottom of its travel — keeps the
+     animation feeling enclosed. */
+  overflow: hidden;
+}
+
+.dot {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--scroll-hint-dot-size);
+  height: var(--scroll-hint-dot-size);
+  border-radius: 999px;
+  background-color: var(--scroll-hint-fg);
+  /* Compose translate inside the keyframes — `transform-origin` stays
+     centered so the X-translate cancels the natural box-offset. */
+  transform: translate(-50%, 25%);
+  animation: scroll-hint-fall 2.2s cubic-bezier(0.65, 0.05, 0.35, 1) infinite;
+}
+
+.label {
+  font-size: var(--scroll-hint-label-size);
+  font-weight: 500;
+  letter-spacing: var(--scroll-hint-label-spacing);
+  text-transform: uppercase;
+  color: var(--scroll-hint-fg);
+  /* Match the dot rest position so the "loop" feels stationary at the
+     start frame; line-height: 1 keeps the gap tight. */
+  line-height: 1;
+}
+
+@keyframes scroll-hint-fall {
+  0% {
+    transform: translate(-50%, 25%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, var(--scroll-hint-travel));
+    opacity: 0;
+  }
+}
+
+/* ---------- Interactive variant (hero): accent contour + dot + label ---------- */
+
+.root.interactive {
+  pointer-events: auto;
+  cursor: default;
+}
+
+.root.interactive:hover {
+  opacity: 1;
+}
+
+.interactive .mouse {
+  transition: border-color 0.48s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.interactive:hover .mouse {
+  border-color: var(--brand-accent-400);
+}
+
+.interactive .dot {
+  transition: background-color 0.48s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.interactive:hover .dot {
+  background-color: var(--brand-accent-400);
+}
+
+.interactive .label {
+  transition: color 0.48s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.interactive:hover .label {
+  color: var(--brand-accent-400);
+}
+
+.labelChar {
+  display: inline-block;
+}
+
+.interactive:hover .labelChar {
+  animation: scroll-hint-char-reel 0.52s cubic-bezier(0.65, 0, 0.35, 1) both;
+  animation-delay: calc(var(--sd-char-i, 0) * 0.035s);
+}
+
+@keyframes scroll-hint-char-reel {
+  from {
+    transform: translate3d(0, 0.72em, 0);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+/* Respect users who opt out of motion: keep the outline visible but
+   freeze the dot at its mid-point so the component still reads as a
+   "scroll" affordance instead of disappearing entirely. */
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+    transform: translate(-50%, calc(var(--scroll-hint-travel) * 0.45));
+  }
+
+  .interactive:hover .labelChar {
+    animation: none;
+  }
+}

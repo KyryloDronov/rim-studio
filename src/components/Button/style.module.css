@@ -1,0 +1,289 @@
+/* ===========================================================
+   Button — animated pill CTA
+   -----------------------------------------------------------
+   Layout/markup is shared across variants; visual style and
+   behaviour toggle via `.variant-*` / `.size-*` modifiers.
+
+   Hover behaviour mirrors what we use in the menu/header
+   pills: the whole pill lifts/scales on a slow easing, and
+   the icon inside its circle is swapped — the original slides
+   out to the right, an identical icon slides in from the left.
+   The two icon layers are stacked inside the same overflow-
+   hidden circle so the swap is seamless.
+   =========================================================== */
+
+.button {
+  --btn-bg: var(--brand-white);
+  --btn-fg: var(--brand-ink-700);
+  --btn-bg-hover: #f5f7f8;
+
+  --btn-icon-bg: #f0f6f8;
+  --btn-icon-fg: var(--brand-ink-700);
+  --btn-icon-bg-hover: var(--btn-icon-bg);
+
+  --btn-pad: 0.3rem;
+  --btn-pad-l: 1.5rem;
+  --btn-icon-size: 2.75rem;
+  --btn-icon-glyph: 38%;
+  --btn-text-px: 0.875rem;
+  --btn-font-size: 0.875rem;
+  --btn-letter-spacing: 0.04em;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+
+  padding: var(--btn-pad) var(--btn-pad) var(--btn-pad) var(--btn-pad-l);
+  border-radius: 999px;
+  border: none;
+  background-color: var(--btn-bg);
+  color: var(--btn-fg);
+
+  font: inherit;
+  font-weight: 500;
+  font-size: var(--btn-font-size);
+  line-height: 1;
+  letter-spacing: var(--btn-letter-spacing);
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease;
+}
+
+.button:hover {
+  background-color: var(--btn-bg-hover);
+}
+
+.button:active {
+  transform: none;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* When there's no trailing icon, drop the circle's right padding
+   so the pill keeps a uniform horizontal rhythm. */
+.noIcon {
+  padding-right: var(--btn-pad-l);
+}
+
+/* ---------- Sizes ---------- */
+.size-sm {
+  --btn-pad: 0.25rem;
+  --btn-pad-l: 1.125rem;
+  --btn-icon-size: 2rem;
+  --btn-icon-glyph: 36%;
+  --btn-font-size: 0.75rem;
+  --btn-text-px: 0.625rem;
+}
+
+/* default — declared on `.button` */
+.size-md {
+}
+
+.size-lg {
+  --btn-pad: 0.4rem;
+  --btn-pad-l: 1.875rem;
+  --btn-icon-size: 3.25rem;
+  --btn-icon-glyph: 38%;
+  --btn-font-size: 1rem;
+  --btn-text-px: 1rem;
+}
+
+/* ---------- Variants ---------- */
+.variant-dark {
+  --btn-bg: var(--brand-ink-700);
+  --btn-fg: var(--brand-white);
+  --btn-bg-hover: var(--brand-ink-600);
+
+  --btn-icon-bg: var(--brand-ink-500);
+  --btn-icon-fg: var(--brand-white);
+  --btn-icon-bg-hover: var(--brand-ink-400);
+}
+
+.variant-accent {
+  --btn-bg: var(--brand-accent-500);
+  --btn-fg: var(--brand-ink-700);
+  --btn-bg-hover: var(--brand-accent-400);
+
+  --btn-icon-bg: var(--brand-ink-700);
+  --btn-icon-fg: var(--brand-accent-300);
+  --btn-icon-bg-hover: var(--brand-ink-600);
+}
+
+.variant-light {
+  --btn-bg: var(--brand-white);
+  --btn-fg: var(--brand-ink-700);
+  --btn-bg-hover: #f0f6f8;
+
+  --btn-icon-bg: #f0f6f8;
+  --btn-icon-fg: var(--brand-ink-700);
+  --btn-icon-bg-hover: #e3eaee;
+}
+
+/* ---------- Intro: expand from trailing icon (viewport, Hero CTAs) ---------- */
+
+/* Don't set overflow:hidden on the pill — animating max-width would clip
+   the trailing icon circle mid-transition. Clip only the label row instead. */
+.introFromIcon {
+  transition:
+    max-width 1s cubic-bezier(0.22, 0.68, 0, 1),
+    min-width 1s cubic-bezier(0.22, 0.68, 0, 1),
+    padding 1s cubic-bezier(0.22, 0.68, 0, 1);
+}
+
+.introFromIcon:not(.introFromIconExpanded) {
+  justify-content: flex-end;
+  max-width: calc(var(--btn-icon-size) + var(--btn-pad) * 2);
+  min-width: calc(var(--btn-icon-size) + var(--btn-pad) * 2);
+  padding: var(--btn-pad);
+}
+
+.introFromIcon.introFromIconExpanded {
+  justify-content: flex-start;
+  max-width: min(100vw, 22rem);
+  min-width: 0;
+  padding: var(--btn-pad) var(--btn-pad) var(--btn-pad) var(--btn-pad-l);
+}
+
+/* Trailing icon stays at the end of the row while the pill grows — same as
+   the visual "right edge" of the control. */
+.introFromIcon .iconSlot {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+}
+
+.introFromIcon:not(.introFromIconExpanded) .iconSlot {
+  margin-inline-start: 0;
+}
+
+.introFromIcon:not(.introFromIconExpanded) .label {
+  flex: 0 0 0;
+  opacity: 0;
+  max-width: 0;
+  min-width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.introFromIcon.introFromIconExpanded .label {
+  flex: 0 1 auto;
+  opacity: 1;
+  max-width: 100%;
+  overflow: hidden;
+  transition: opacity 0.55s cubic-bezier(0.22, 0.68, 0, 1) 0.48s;
+}
+
+/* ---------- Inner parts ---------- */
+.label {
+  display: inline-block;
+  padding-left: var(--btn-text-px);
+  padding-right: calc(var(--btn-text-px) * 1.5);
+}
+
+.noIcon .label {
+  padding-right: var(--btn-text-px);
+}
+
+.iconSlot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--btn-icon-size);
+  height: var(--btn-icon-size);
+  border-radius: 999px;
+  overflow: hidden;
+  background-color: var(--btn-icon-bg);
+  color: var(--btn-icon-fg);
+  transition: background-color 0.35s ease;
+}
+
+.button:hover .iconSlot {
+  background-color: var(--btn-icon-bg-hover);
+}
+
+.iconLayer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--btn-icon-glyph);
+  height: var(--btn-icon-glyph);
+  will-change: transform;
+  /* ~2× slower than the previous 0.55s swap */
+  transition: transform 1.1s cubic-bezier(0.22, 0.68, 0, 1.5);
+}
+
+.iconBack {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  transform: translateX(-260%);
+}
+
+.button:hover .iconFront {
+  transform: translateX(260%);
+}
+
+.button:hover .iconBack {
+  transform: translateX(0);
+}
+
+.iconLayer > svg,
+.iconLayer > * {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Disabled state — applies to both <button> and aria-disabled <a>. */
+.button:disabled,
+.button[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Respect users who opt out of motion. */
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .iconLayer,
+  .iconSlot {
+    transition: none;
+  }
+
+  .button:hover {
+    transform: none;
+  }
+
+  .button:hover .iconFront,
+  .button:hover .iconBack {
+    transform: translateX(0);
+  }
+
+  /* Reduced-motion users see only the front layer; hide the
+     duplicate so it doesn't flash on either side. */
+  .iconBack {
+    display: none;
+  }
+
+  .introFromIcon {
+    transition: none;
+  }
+
+  .introFromIcon.introFromIconExpanded .label {
+    transition: none;
+  }
+}

@@ -1,0 +1,200 @@
+/* ===========================================================
+   Tabs — shared icon + label bar with sliding notch reveal
+   (motion vocabulary inspired by animated tab bars; brand tokens only)
+   =========================================================== */
+
+.tabs {
+  --tabs-duration: 0.72s;
+  --tabs-ease: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --tabs-bar-bg: var(--brand-ink-700);
+  --tabs-active-disc: var(--brand-accent-500);
+  --tabs-icon: var(--brand-white);
+  --tabs-label: rgba(255, 255, 255, 0.62);
+  --tabs-label-active: var(--brand-white);
+
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: min(100%, 28rem);
+  margin-inline: 0;
+  padding: 0 clamp(1.5rem, 4vw, 2.85rem);
+  padding-top: 0.35rem;
+  padding-bottom: 1.35rem;
+  font-size: clamp(0.82rem, 2.4vw, 1rem);
+  background-color: var(--tabs-bar-bg);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.06) inset,
+    0 12px 40px rgb(0 0 0 / 0.28);
+}
+
+.list {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 0.15rem;
+}
+
+.item {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.tab {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.45em;
+  width: 100%;
+  padding: 0.85em 0.25em 0.35em;
+  border-radius: 999px;
+  color: var(--tabs-icon);
+  -webkit-tap-highlight-color: transparent;
+  transition: transform var(--tabs-duration) var(--tabs-ease);
+  will-change: transform;
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--brand-accent-400);
+  outline-offset: 3px;
+}
+
+.iconSlot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25em;
+  height: 3.25em;
+}
+
+.iconSlot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background-color: var(--tabs-active-disc);
+  transform: scale(0);
+  transition:
+    transform var(--tabs-duration) var(--tabs-ease),
+    opacity var(--tabs-duration) var(--tabs-ease);
+  opacity: 0;
+}
+
+.icon {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 1.45em;
+  height: 1.45em;
+  color: inherit;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.label {
+  display: block;
+  max-width: 100%;
+  font-size: 0.62em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.15;
+  color: var(--tabs-label);
+  transition: color var(--tabs-duration) var(--tabs-ease);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab[data-active="true"] {
+  transform: translate3d(0, 0.72em, 0);
+}
+
+.tab[data-active="true"] .iconSlot::before {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.tab[data-active="true"] .label {
+  color: var(--tabs-label-active);
+}
+
+.tab[data-active="true"] .icon svg {
+  animation: tabsIconDraw 1.35s var(--tabs-ease) reverse;
+}
+
+.tab[data-active="true"] .icon svg path {
+  stroke-dasharray: 120;
+  stroke-dashoffset: 0;
+}
+
+@keyframes tabsIconDraw {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 120;
+  }
+}
+
+/* Curved notch — slides under the active tab, protruding downward. */
+.notch {
+  position: absolute;
+  left: 0;
+  top: calc(100% - 1px);
+  width: var(--tabs-notch-width, 8.6em);
+  height: var(--tabs-notch-height, 2.15em);
+  pointer-events: none;
+  background-color: var(--tabs-bar-bg);
+  transform: translate3d(0, 0, 0) scaleY(-1);
+  transition: transform var(--tabs-duration) var(--tabs-ease);
+  will-change: transform;
+}
+
+.tabs[data-reduced-motion="true"] .tab,
+.tabs[data-reduced-motion="true"] .notch,
+.tabs[data-reduced-motion="true"] .iconSlot::before {
+  transition: none;
+}
+
+.tabs[data-reduced-motion="true"] .tab[data-active="true"] .icon svg {
+  animation: none;
+}
+
+.clipResource {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 479px) {
+  .tabs {
+    width: 100%;
+    padding-inline: 0.85rem;
+    border-radius: 1rem;
+  }
+
+  .label {
+    font-size: 0.58em;
+  }
+}

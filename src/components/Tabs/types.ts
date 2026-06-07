@@ -1,0 +1,28 @@
+import type { ReactNode, RefObject } from "react";
+
+export type TabItem = Readonly<{
+  id: string;
+  label: string;
+  icon: ReactNode;
+}>;
+
+export type TabNotchMetrics = Readonly<{
+  /** Horizontal offset from the metrics anchor's left edge. */
+  left: number;
+  width: number;
+}>;
+
+export type TabsProps = Readonly<{
+  items: ReadonlyArray<TabItem>;
+  /** Controlled active tab id. */
+  value?: string;
+  /** Uncontrolled initial tab. */
+  defaultValue?: string;
+  onChange?: (id: string) => void;
+  className?: string;
+  /** Accessible name when there is no visible heading. */
+  ariaLabel?: string;
+  /** Shared root for tab + table notch alignment (e.g. pricing panel). */
+  metricsAnchorRef?: RefObject<HTMLElement | null>;
+  onNotchMetrics?: (metrics: TabNotchMetrics) => void;
+}>;

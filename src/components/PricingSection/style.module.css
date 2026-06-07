@@ -1,0 +1,171 @@
+/* ===========================================================
+   Pricing — full-viewport light section with tabbed panels
+   =========================================================== */
+
+.section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 6vw 4vw 2vw;
+  background: var(--brand-pearl-100);
+  color: var(--brand-pearl-alpha-88);
+  overflow: hidden;
+  scroll-margin-top: 0;
+}
+
+/* ---------- Tab background visuals ---------- */
+
+.bgLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  min-height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  --pricing-bg-blur: 4px;
+  --pricing-bg-wash: 0.12;
+}
+
+.bgBase {
+  position: absolute;
+  inset: 0;
+  background: var(--brand-pearl-100);
+}
+
+.bgStack {
+  position: absolute;
+  inset: 0;
+}
+
+.bgVisual {
+  position: absolute;
+  inset: 0;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+
+.bgImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  user-select: none;
+}
+
+/* Frost layer — blur/wash set inline from GSAP (avoid CSS-var override). */
+.bgBlurOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  will-change: backdrop-filter, background;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bgVisual,
+  .bgBlurOverlay {
+    will-change: auto;
+  }
+}
+
+@media (max-width: 991px) {
+  .section {
+    padding: 10vw 6vw 4vw;
+  }
+}
+
+@media (max-width: 479px) {
+  .section {
+    padding: 16vw 5vw 6vw;
+  }
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+}
+
+.panel {
+  --tabs-duration: 0.72s;
+  --table-radius: 1rem;
+  --table-glass-blur: blur(12px) saturate(1.4);
+  --table-glass-bg: rgb(171 171 171 / 0.4);
+  --table-glass-border: rgb(171 171 171 / 0.38);
+  --table-glass-shadow: 0 4px 30px rgb(0 0 0 / 0.1);
+  --table-head-glass-bg: rgb(25 31 36 / 0.58);
+  --table-head-divider: rgb(255 255 255 / 0.06);
+  --table-cell-glass-bg: rgb(255 255 255 / 0.14);
+  --table-cell-glass-bg-alt: rgb(255 255 255 / 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  gap: calc(clamp(1.35rem, 3.2vh, 2.35rem) + 12px);
+  font-size: clamp(0.82rem, 2.4vw, 1rem);
+}
+
+.clipResource {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.tabsBar {
+  flex: 0 1 auto;
+  align-self: flex-start;
+  width: min(100%, 32rem);
+  margin: 0 0 4px;
+}
+
+.tableStack {
+  position: relative;
+  width: 100%;
+}
+
+.tableNotchSlot {
+  position: absolute;
+  top: calc(-1 * var(--table-notch-height, calc(var(--tabs-notch-height, 2.15em) / 3)) + 1px);
+  z-index: 3;
+  height: var(--table-notch-height, calc(var(--tabs-notch-height, 2.15em) / 3));
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.tableNotch {
+  width: 100%;
+  height: 100%;
+  transform-origin: bottom center;
+  /* Same glass + header tint stack as `.headCell` over `.glassSurface`. */
+  background:
+    linear-gradient(var(--table-head-glass-bg), var(--table-head-glass-bg)),
+    var(--table-glass-bg);
+  -webkit-backdrop-filter: var(--table-glass-blur);
+  backdrop-filter: var(--table-glass-blur);
+  border-bottom: 1px solid var(--table-head-divider);
+}
+
+.tableScroll {
+  border-radius: var(--table-radius, 1rem);
+}
+
+.tableArea {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  align-self: stretch;
+  min-height: 0;
+  margin-top: 0;
+  padding-bottom: clamp(0.5rem, 2vh, 1.25rem);
+}

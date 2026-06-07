@@ -1,0 +1,61 @@
+/* ===========================================================
+   Pricing — full-viewport light section with tabbed panels
+   =========================================================== */
+
+.section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin-top: calc(-1 * 2.6vh);
+  padding: 6vw 4vw 2vw;
+  background: var(--brand-pearl-100);
+  color: var(--brand-pearl-alpha-88);
+  overflow: hidden;
+  scroll-margin-top: 0;
+  z-index: 1;
+}
+
+@media (max-width: 991px) {
+  .section {
+    padding: 10vw 6vw 4vw;
+  }
+}
+
+@media (max-width: 479px) {
+  .section {
+    padding: 16vw 5vw 6vw;
+  }
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  gap: clamp(0.75rem, 1.5vw, 1.25rem);
+}
+
+.tabsWrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.tabsBar {
+  margin-inline: 0;
+  width: min(100%, 32rem);
+}
+
+.tableArea {
+  flex: 1;
+  align-self: stretch;
+  min-height: 0;
+  padding-bottom: clamp(0.5rem, 2vh, 1.25rem);
+}

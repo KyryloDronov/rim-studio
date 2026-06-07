@@ -1,0 +1,76 @@
+:root {
+  /* ---------- Brand · Ink (primary neutral) ---------- */
+  --brand-ink-300: #5d7183; /* lightest — borders / muted icons   */
+  --brand-ink-400: #485865; /* light    — hover on dark surfaces  */
+  --brand-ink-500: #333e48; /* BASE     — page background         */
+  --brand-ink-600: #262e36; /* dark     — sunken surfaces         */
+  --brand-ink-700: #191f24; /* darkest  — deep wells / overlays   */
+
+  /* ---------- Brand · Accent (primary orange) ---------- */
+  --brand-accent-300: #ffc266; /* lightest — hover glow / tinted bg */
+  --brand-accent-400: #ffad33; /* light    — hover on accent button */
+  --brand-accent-500: #ff9900; /* BASE     — primary CTA            */
+  --brand-accent-600: #cc7a00; /* dark     — pressed / active state */
+  --brand-accent-700: #995c00; /* darkest  — focus ring / deep tint */
+
+  /* ---------- Brand · Neutrals ---------- */
+  --brand-white: #ffffff;
+  --brand-black: #000000;
+
+  /* ---------- Backwards-compat aliases (legacy code) ---------- */
+  --brand-ink: var(--brand-ink-500);
+  --brand-accent: var(--brand-accent-500);
+
+  /* ---------- Semantic · Surfaces ---------- */
+  --background: var(--brand-ink-500);
+  --surface-raised: var(--brand-ink-400);
+  --surface-sunken: var(--brand-ink-600);
+  --surface-deepest: var(--brand-ink-700);
+
+  /* ---------- Semantic · Text ---------- */
+  --foreground: var(--brand-white);
+  --foreground-muted: var(--brand-ink-300);
+
+  /* ---------- Semantic · Accent ---------- */
+  --accent: var(--brand-accent-500);
+  --accent-hover: var(--brand-accent-400);
+  --accent-pressed: var(--brand-accent-600);
+  --accent-subtle: var(--brand-accent-300);
+  --accent-deep: var(--brand-accent-700);
+}
+
+html {
+  height: 100%;
+  color-scheme: dark;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: var(--foreground);
+  background: var(--background);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

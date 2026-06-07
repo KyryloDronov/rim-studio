@@ -1,23 +1,98 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* ---------- Brand · Ink (dark UI — cool studio greys) ---------- */
+  --brand-ink-300: #5d7183; /* lightest — borders / muted icons   */
+  --brand-ink-400: #485865; /* light    — hover on dark surfaces  */
+  --brand-ink-500: #333e48; /* BASE     — page background         */
+  --brand-ink-600: #262e36; /* dark     — sunken surfaces         */
+  --brand-ink-700: #191f24; /* darkest  — deep wells / overlays   */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* ---------- Brand · Pearl (neutral greys — light fills, type, borders) ---------- */
+  --brand-pearl-50: #ffffff;
+  --brand-pearl-100: #fafafc;
+  --brand-pearl-200: #f5f5f7;
+  --brand-pearl-300: #e8e8ed;
+  --brand-pearl-400: #d2d2d7;
+  --brand-pearl-500: #86868b;
+  --brand-pearl-600: #6e6e73;
+  --brand-pearl-700: #424245;
+  --brand-pearl-800: #1d1d1f;
+  --brand-pearl-900: #000000;
+
+  /* Pearl · translucent blacks for type hierarchy / overlays on light surfaces */
+  --brand-pearl-alpha-88: rgb(0 0 0 / 0.88);
+  --brand-pearl-alpha-72: rgb(0 0 0 / 0.72);
+  --brand-pearl-alpha-56: rgb(0 0 0 / 0.56);
+  --brand-pearl-alpha-48: rgb(0 0 0 / 0.48);
+  --brand-pearl-alpha-16: rgb(0 0 0 / 0.16);
+  --brand-pearl-alpha-08: rgb(0 0 0 / 0.08);
+
+  /* ---------- Brand · Accent (primary orange) ---------- */
+  --brand-accent-300: #ffc266; /* lightest — hover glow / tinted bg */
+  --brand-accent-400: #ffad33; /* light    — hover on accent button */
+  --brand-accent-500: #ff9900; /* BASE     — primary CTA            */
+  --brand-accent-600: #cc7a00; /* dark     — pressed / active state */
+  --brand-accent-700: #995c00; /* darkest  — focus ring / deep tint */
+
+  /* ---------- Brand · Auxiliary (system + marketing accents) ---------- */
+  --brand-info-500: #0071e3;
+  --brand-info-600: #0066cc;
+
+  --brand-success-500: #03a10e;
+  --brand-success-600: #008009;
+  --brand-success-subtle: #f5fff6;
+
+  --brand-danger-500: #e30000;
+  --brand-danger-subtle: #fff2f4;
+
+  --brand-warning-500: #ffe045;
+  --brand-warning-subtle: #fffef2;
+
+  --brand-orange-alt-500: #f56300;
+  --brand-orange-alt-600: #b64400;
+  --brand-orange-subtle: #fff9f4;
+
+  --brand-product-red: #af1e2d;
+  --brand-enviro-green: #00d959;
+  --brand-enviro-neutral: #e8e8ed;
+
+  /* ---------- Brand · Neutrals ---------- */
+  --brand-white: #ffffff;
+  --brand-black: #000000;
+
+  /* ---------- Backwards-compat aliases (legacy code) ---------- */
+  --brand-ink: var(--brand-ink-500);
+  --brand-accent: var(--brand-accent-500);
+
+  /* ---------- Semantic · Surfaces ---------- */
+  --background: var(--brand-ink-500);
+  --surface-raised: var(--brand-ink-400);
+  --surface-sunken: var(--brand-ink-600);
+  --surface-deepest: var(--brand-ink-700);
+
+  /* ---------- Semantic · Text ---------- */
+  --foreground: var(--brand-white);
+  --foreground-muted: var(--brand-ink-300);
+
+  /* ---------- Semantic · Accent ---------- */
+  --accent: var(--brand-accent-500);
+  --accent-hover: var(--brand-accent-400);
+  --accent-pressed: var(--brand-accent-600);
+  --accent-subtle: var(--brand-accent-300);
+  --accent-deep: var(--brand-accent-700);
 }
 
 html {
   height: 100%;
+  color-scheme: dark;
 }
 
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  /* `clip` instead of `hidden`: `hidden` creates a scroll container that
+     silently breaks `position: sticky` on descendants (especially in
+     Safari). `clip` clips horizontal overflow without that side-effect. */
+  overflow-x: clip;
 }
 
 body {
@@ -26,9 +101,12 @@ body {
   flex-direction: column;
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 * {
@@ -40,10 +118,4 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
 }

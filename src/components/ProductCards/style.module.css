@@ -1,0 +1,207 @@
+/* ----------------------------------------------------------------------- *
+ *  ProductCards — reusable vertical fan-out stack.
+ *
+ *  Wrap is a relatively-positioned column with the size of the *resting*
+ *  stack. Cards inside are absolutely positioned with `bottom: i * step`
+ *  (the natural spread position) and `translateY` from Motion variants
+ *  collapses them in the rest state. `overflow: visible` (default) lets
+ *  cards extend ABOVE the wrap when the stack opens — the parent layout
+ *  never shifts.
+ * ----------------------------------------------------------------------- */
+
+/* Card size is the single source of truth — width and all derived
+   geometry on the JS side reads back from this element. `clamp()` keeps
+   the card sane on extreme viewports: ~5.5vw on a typical desktop,
+   capped at 96px on ultrawides, and floored at 64px so the silhouette
+   doesn't disappear on smaller laptops. */
+.wrap {
+  --card-size: clamp(64px, 5.5vw, 96px);
+  --card-radius: clamp(0.7rem, 1.2vw, 1.4rem);
+  --card-padding: clamp(3px, 0.5vw, 7px);
+  --card-border-w: max(1px, 0.075vw);
+
+  position: relative;
+  width: var(--card-size);
+  /* height is set inline by the component — must equal cardSize +
+     (N - 1) * stackPeek. */
+}
+
+@media (max-width: 991px) {
+  .wrap {
+    --card-size: clamp(56px, 8vw, 80px);
+  }
+}
+
+@media (max-width: 479px) {
+  .wrap {
+    --card-size: clamp(56px, 14vw, 72px);
+  }
+}
+
+/* Invisible expanded-area target for hover detection. Anchored to the
+   wrap's bottom-right and grown UP to cover the full fanned-out stack,
+   so moving the cursor across cards in their open position keeps the
+   stack open. */
+.hitArea {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  /* height set inline; equals (N - 1) * step + cardSize. */
+}
+
+/* Eyebrow label — sits to the left of the visible bottom card, centered
+   on its vertical mid-line. Height is set inline by JS so it matches
+   the measured cardSize exactly. */
+.eyebrow {
+  position: absolute;
+  right: 100%;
+  bottom: 0;
+  margin-right: 1.25rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* Hero intro shell — same slip/blur vocabulary as `[data-hero-recent-card]`. */
+.eyebrowIntroShell {
+  position: absolute;
+  right: 100%;
+  bottom: 0;
+  margin-right: 1.25rem;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  will-change: transform, filter, opacity;
+  filter: blur(10px);
+  transform: translateX(6px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eyebrowIntroShell {
+    filter: none;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Typography split out when the shell owns positioning (stackIntro). */
+.eyebrowLabel {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+  will-change: opacity;
+}
+
+/* Per-card titles. `bottom` and `height` come from inline styles; this
+   block only paints the typography and the right-aligned layout. */
+.title {
+  position: absolute;
+  right: 100%;
+  margin-right: 1.25rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand-white);
+  white-space: nowrap;
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+/* Glass surface — translucent dark fill with a heavy backdrop blur,
+   thin highlight rim, soft inner sheen, and a deep drop shadow. The
+   PNG / gradient lives inside `.image` so the glass wrapper stays
+   consistent regardless of artwork. */
+.card {
+  position: absolute;
+  right: 0;
+  display: flex;
+  width: var(--card-size);
+  height: var(--card-size);
+  padding: var(--card-padding);
+  border-radius: var(--card-radius);
+  background-color: rgba(33, 33, 33, 0.69); /* #212121b0 */
+  border: var(--card-border-w) solid rgba(138, 138, 138, 0.22);
+  backdrop-filter: blur(19px) saturate(1.1);
+  -webkit-backdrop-filter: blur(19px) saturate(1.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+    0 14px 30px rgba(0, 0, 0, 0.45);
+  text-decoration: none;
+  cursor: pointer;
+  /* Both transforms are driven by Motion (y + scale), but giving the
+     browser a hint here improves compositing. */
+  will-change: transform;
+  /* Spec'd here for parity with the iyo-style hover reaction (color
+     transitions are CSS-only; transform comes from Motion). */
+  transition: background-color 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.card:hover {
+  background-color: rgba(50, 50, 50, 0.72);
+}
+
+/* Inside the glass: holds the product render or gradient. The pseudo
+   element layers a subtle diagonal sheen for added depth — barely
+   noticeable on a single card, sells the glass effect on the stack. */
+.image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--card-radius) - var(--card-padding));
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0) 45%
+  );
+  pointer-events: none;
+}
+
+/* Intro shell (Hero only): GSAP owns blur + horizontal slip; Motion
+   keeps stack `y` / hover scale on the inner `.card`. */
+.cardShellIntro {
+  will-change: transform, filter, opacity;
+  filter: blur(10px);
+  transform: translateX(6px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardShellIntro {
+    filter: none;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+}

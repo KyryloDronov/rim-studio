@@ -1,0 +1,207 @@
+.section {
+  position: relative;
+  width: 100%;
+  --before-after-gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --before-after-max: 88rem;
+  padding: clamp(3.5rem, 9vh, 6rem) 0 clamp(3rem, 8vh, 5rem);
+  background: var(--brand-pearl-100);
+  color: var(--brand-pearl-alpha-88);
+}
+
+.inner {
+  width: min(100%, var(--before-after-max));
+  margin: 0 auto;
+  padding: 0 var(--before-after-gutter);
+}
+
+.header {
+  margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
+}
+
+.title {
+  margin: 0;
+  max-width: 42rem;
+  font-size: clamp(1.65rem, 3.8vw, 2.65rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.titleStrong {
+  color: var(--brand-pearl-alpha-88);
+}
+
+.titleMuted {
+  color: var(--brand-pearl-alpha-56);
+  font-weight: 500;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.75rem);
+  align-items: stretch;
+  max-height: 75vh;
+  max-height: 75dvh;
+}
+
+.sliderCol {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vw, 0.85rem);
+  min-width: 0;
+  min-height: 0;
+  max-height: 75vh;
+  max-height: 75dvh;
+}
+
+.compareWrap {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.cardCol {
+  min-width: 0;
+  min-height: 0;
+  max-height: 75vh;
+  max-height: 75dvh;
+}
+
+.card {
+  min-height: 100%;
+  height: 100%;
+  border-radius: 18px;
+  background: var(--brand-white);
+  box-shadow: 2px 4px 12px rgb(0 0 0 / 0.06);
+}
+
+.thumbRegion {
+  --card-size: clamp(64px, 5.5vw, 96px);
+  --card-radius: clamp(0.7rem, 1.2vw, 1.4rem);
+  --card-padding: clamp(3px, 0.5vw, 7px);
+  --card-border-w: max(1px, 0.075vw);
+
+  position: relative;
+  flex: none;
+  width: 100%;
+}
+
+.thumbSlider {
+  --slide-size: var(--card-size);
+  --slide-gap: calc(var(--card-size) * 0.125);
+  --slide-inset: 0px;
+  --slide-overflow-pad: 0.55rem;
+  width: 100%;
+}
+
+.thumbReveal {
+  display: flex;
+  width: var(--card-size);
+  height: var(--card-size);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(4rem);
+  will-change: transform, opacity;
+}
+
+.thumb {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: var(--card-padding);
+  border: var(--card-border-w) solid rgb(138 138 138 / 0.22);
+  border-radius: var(--card-radius);
+  background-color: rgb(33 33 33 / 0.69);
+  -webkit-backdrop-filter: blur(19px) saturate(1.1);
+  backdrop-filter: blur(19px) saturate(1.1);
+  cursor: pointer;
+  will-change: transform;
+  transition:
+    background-color 0.3s cubic-bezier(0.65, 0, 0.35, 1),
+    border-color 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.thumb:hover,
+.thumb:focus-visible {
+  background-color: rgb(50 50 50 / 0.72);
+}
+
+.thumb:focus-visible {
+  outline: 2px solid var(--brand-accent-400);
+  outline-offset: 3px;
+}
+
+.thumbActive {
+  background-color: rgb(50 50 50 / 0.72);
+  border-color: var(--brand-accent-500);
+}
+
+.thumbImage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--card-radius) - var(--card-padding));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.thumbImage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 0.08) 0%,
+    rgb(255 255 255 / 0) 45%
+  );
+  pointer-events: none;
+}
+
+@media (max-width: 991px) {
+  .thumbRegion {
+    --card-size: clamp(56px, 8vw, 80px);
+  }
+}
+
+@media (max-width: 479px) {
+  .thumbRegion {
+    --card-size: clamp(56px, 14vw, 72px);
+  }
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    max-height: none;
+  }
+
+  .sliderCol {
+    max-height: none;
+  }
+
+  .compareWrap {
+    aspect-ratio: 4 / 3;
+    flex: none;
+  }
+
+  .card {
+    min-height: clamp(12rem, 40vw, 16rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb {
+    transition: none;
+  }
+
+  .thumbReveal {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    will-change: auto;
+  }
+}

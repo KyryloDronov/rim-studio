@@ -1,0 +1,188 @@
+/* ===========================================================
+   Showcase — Apple-style horizontal card carousel
+   Card dimensions follow rf-ccard-50 (480×500 art, 18px radius)
+   =========================================================== */
+
+.section {
+  position: relative;
+  width: 100%;
+  --showcase-gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --showcase-max: 88rem;
+  --showcase-card-width: 28.2352941176rem;
+  --showcase-card-height: 29.4117647059rem;
+  padding: clamp(3.5rem, 9vh, 6rem) 0 clamp(3rem, 8vh, 5rem);
+  background: var(--brand-pearl-200);
+  color: var(--brand-pearl-alpha-88);
+  overflow-x: clip;
+}
+
+.inner {
+  width: min(100%, var(--showcase-max));
+  margin: 0 auto;
+  padding: 0 var(--showcase-gutter);
+}
+
+.header {
+  max-width: none;
+  margin-bottom: clamp(2rem, 4.5vh, 3rem);
+}
+
+.title {
+  margin: 0;
+  max-width: 42rem;
+  font-size: clamp(1.65rem, 3.8vw, 2.65rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.titleStrong {
+  color: var(--brand-pearl-alpha-88);
+}
+
+.titleMuted {
+  color: var(--brand-pearl-alpha-56);
+  font-weight: 500;
+}
+
+.slider {
+  --slide-inset: max(
+    var(--showcase-gutter),
+    calc((100vw - var(--showcase-max)) / 2 + var(--showcase-gutter))
+  );
+  --slide-gap: 18px;
+  --slide-size: var(--showcase-card-width);
+  width: 100%;
+}
+
+.sliderRegion {
+  position: relative;
+  width: 100vw;
+  max-width: 100%;
+  margin-top: 0;
+}
+
+.card {
+  height: var(--showcase-card-height);
+  will-change: transform, opacity;
+}
+
+/* GSAP initial state — avoids flash before timeline attaches. */
+.cardReveal {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(4rem);
+}
+
+.cardLink {
+  display: block;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 18px;
+  box-shadow: 2px 4px 12px rgb(0 0 0 / 0.08);
+  transition:
+    box-shadow 0.3s cubic-bezier(0, 0, 0.5, 1),
+    transform 0.3s cubic-bezier(0, 0, 0.5, 1);
+}
+
+.cardLink:focus-visible {
+  outline: none;
+}
+
+.cardLink:focus-visible .cardContent {
+  outline: 2px solid var(--brand-accent-400);
+  outline-offset: 3px;
+}
+
+.cardLink:hover {
+  box-shadow: 2px 4px 16px rgb(0 0 0 / 0.16);
+  transform: scale3d(1.01, 1.01, 1.01);
+}
+
+.cardContent {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: var(--showcase-card-width);
+  height: var(--showcase-card-height);
+  border-radius: 18px;
+  background: var(--brand-white);
+  overflow: hidden;
+}
+
+.cardImageWrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cardImage {
+  object-fit: cover;
+  user-select: none;
+}
+
+.cardInfo {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  box-sizing: border-box;
+  padding: 1.6470588235rem;
+  pointer-events: none;
+}
+
+.cardEyebrow {
+  margin: 0;
+  padding-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.33;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--brand-pearl-alpha-56);
+}
+
+.cardTitle {
+  margin: 0;
+  padding-top: 0;
+  font-size: clamp(1.3125rem, 2vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: 0.007em;
+  color: var(--brand-pearl-alpha-88);
+}
+
+@media (max-width: 767px) {
+  .section {
+    --showcase-card-width: 309px;
+    --showcase-card-height: 450px;
+  }
+
+  .cardInfo {
+    padding: 1.75rem;
+  }
+
+  .cardTitle {
+    font-size: 1.3125rem;
+    line-height: 1.19;
+    letter-spacing: 0.011em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardReveal {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    will-change: auto;
+  }
+
+  .cardLink {
+    transition: none;
+  }
+
+  .cardLink:hover {
+    transform: none;
+  }
+}

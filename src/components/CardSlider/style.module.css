@@ -1,0 +1,191 @@
+/* ----------------------------------------------------------------------- *
+ *  CardSlider — horizontal drag carousel (Embla)
+ *  `--slide-inset` — start padding + last-slide margin (Embla edge gaps).
+ *  `--slide-size` is set by the parent section (card width).
+ * ----------------------------------------------------------------------- */
+
+.root {
+  --slide-gap: 18px;
+  --slide-size: 28.2352941176rem;
+  --slide-overflow-pad: 1rem;
+  position: relative;
+  width: 100%;
+}
+
+.viewport {
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y pinch-zoom;
+}
+
+.viewport:active {
+  cursor: grabbing;
+}
+
+.container {
+  display: flex;
+  gap: var(--slide-gap);
+  padding-left: var(--slide-inset, 0px);
+  backface-visibility: hidden;
+}
+
+.slide {
+  flex: 0 0 var(--slide-size);
+  min-width: 0;
+  padding-block: var(--slide-overflow-pad);
+  box-sizing: content-box;
+}
+
+/* Embla reads trailing gutter from the last slide margin, not container padding. */
+.slide:last-child {
+  margin-inline-end: var(--slide-inset, 0px);
+}
+
+.controls {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.navBtn {
+  --nav-btn-size: clamp(2.75rem, 5vw, 3.15rem);
+  --nav-icon-size: 38%;
+
+  position: absolute;
+  top: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--nav-btn-size);
+  height: var(--nav-btn-size);
+  padding: 0;
+  border: 1px solid rgb(171 171 171 / 0.38);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.55);
+  color: var(--brand-pearl-alpha-88);
+  box-shadow: 0 4px 30px rgb(0 0 0 / 0.08);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translateY(-50%);
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.controlsReveal {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.navBtnPrev {
+  left: 10px;
+}
+
+.navBtnNext {
+  right: 10px;
+}
+
+.navBtn:hover {
+  background: rgb(255 255 255 / 0.72);
+  border-color: rgb(171 171 171 / 0.48);
+  box-shadow: 0 6px 32px rgb(0 0 0 / 0.1);
+}
+
+.navBtn:focus-visible {
+  outline: 2px solid var(--brand-accent-400);
+  outline-offset: 3px;
+}
+
+.iconSlot {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--nav-icon-size);
+  height: var(--nav-icon-size);
+  overflow: hidden;
+}
+
+.iconLayer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  transition: transform 1.1s cubic-bezier(0.22, 0.68, 0, 1.5);
+}
+
+.iconLayer svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.iconBack {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  transform: translateX(-260%);
+}
+
+.navBtnNext:hover .iconFront {
+  transform: translateX(260%);
+}
+
+.navBtnNext:hover .iconBack {
+  transform: translateX(0);
+}
+
+.navBtnPrev .iconBack {
+  transform: translateX(260%);
+}
+
+.navBtnPrev:hover .iconFront {
+  transform: translateX(-260%);
+}
+
+.navBtnPrev:hover .iconBack {
+  transform: translateX(0);
+}
+
+@media (max-width: 767px) {
+  .root {
+    --slide-size: 309px;
+    --slide-overflow-pad: 0.75rem;
+  }
+
+  .controls {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .controlsReveal {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .navBtn {
+    transition: none;
+  }
+
+  .iconLayer {
+    transition: none;
+  }
+
+  .navBtnNext:hover .iconFront,
+  .navBtnNext:hover .iconBack,
+  .navBtnPrev:hover .iconFront,
+  .navBtnPrev:hover .iconBack {
+    transform: translateX(0);
+  }
+
+  .iconBack {
+    display: none;
+  }
+}
