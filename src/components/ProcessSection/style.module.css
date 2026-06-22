@@ -1,0 +1,379 @@
+/* ===========================================================
+   Process — how rim/studio works (video + morphing blob diagram)
+   =========================================================== */
+
+.section {
+  position: relative;
+  width: 100%;
+  padding: clamp(3.5rem, 8vh, 5.5rem) 0;
+  background: var(--brand-ink-700);
+  color: var(--brand-white);
+  overflow-x: clip;
+  isolation: isolate;
+}
+
+.starfield {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.starfield canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 88rem);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
+}
+
+.headerCopy {
+  min-width: 0;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
+  margin: 0;
+  font-size: clamp(2rem, 3.4vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+}
+
+.titleMuted {
+  color: rgb(255 255 255 / 0.45);
+}
+
+.titleStrong {
+  color: var(--brand-white);
+}
+
+.headerAction {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: 0.35rem;
+  color: rgb(255 255 255 / 0.7);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.headerAction:hover {
+  background: rgb(255 255 255 / 0.1);
+  color: var(--brand-white);
+  border-color: rgb(255 255 255 / 0.35);
+}
+
+.headerAction:focus-visible {
+  outline: 2px solid var(--brand-accent-400);
+  outline-offset: 3px;
+}
+
+.headerAction svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2.5rem, 5vw, 3rem);
+}
+
+.leftCol,
+.rightCol {
+  min-width: 0;
+}
+
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.2vh, 1.35rem);
+}
+
+@media (min-width: 992px) {
+  .layout {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+}
+
+.videoCard {
+  position: relative;
+  width: 100%;
+  height: clamp(18rem, 42vh, 22rem);
+  border-radius: clamp(18px, 2vw, 24px);
+  overflow: hidden;
+  background: var(--brand-ink-600);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.28);
+}
+
+.videoMedia {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.videoReadability {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(10 12 14 / 0.08) 0%,
+    rgb(10 12 14 / 0) 42%,
+    rgb(10 12 14 / 0.22) 100%
+  );
+}
+
+.stepCopy {
+  min-width: 0;
+}
+
+.stepRow {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  min-height: clamp(4.75rem, 13vw, 7rem);
+}
+
+.amorphNumber {
+  display: flex;
+  flex: 0 0 auto;
+  align-self: stretch;
+  align-items: stretch;
+}
+
+.amorphDigit {
+  height: 100%;
+  width: auto;
+  aspect-ratio: 1 / 1;
+  min-height: clamp(4.75rem, 13vw, 7rem);
+  min-width: clamp(4rem, 11vw, 6.25rem);
+}
+
+.amorphPath {
+  display: none;
+}
+
+.amorphCircle {
+  fill: #fff;
+  color: #fff;
+}
+
+.stepText {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.35rem, 0.8vh, 0.5rem);
+  min-width: 0;
+}
+
+.stepLabel {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--brand-white);
+}
+
+.stepDescription {
+  margin: 0;
+  font-size: clamp(1rem, 1.45vw, 1.15rem);
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.005em;
+  color: rgb(255 255 255 / 0.82);
+  text-wrap: pretty;
+}
+
+.diagramWrap {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.diagramVisible {
+  opacity: 1;
+}
+
+.rightCol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(18rem, 42vh, 22rem);
+}
+
+.diagramInner {
+  position: relative;
+  width: min(100%, 100%);
+  max-width: 28rem;
+  aspect-ratio: 1 / 1;
+}
+
+.diagramSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.blobSector {
+  pointer-events: none;
+  fill: rgb(255 153 0 / 0.34);
+  stroke: none;
+}
+
+.blobStroke {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.78);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+
+.blobStroke:nth-of-type(2) {
+  stroke-width: 0.34;
+  opacity: 0.58;
+}
+
+.blobStroke:nth-of-type(3) {
+  stroke-width: 0.26;
+  opacity: 0.42;
+}
+
+.blobStroke:nth-of-type(4) {
+  stroke-width: 0.2;
+  opacity: 0.3;
+}
+
+.diagramSpoke {
+  stroke: rgb(255 255 255 / 0.35);
+  stroke-width: 0.18;
+  transition:
+    stroke 0.3s ease,
+    stroke-width 0.3s ease,
+    opacity 0.3s ease;
+}
+
+.diagramSpokeActive {
+  stroke: var(--brand-accent-400);
+  stroke-width: 0.55;
+  opacity: 1;
+}
+
+.diagramLabel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.55rem;
+  border: none;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  opacity: 0;
+  translate: 0 14px;
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.25s ease;
+}
+
+.diagramLabelVisible {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.diagramLabel:focus-visible {
+  outline: 2px solid var(--brand-accent-400);
+  outline-offset: 4px;
+  border-radius: 0.35rem;
+}
+
+.diagramStepLabel {
+  font-size: clamp(0.95rem, 2vw, 1.45rem);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: rgb(255 255 255 / 0.72);
+  white-space: nowrap;
+  transition:
+    font-weight 0.3s ease,
+    color 0.3s ease,
+    text-shadow 0.3s ease;
+}
+
+.diagramLabelActive .diagramStepLabel {
+  font-weight: 600;
+  color: var(--brand-white);
+  text-shadow: 0 0 18px rgb(255 153 0 / 0.35);
+}
+
+@media (max-width: 479px) {
+  .videoCard {
+    height: clamp(14rem, 52vw, 18rem);
+  }
+
+  .rightCol {
+    min-height: auto;
+  }
+
+  .diagramStepLabel {
+    font-size: clamp(0.88rem, 4vw, 1.05rem);
+    white-space: normal;
+    text-align: center;
+    max-width: 6.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diagramWrap {
+    opacity: 1;
+    transition: none;
+  }
+
+  .diagramLabel {
+    opacity: 1;
+    translate: 0 0;
+    transition: color 0.2s ease;
+  }
+
+  .diagramSpoke {
+    transition: stroke 0.2s ease;
+  }
+}

@@ -104,7 +104,30 @@ export const SHOWCASE_SCROLL = {
   },
 } as const;
 
-/** Benefits grid — dark section card stagger on scroll. */
+/** Loyalty program — left column word reveal on scroll. */
+export const LOYALTY_SCROLL = {
+  triggerStart: "top 78%",
+  defaultsEase: EASE.punchy,
+  eyebrow: { duration: 0.62, yFrom: 16 },
+  claim: { overlapEyebrow: 0.28 },
+  bodyLetters: {
+    duration: 0.58,
+    stagger: 0.011,
+    overlapClaim: 0.32,
+  },
+  cta: {
+    duration: 0.68,
+    overlapBody: 0.18,
+    ease: EASE.punchy,
+  },
+  secondaryLetters: {
+    duration: 0.52,
+    stagger: 0.013,
+    overlapCta: 0.12,
+  },
+} as const;
+
+/** Benefits hub — title, center video card, side card stagger on scroll. */
 export const BENEFITS_SCROLL = {
   triggerStart: "top 78%",
   defaultsEase: EASE.punchy,
@@ -112,10 +135,79 @@ export const BENEFITS_SCROLL = {
     yFrom: 28,
     duration: 0.72,
   },
-  cards: {
-    yFrom: 40,
+  center: {
+    yFrom: 36,
+    scaleFrom: 0.97,
+    duration: 0.82,
+    overlapTitle: 0.42,
+  },
+  cardsLeft: {
+    xFrom: -32,
+    yFrom: 24,
     duration: 0.68,
-    stagger: 0.07,
-    overlapTitle: 0.38,
+    stagger: 0.08,
+    overlapCenter: 0.52,
+  },
+  cardsRight: {
+    xFrom: 32,
+    yFrom: 24,
+    duration: 0.68,
+    stagger: 0.08,
+    overlapCenter: 0.52,
+  },
+} as const;
+
+/** Before/after — compare, thumbs, booking card; one-shot on scroll. */
+export const BEFORE_AFTER_SCROLL = {
+  triggerStart: "top 78%",
+  defaultsEase: EASE.punchy,
+  compare: {
+    yFrom: 28,
+    scaleFrom: 0.96,
+    duration: 0.85,
+  },
+  thumbs: {
+    yFrom: 12,
+    scaleFrom: 0.88,
+    duration: 0.52,
+    stagger: 0.042,
+    overlapCompare: 0.28,
+  },
+  controls: {
+    yFrom: 10,
+    duration: 0.42,
+    overlapThumbs: 0.18,
+  },
+  booking: {
+    xFrom: 36,
+    yFrom: 18,
+    scaleFrom: 0.97,
+    duration: 0.78,
+    overlapPrev: 0.12,
+  },
+} as const;
+
+/** Testimonials — blur dissolve in place; exit 2× faster than enter. */
+export const TESTIMONIAL_QUOTE = {
+  enter: {
+    duration: 0.62,
+    stagger: 0.024,
+    ease: EASE.narrative,
+    blur: 18,
+    scale: 1.12,
+  },
+  exit: {
+    duration: 0.19,
+    stagger: 0.005,
+    ease: "power2.in" as const,
+    metaDuration: 0.16,
+    blur: 14,
+    scale: 0.88,
+  },
+  meta: {
+    duration: 0.62,
+    overlap: 0.42,
+    ease: EASE.punchy,
+    y: 14,
   },
 } as const;

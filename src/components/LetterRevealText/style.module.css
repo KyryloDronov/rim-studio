@@ -1,0 +1,17 @@
+/* Word-level chunks from `splitQuoteSegments` — never break inside a word. */
+.word {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: top;
+  max-width: 100%;
+}
+
+.space {
+  display: inline;
+  white-space: pre;
+}
+
+.charWrap {
+  display: inline;
+  vertical-align: baseline;
+}

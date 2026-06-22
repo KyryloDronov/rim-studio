@@ -1,0 +1,42 @@
+.page {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: min(100vh, 100dvh);
+  padding: clamp(7rem, 18vh, 10rem) clamp(1.5rem, 5vw, 4.5rem)
+    clamp(3rem, 10vh, 5rem);
+  background: var(--brand-pearl-100);
+  color: var(--brand-pearl-alpha-88);
+}
+
+.inner {
+  width: min(100%, 46rem);
+}
+
+.eyebrow {
+  margin: 0 0 clamp(1rem, 2.5vh, 1.5rem);
+  font-size: clamp(0.68rem, 1.6vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brand-pearl-alpha-48);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2.25rem, 7vw, 4.5rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--brand-pearl-alpha-88);
+}
+
+.lead {
+  margin: clamp(1.25rem, 3vh, 2rem) 0 0;
+  max-width: 38rem;
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: var(--brand-pearl-alpha-56);
+}

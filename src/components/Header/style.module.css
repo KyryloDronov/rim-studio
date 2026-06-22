@@ -11,6 +11,11 @@
   z-index: 100;
   color: var(--foreground);
   pointer-events: none;
+  will-change: top;
+}
+
+.header[data-concealed="true"] .headerInner {
+  pointer-events: none;
 }
 
 .headerInner {

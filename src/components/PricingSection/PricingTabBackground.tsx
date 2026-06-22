@@ -8,15 +8,13 @@ import {
   type PricingTabId,
 } from "@/content/pricing-tab-backgrounds";
 import {
-  PRICING_BG_IMAGE_ENTER_S,
-  PRICING_BG_IMAGE_EXIT_S,
+  PRICING_BG_IMAGE_CROSSFADE_S,
   PRICING_BG_IMAGE_SCALE_FROM,
 } from "@/components/PricingSection/pricingTransition";
 
 import styles from "./style.module.css";
 
-const appleEase = [0.22, 1, 0.36, 1] as const;
-const imageEnterEase = [0.16, 1, 0.28, 1] as const;
+const crossfadeEase = [0.22, 1, 0.36, 1] as const;
 
 type PricingTabBackgroundProps = Readonly<{
   activeTab: PricingTabId;
@@ -46,58 +44,48 @@ export function PricingTabBackground({
     WebkitBackdropFilter: frostFilter,
   } satisfies CSSProperties;
 
+  const crossfade = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: PRICING_BG_IMAGE_CROSSFADE_S, ease: crossfadeEase };
+
   return (
     <div className={styles.bgLayer} aria-hidden>
       <div className={styles.bgBase} />
 
-      <AnimatePresence initial={false} mode="sync">
-        {visual ? (
-          <motion.div
-            key={activeTab}
-            className={styles.bgStack}
-            initial={prefersReducedMotion ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={
-              prefersReducedMotion
-                ? undefined
-                : {
-                    opacity: 0,
-                    transition: {
-                      duration: PRICING_BG_IMAGE_EXIT_S,
-                      ease: appleEase,
-                    },
-                  }
-            }
-            transition={{
-              duration: PRICING_BG_IMAGE_ENTER_S,
-              ease: imageEnterEase,
-            }}
-          >
+      <div className={styles.bgStage}>
+        <AnimatePresence initial={false}>
+          {visual ? (
             <motion.div
-              className={styles.bgVisual}
+              key={activeTab}
+              className={styles.bgStack}
               initial={
                 prefersReducedMotion
                   ? false
                   : { opacity: 0, scale: PRICING_BG_IMAGE_SCALE_FROM }
               }
               animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: PRICING_BG_IMAGE_ENTER_S,
-                ease: imageEnterEase,
-              }}
+              exit={
+                prefersReducedMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, scale: 1 }
+              }
+              transition={crossfade}
             >
-              <Image
-                src={visual.src}
-                alt=""
-                fill
-                sizes="100vw"
-                className={styles.bgImage}
-                draggable={false}
-              />
+              <div className={styles.bgVisual}>
+                <Image
+                  src={visual.src}
+                  alt=""
+                  fill
+                  sizes="100vw"
+                  className={styles.bgImage}
+                  draggable={false}
+                  priority={activeTab === "paint"}
+                />
+              </div>
             </motion.div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+          ) : null}
+        </AnimatePresence>
+      </div>
 
       <div className={styles.bgBlurOverlay} style={frostStyle} aria-hidden />
     </div>

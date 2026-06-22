@@ -60,6 +60,12 @@
   min-height: 0;
 }
 
+.compareReveal {
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
 .cardCol {
   min-width: 0;
   min-height: 0;
@@ -67,12 +73,112 @@
   max-height: 75dvh;
 }
 
-.card {
+.bookingCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   min-height: 100%;
   height: 100%;
-  border-radius: 18px;
-  background: var(--brand-white);
-  box-shadow: 2px 4px 12px rgb(0 0 0 / 0.06);
+  padding: clamp(1.15rem, 2.2vw, 2rem);
+  border-radius: clamp(22px, 2.2vw, 28px);
+  overflow: hidden;
+  background: var(--brand-ink-700);
+  box-shadow: 0 12px 40px rgb(51 62 72 / 0.22);
+}
+
+.bookingReveal {
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.bookingVideo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.bookingReadability {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(10 12 14 / 0.42) 0%,
+    rgb(10 12 14 / 0.18) 38%,
+    rgb(10 12 14 / 0.55) 100%
+  );
+}
+
+.bookingContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  min-height: 0;
+  gap: clamp(1rem, 2vh, 1.5rem);
+}
+
+.bookingBrand {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--brand-white);
+}
+
+.bookingCopy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.55rem, 1vh, 0.75rem);
+  margin-top: auto;
+}
+
+.bookingEyebrow {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.5);
+}
+
+.bookingTitle {
+  margin: 0;
+  font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: var(--brand-white);
+  text-wrap: pretty;
+}
+
+.bookingTitleAccent {
+  color: rgb(255 255 255 / 0.65);
+}
+
+.bookingBody {
+  margin: 0;
+  max-width: 22rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: rgb(255 255 255 / 0.55);
+  text-wrap: pretty;
+}
+
+.bookingCta {
+  flex-shrink: 0;
+  align-self: flex-start;
 }
 
 .thumbRegion {
@@ -100,7 +206,6 @@
   height: var(--card-size);
   opacity: 0;
   visibility: hidden;
-  transform: translateX(4rem);
   will-change: transform, opacity;
 }
 
@@ -188,8 +293,12 @@
     flex: none;
   }
 
-  .card {
-    min-height: clamp(12rem, 40vw, 16rem);
+  .cardCol {
+    max-height: none;
+  }
+
+  .bookingCard {
+    min-height: clamp(18rem, 52vw, 24rem);
   }
 }
 
@@ -198,7 +307,9 @@
     transition: none;
   }
 
-  .thumbReveal {
+  .compareReveal,
+  .thumbReveal,
+  .bookingReveal {
     opacity: 1;
     visibility: visible;
     transform: none;

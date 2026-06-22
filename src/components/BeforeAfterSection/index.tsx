@@ -1,10 +1,12 @@
 "use client";
 
 import gsap from "gsap";
+import { CalendarCheck } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { runShowcaseScrollReveal } from "@/animations";
+import { runBeforeAfterScrollReveal } from "@/animations";
 import { BeforeAfterCompare } from "@/components/BeforeAfterCompare";
+import { Button } from "@/components/Button";
 import {
   CardSlider,
   CardSliderNav,
@@ -12,8 +14,12 @@ import {
   useCardSlider,
 } from "@/components/CardSlider";
 import cardSliderStyles from "@/components/CardSlider/style.module.css";
-import { BEFORE_AFTER_ITEMS } from "@/content/before-after-pairs";
+import {
+  BEFORE_AFTER_BOOKING_VIDEO,
+  BEFORE_AFTER_ITEMS,
+} from "@/content/before-after-pairs";
 import { useLocale } from "@/i18n/LocaleProvider";
+import { localizedPath } from "@/i18n/paths";
 
 import styles from "./style.module.css";
 
@@ -46,7 +52,8 @@ export function BeforeAfterSection() {
   const prefersReducedMotion = useReducedMotion();
   const thumbSlider = useCardSlider();
   const sectionRef = useRef<HTMLElement>(null);
-  const thumbRegionRef = useRef<HTMLDivElement>(null);
+  const layoutRef = useRef<HTMLDivElement>(null);
+  const bookingVideoRef = useRef<HTMLVideoElement>(null);
   const [mounted, setMounted] = useState(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [activeId, setActiveId] = useState(BEFORE_AFTER_ITEMS[0]?.id ?? "");
@@ -56,17 +63,23 @@ export function BeforeAfterSection() {
   }, []);
 
   useEffect(() => {
+    bookingVideoRef.current?.play().catch(() => {});
+  }, []);
+
+  useEffect(() => {
     if (globalThis.window === undefined) return;
     const root = sectionRef.current;
-    const trigger = thumbRegionRef.current;
+    const trigger = layoutRef.current;
     if (!root || !trigger) return;
 
     const ctx = gsap.context(() => {
-      runShowcaseScrollReveal(
+      runBeforeAfterScrollReveal(
         trigger,
         {
-          cardReveal: styles.thumbReveal,
+          compareReveal: styles.compareReveal,
+          thumbReveal: styles.thumbReveal,
           controlsReveal: cardSliderStyles.controlsReveal,
+          bookingReveal: styles.bookingReveal,
         },
         Boolean(prefersReducedMotion),
       );
@@ -86,6 +99,7 @@ export function BeforeAfterSection() {
 
   const metaId = THUMB_META_ID[activeItem.id];
   const activeMeta = beforeAfter.pairs.find((pair) => pair.id === metaId);
+  const { booking } = beforeAfter;
 
   return (
     <section
@@ -102,9 +116,9 @@ export function BeforeAfterSection() {
           </h2>
         </header>
 
-        <div className={styles.layout}>
+        <div ref={layoutRef} className={styles.layout}>
           <div className={styles.sliderCol}>
-            <div className={styles.compareWrap}>
+            <div className={`${styles.compareWrap} ${styles.compareReveal}`}>
               <BeforeAfterCompare
                 beforeSrc={activeItem.beforeSrc}
                 afterSrc={activeItem.afterSrc}
@@ -116,7 +130,6 @@ export function BeforeAfterSection() {
             </div>
 
             <div
-              ref={thumbRegionRef}
               className={styles.thumbRegion}
               role="tablist"
               aria-label={beforeAfter.thumbsAriaLabel}
@@ -180,9 +193,48 @@ export function BeforeAfterSection() {
             </div>
           </div>
 
-          <div className={styles.cardCol} aria-hidden="true">
-            <div className={styles.card} />
-          </div>
+          <aside className={styles.cardCol}>
+            <article className={`${styles.bookingCard} ${styles.bookingReveal}`}>
+              <video
+                ref={bookingVideoRef}
+                className={styles.bookingVideo}
+                src={BEFORE_AFTER_BOOKING_VIDEO}
+                muted
+                playsInline
+                loop
+                autoPlay
+                preload="metadata"
+                aria-hidden
+              />
+              <div className={styles.bookingReadability} aria-hidden />
+
+              <div className={styles.bookingContent}>
+                <p className={styles.bookingBrand}>rim/studio</p>
+
+                <div className={styles.bookingCopy}>
+                  <p className={styles.bookingEyebrow}>{booking.eyebrow}</p>
+                  <h3 className={styles.bookingTitle}>
+                    {booking.title}{" "}
+                    <span className={styles.bookingTitleAccent}>
+                      {booking.titleAccent}
+                    </span>
+                  </h3>
+                  <p className={styles.bookingBody}>{booking.body}</p>
+                </div>
+
+                <Button
+                  href={localizedPath(locale, booking.cta.href)}
+                  variant="accent"
+                  size="md"
+                  expandFromIcon
+                  icon={<CalendarCheck strokeWidth={1.75} aria-hidden />}
+                  className={styles.bookingCta}
+                >
+                  {booking.cta.label}
+                </Button>
+              </div>
+            </article>
+          </aside>
         </div>
       </div>
     </section>

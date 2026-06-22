@@ -1,10 +1,8 @@
 "use client";
 
 import gsap from "gsap";
-import Image from "next/image";
-import Link from "next/link";
 import { useReducedMotion } from "motion/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { runShowcaseScrollReveal } from "@/animations";
 import {
   CardSlider,
@@ -13,16 +11,32 @@ import {
   useCardSlider,
 } from "@/components/CardSlider";
 import cardSliderStyles from "@/components/CardSlider/style.module.css";
-import { SHOWCASE_CARD_IMAGE } from "@/content/showcase-slider-cards";
+import { resolveShowcaseServiceCards } from "@/content/showcase-services";
+import type { PageServiceKey } from "@/content/site-pages";
 import { useLocale } from "@/i18n/LocaleProvider";
+import { ShowcaseCard } from "./ShowcaseCard";
 
 import styles from "./style.module.css";
 
 export const SHOWCASE_SECTION_ID = "showcase";
 
-export function ShowcaseSection() {
+export type ShowcaseSectionProps = Readonly<{
+  /** Current service page — hidden from the carousel on that landing. */
+  excludePageKey?: PageServiceKey;
+  /** Override section id (avoid duplicates when multiple instances on a page). */
+  sectionId?: string;
+}>;
+
+export function ShowcaseSection({
+  excludePageKey,
+  sectionId = SHOWCASE_SECTION_ID,
+}: ShowcaseSectionProps = {}) {
   const { locale, t } = useLocale();
   const { showcase } = t;
+  const cards = useMemo(
+    () => resolveShowcaseServiceCards(locale, showcase.cards, excludePageKey),
+    [excludePageKey, locale, showcase.cards],
+  );
   const slider = useCardSlider();
   const prefersReducedMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
@@ -46,18 +60,20 @@ export function ShowcaseSection() {
     }, root);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion, locale, showcase.cards.length]);
+  }, [cards.length, prefersReducedMotion, locale]);
+
+  if (cards.length === 0) return null;
 
   return (
     <section
       ref={sectionRef}
-      id={SHOWCASE_SECTION_ID}
+      id={sectionId}
       className={styles.section}
-      aria-labelledby={`${SHOWCASE_SECTION_ID}-title`}
+      aria-labelledby={`${sectionId}-title`}
     >
       <div className={styles.inner}>
         <header className={styles.header}>
-          <h2 id={`${SHOWCASE_SECTION_ID}-title`} className={styles.title}>
+          <h2 id={`${sectionId}-title`} className={styles.title}>
             <span className={styles.titleStrong}>{showcase.titleStrong}</span>{" "}
             <span className={styles.titleMuted}>{showcase.titleMuted}</span>
           </h2>
@@ -72,29 +88,9 @@ export function ShowcaseSection() {
         data-lenis-prevent-horizontal
       >
         <CardSlider emblaRef={slider.emblaRef} className={styles.slider}>
-          {showcase.cards.map((card) => (
+          {cards.map((card) => (
             <CardSliderSlide key={card.id}>
-              <article className={`${styles.card} ${styles.cardReveal}`}>
-                <Link href={card.href} className={styles.cardLink}>
-                  <div className={styles.cardContent}>
-                    <div className={styles.cardImageWrap}>
-                      <Image
-                        src={SHOWCASE_CARD_IMAGE}
-                        alt=""
-                        fill
-                        sizes="(max-width: 767px) 309px, 452px"
-                        className={styles.cardImage}
-                        draggable={false}
-                      />
-                    </div>
-
-                    <div className={styles.cardInfo}>
-                      <p className={styles.cardEyebrow}>{card.category}</p>
-                      <h3 className={styles.cardTitle}>{card.title}</h3>
-                    </div>
-                  </div>
-                </Link>
-              </article>
+              <ShowcaseCard card={card} />
             </CardSliderSlide>
           ))}
         </CardSlider>

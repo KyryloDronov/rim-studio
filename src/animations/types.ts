@@ -9,6 +9,12 @@ export type WordSegment = Readonly<{
   key: string;
 }>;
 
+/** One glyph from `splitChars` — used for testimonial letter reveals. */
+export type CharSegment = Readonly<{
+  char: string;
+  key: string;
+}>;
+
 /**
  * CSS-module class names the Hero intro timeline needs to query scoped nodes.
  * Passed from the component so hashed classes stay correct.
@@ -22,7 +28,9 @@ export type HeroIntroClassNames = Readonly<{
 /** Benefits grid scroll-reveal class names passed from `<BenefitsSection>`. */
 export type BenefitsRevealClassNames = Readonly<{
   revealTitle: string;
-  revealCard: string;
+  revealCardLeft: string;
+  revealCardRight: string;
+  revealCenter: string;
 }>;
 
 /** Footer scroll-reveal class names (CSS modules) passed from `<Footer>`. */
@@ -31,6 +39,16 @@ export type FooterRevealClassNames = Readonly<{
   revealLine: string;
   revealLink: string;
   claimWord: string;
+}>;
+
+/** Loyalty section scroll-reveal class names. */
+export type LoyaltyRevealClassNames = Readonly<{
+  revealEyebrow: string;
+  claimWord: string;
+  bodyChar: string;
+  ctaItem: string;
+  secondaryChar: string;
+  secondaryUnderline: string;
 }>;
 
 /** Element refs the footer timeline wires for column link staggers. */
@@ -46,6 +64,14 @@ export type FooterScrollRefs = Readonly<{
 export type ShowcaseRevealClassNames = Readonly<{
   cardReveal: string;
   controlsReveal: string;
+}>;
+
+/** Before/after section scroll-reveal class names. */
+export type BeforeAfterRevealClassNames = Readonly<{
+  compareReveal: string;
+  thumbReveal: string;
+  controlsReveal: string;
+  bookingReveal: string;
 }>;
 
 /** Resolved DOM buckets for one hero intro run (single query pass). */

@@ -13,9 +13,70 @@ export const pl: Dictionary = {
     contact: "Pogadajmy",
   },
   menu: {
-    home: "Start",
-    work: "Prace",
-    lab: "Lab",
+    servicesHeading: "Usługi",
+    studioHeading: "Studio",
+    services: {
+      wheelPainting: "Lakierowanie felg",
+      wheelRepair: "Naprawa felg",
+      diamondCutting: "Szlifowanie diamentowe felg",
+      tireMounting: "Montaż opon",
+      caliperPainting: "Lakierowanie zacisków",
+      motorcycleWheelPainting: "Lakierowanie felg moto + części",
+      tigWelding: "Spawanie argonowe TIG",
+    },
+    studio: {
+      about: "O nas",
+      contact: "Kontakt",
+    },
+  },
+  pages: {
+    services: {
+      wheelPainting: {
+        title: "Lakierowanie felg",
+        lead:
+          "Proszkowe lakierowanie i renowacja felg w Warszawie — dobierzemy kolor, przygotujemy powierzchnię i przywrócimy fabryczny wygląd.",
+      },
+      wheelRepair: {
+        title: "Naprawa felg",
+        lead:
+          "Usuwamy wgniecenia, pęknięcia i korozję. Diagnostyka, prostowanie geometrii i przygotowanie pod lakier — w jednym miejscu.",
+      },
+      diamondCutting: {
+        title: "Szlifowanie diamentowe felg",
+        lead:
+          "Diamentowe toczenie obrzeży i powierzchni — głęboki połysk, wyraźna faktura i czyste przejścia bez przegrzania metalu.",
+      },
+      tireMounting: {
+        title: "Montaż opon",
+        lead:
+          "Sezonowa wymiana, wyważanie i montaż opon z dbałością o felgi — bez zarysowań i zbędnego obciążenia powłoki.",
+      },
+      caliperPainting: {
+        title: "Lakierowanie zacisków",
+        lead:
+          "Lakierowanie zacisków hamulcowych w trwałe odcienie proszkowe — od demontażu po montaż, z ochroną powierzchni roboczych.",
+      },
+      motorcycleWheelPainting: {
+        title: "Lakierowanie felg moto + części",
+        lead:
+          "Lakierowanie motocyklowych felg, obręczy i dodatków — małe rozmiary, złożone kształty i precyzyjne przygotowanie.",
+      },
+      tigWelding: {
+        title: "Spawanie argonowe TIG",
+        lead:
+          "Spawanie TIG elementów aluminiowych i stalowych felg — lokalna naprawa pęknięć i odtworzenie stref montażowych.",
+      },
+    },
+    about: {
+      title: "O nas",
+      lead:
+        "rim/studio — pracownia renowacji i lakierowania felg w Warszawie. Pracujemy starannie, z gwarancją i bez zbędnego pośpiechu.",
+    },
+    contact: {
+      title: "Kontakt",
+      lead:
+        "Napisz lub zadzwoń — doradzimy w sprawie terminów, kolorów i wyceny. Możesz też przesłać zdjęcia felg do wstępnej oceny.",
+    },
   },
   hero: {
     titleStart: "Renowacja i lakierowanie",
@@ -56,7 +117,8 @@ export const pl: Dictionary = {
     tabsAriaLabel: "Kategorie cen",
     panels: {
       paint: {
-        tabLabel: "Lakierowanie felg",
+        tabLabelLine1: "Lakierowanie",
+        tabLabelLine2: "felg",
         table: {
           title: "Lakierowanie felg",
           columns: [
@@ -125,7 +187,8 @@ export const pl: Dictionary = {
         },
       },
       repair: {
-        tabLabel: "Naprawa",
+        tabLabelLine1: "Naprawa",
+        tabLabelLine2: "felg",
         table: {
           title: "Naprawa felg",
           columns: ["R15-16", "R17-18", "R19-20", "R21+"],
@@ -145,8 +208,31 @@ export const pl: Dictionary = {
           ],
         },
       },
+      diamond: {
+        tabLabelLine1: "Szlifowanie",
+        tabLabelLine2: "diamentowe",
+        table: {
+          title: "Diamentowe szlifowanie felg",
+          columns: ["R15-16", "R17-18", "R19-20", "R21+"],
+          rows: [
+            {
+              label: "Toczenie diamentowe bez lakieru (komplet)",
+              prices: ["12000", "14000", "16000", "18000"],
+            },
+            {
+              label: "Toczenie + polerowanie rantów (komplet)",
+              prices: ["15000", "17000", "19000", "21000"],
+            },
+            {
+              label: "Połysk lustrzany (komplet)",
+              prices: ["18000", "20000", "22000", "25000"],
+            },
+          ],
+        },
+      },
       tire: {
-        tabLabel: "Opony",
+        tabLabelLine1: "Montaż",
+        tabLabelLine2: "opon",
         table: {
           title: "Montaż opon",
           columns: ["R14-15", "R16-17", "R18-19", "R20+"],
@@ -166,23 +252,68 @@ export const pl: Dictionary = {
           ],
         },
       },
-      finish: {
-        tabLabel: "Polerowanie",
+      caliper: {
+        tabLabelLine1: "Lakierowanie",
+        tabLabelLine2: "zacisków",
         table: {
-          title: "Polerowanie i finisz",
-          columns: ["R15-16", "R17-18", "R19-20", "R21+"],
+          title: "Lakierowanie zacisków",
+          columns: ["1 oś", "2 osie", "Komplet", "Z logo"],
           rows: [
             {
-              label: "Polerowanie rantów (komplet)",
-              prices: ["4500", "5000", "5500", "6000"],
+              label: "Lakier proszkowy",
+              prices: ["4500", "8000", "12000", "15000"],
             },
             {
-              label: "Wykończenie szczotkowane (komplet)",
-              prices: ["5500", "6000", "6500", "7000"],
+              label: "Lakier + odtłuszczanie",
+              prices: ["5500", "9500", "14000", "17500"],
             },
             {
-              label: "Toczenie diamentowe bez lakieru",
-              prices: ["12000", "14000", "16000", "18000"],
+              label: "Demontaż / montaż zacisku",
+              prices: ["1500", "2800", "4000", "5000"],
+            },
+          ],
+        },
+      },
+      motorcycle: {
+        tabLabelLine1: "Felgi moto",
+        tabLabelLine2: "+ detale",
+        table: {
+          title: "Lakierowanie felg moto i detali",
+          columns: ["10–12\"", "13–17\"", "18–21\"", "Detale"],
+          rows: [
+            {
+              label: "Lakier felgi (1 szt.)",
+              prices: ["3500", "4500", "5500", "od 1500"],
+            },
+            {
+              label: "Lakier kompletu (2 felgi)",
+              prices: ["6500", "8500", "10000", "—"],
+            },
+            {
+              label: "Naprawa / prostowanie felgi moto",
+              prices: ["2500", "3000", "3500", "—"],
+            },
+          ],
+        },
+      },
+      tig: {
+        tabLabelLine1: "Spawanie",
+        tabLabelLine2: "TIG",
+        table: {
+          title: "Spawanie argonowo-łukowe (TIG)",
+          columns: ["Do 3 cm", "3–8 cm", "8–15 cm", "Trudny szew"],
+          rows: [
+            {
+              label: "Spawanie pęknięcia na felge",
+              prices: ["3500", "5000", "7000", "od 9000"],
+            },
+            {
+              label: "Naprawa gniazda",
+              prices: ["2500", "4000", "5500", "od 7500"],
+            },
+            {
+              label: "Regeneracja strefy piaskowania",
+              prices: ["2000", "3500", "5000", "od 6500"],
             },
           ],
         },
@@ -195,50 +326,43 @@ export const pl: Dictionary = {
     sliderAriaLabel: "Karuzela usług",
     prevLabel: "Poprzednia karta",
     nextLabel: "Następna karta",
-    cards: [
-      {
-        id: "paint",
+    cards: {
+      wheelPainting: {
         category: "Lakierowanie",
         title: "Proszkowe lakierowanie felg dowolnej złożoności",
-        href: "/services/wheel-painting",
         linkLabel: "Więcej",
       },
-      {
-        id: "repair",
+      wheelRepair: {
         category: "Naprawa",
         title: "Naprawa i renowacja uszkodzonych felg",
-        href: "/services/wheel-repair",
         linkLabel: "Więcej",
       },
-      {
-        id: "tire",
-        category: "Opony",
-        title: "Montaż opon i sezonowe przechowywanie",
-        href: "/services/tire-mounting",
-        linkLabel: "Więcej",
-      },
-      {
-        id: "diamond",
+      diamondCutting: {
         category: "Szlifowanie",
         title: "Diamentowe toczenie i lustrzany połysk",
-        href: "/services/diamond-cutting",
         linkLabel: "Więcej",
       },
-      {
-        id: "polish",
-        category: "Polerowanie",
-        title: "Polerowanie rantów i wykończenie",
-        href: "/services/lip-polishing",
+      tireMounting: {
+        category: "Opony",
+        title: "Montaż opon i sezonowe przechowywanie",
         linkLabel: "Więcej",
       },
-      {
-        id: "caliper",
+      caliperPainting: {
         category: "Zaciski",
         title: "Lakierowanie zacisków w kolorze nadwozia",
-        href: "/services/caliper-painting",
         linkLabel: "Więcej",
       },
-    ],
+      motorcycleWheelPainting: {
+        category: "Moto",
+        title: "Lakierowanie felg motocyklowych i dodatków",
+        linkLabel: "Więcej",
+      },
+      tigWelding: {
+        category: "Spawanie",
+        title: "Spawanie TIG pęknięć i stref montażowych",
+        linkLabel: "Więcej",
+      },
+    },
   },
   beforeAfter: {
     titleStrong: "Przed i po.",
@@ -263,6 +387,17 @@ export const pl: Dictionary = {
         thumbAlt: "Drugi przykład renowacji felgi Mercedes AMG",
       },
     ],
+    booking: {
+      eyebrow: "Konsultacja",
+      title: "Umów się na",
+      titleAccent: "bezpłatną konsultację",
+      body:
+        "Ocenimy stan felg, dobierzemy kolor i podamy termin — zanim zapiszesz się na lakierowanie.",
+      cta: {
+        label: "Umów konsultację",
+        href: "/contact",
+      },
+    },
   },
   benefits: {
     titleStrong: "Nasze atuty.",
@@ -313,6 +448,185 @@ export const pl: Dictionary = {
       privacyHref: "/privacy",
     },
   },
+  aboutSection: {
+    heading: "rim/studio — renowacja i lakierowanie felg",
+    lead:
+      "Studio w Warszawie: przywracamy geometrię, przygotowujemy powierzchnię i lakierujemy komplety tak, by nie odróżnić ich od fabrycznych. Bez przedpłaty, z gwarancją do trzech lat i jasnym terminem przed startem prac.",
+    cta: {
+      label: "Umów diagnostykę felg",
+      href: "/contact",
+    },
+    cards: {
+      studio: { label: "Studio" },
+      timeline: [
+        {
+          period: "2022 — obecnie",
+          role: "rim/studio",
+          detail: "Lakierowanie, naprawa i montaż opon",
+        },
+        {
+          period: "2019 — 2022",
+          role: "Kabina lakiernicza",
+          detail: "Technologie proszkowe i suszenie",
+        },
+        {
+          period: "2016 — 2019",
+          role: "Renowacja felg",
+          detail: "Dealerzy i klienci indywidualni",
+        },
+        {
+          period: "2014 — 2016",
+          role: "Początek kierunku",
+          detail: "Przygotowanie i lokalna naprawa",
+        },
+      ],
+      warranty: {
+        label: "Gwarancja",
+        title: "Na nasze usługi dajemy 3 lata gwarancji",
+        body:
+          "Jeśli w tym czasie odpryśnie lakier lub pojawi się wada, której nie powinno być — naprawimy na nasz koszt",
+      },
+      stat: {
+        value: "8+",
+        caption: "lat na rynku renowacji",
+      },
+      equipment: {
+        label: "Sprzęt",
+      },
+      advantage: {
+        label: "Warunki",
+        title: "Pracujemy bez przedpłaty",
+        body:
+          "Płatność dopiero po odbiorze efektu. Przed rozpoczęciem prac podajemy dokładną cenę i termin — bez niespodzianek w trakcie.",
+      },
+    },
+  },
+  process: {
+    titleMuted: "Jak",
+    titleStrong: "pracujemy",
+    videoAlt: "Proces pracy w studiu rim/studio",
+    diagramAriaLabel: "Etapy pracy rim/studio",
+    cta: {
+      label: "Umów konsultację",
+      href: "/contact",
+    },
+    steps: [
+      {
+        id: "consultation",
+        label: "Konsultacja",
+        description:
+          "Pomożemy wybrać kolor i doradzimy we wszystkich potrzebnych pracach.",
+      },
+      {
+        id: "work",
+        label: "Praca",
+        description:
+          "Realizujemy zlecenie w 1–4 dni. Jeśli nie masz drugiego kompletu, zostaw auto na naszym parkingu.",
+      },
+      {
+        id: "payment",
+        label: "Płatność",
+        description:
+          "Pełną kwotę wpłacasz po odbiorze efektu, gdy wszystko Ci odpowiada.",
+      },
+      {
+        id: "done",
+        label: "Gotowe",
+        description:
+          "Wraz z dokumentacją wykonanych prac wydamy kartę gwarancyjną.",
+      },
+    ],
+  },
+  loyalty: {
+    eyebrow: "Program lojalnościowy",
+    claimRuns: [
+      {
+        group: "muted",
+        text: "System rabatów",
+        breakAfter: true,
+      },
+      { group: "muted", text: "dla stałych klientów —" },
+      { group: "strong", text: "do 15% zniżki" },
+    ],
+    body:
+      "Każde zlecenie przybliża Cię do kolejnego poziomu. Rabat naliczamy automatycznie — im więcej prac wykonasz w rim/studio, tym korzystniejsze warunki na lakierowanie, naprawę i montaż opon.",
+    carouselAriaLabel: "Poziomy programu lojalnościowego rim/studio",
+    cta: {
+      label: "Sprawdź swój poziom",
+      href: "/contact",
+    },
+    secondaryCta: {
+      label: "Jak naliczamy punkty",
+      href: "/about",
+    },
+    tiers: {
+      silver: {
+        level: "Srebro",
+        discount: "7%",
+        discountLabel: "zniżki na usługi",
+        thresholdLabel: "suma zamówień",
+        threshold: "od 35 000 zł",
+        perks: ["Rabat na montaż opon", "7 dni przechowania"],
+      },
+      gold: {
+        level: "Złoto",
+        discount: "10%",
+        discountLabel: "zniżki na usługi",
+        thresholdLabel: "suma zamówień",
+        threshold: "od 70 000 zł",
+        perks: ["Rabat na zaciski", "Osobisty opiekun"],
+      },
+      platinum: {
+        level: "Platyna",
+        discount: "15%",
+        discountLabel: "zniżki na usługi",
+        thresholdLabel: "suma zamówień",
+        threshold: "od 120 000 zł",
+        perks: ["Maksymalny rabat", "VIP bez kolejki"],
+      },
+    },
+  },
+  testimonials: {
+    eyebrow: "Opinie klientów",
+    sliderAriaLabel: "Opinie klientów rim/studio",
+    prevLabel: "Poprzednia opinia",
+    nextLabel: "Następna opinia",
+    counterAriaLabel: "Opinia {current} z {total}",
+    items: [
+      {
+        id: "anna-k",
+        quote:
+          "Zleciliśmy lakierowanie kompletu R19 — kolor trafiony za pierwszym razem, termin jak obiecany. Felgi wyglądają jak nowe, bez smug i różnic w odcieniu.",
+        author: "Anna Kowalska",
+        role: "BMW X5, Warszawa",
+        initials: "AK",
+      },
+      {
+        id: "mikhail-n",
+        quote:
+          "Po uderzeniu w krawężnik odzyskali geometrię i polakierowali komplet — widać, że profesjonaliści. Auto na czas, bez niespodzianek w cenie.",
+        author: "Michał Nowak",
+        role: "Mercedes C-Class",
+        initials: "MN",
+      },
+      {
+        id: "olga-w",
+        quote:
+          "Robiliśmy toczenie diamentowe i lakier zacisków — połysk równy, przejścia czyste. Miło, że można wysłać zdjęcia i od razu dostać jasną wycenę.",
+        author: "Olga Wiśniewska",
+        role: "Audi A6",
+        initials: "OW",
+      },
+      {
+        id: "tomasz-l",
+        quote:
+          "Sezonowa wymiana opon poszła szybko, felg nie porysowano. Przechowywanie kół wygodne — nie trzeba ciągnąć kompletu po mieszkaniu między sezonami.",
+        author: "Tomasz Lewandowski",
+        role: "VW Tiguan",
+        initials: "TL",
+      },
+    ],
+  },
   footer: {
     addressLines: ["Warszawa, Polska", "hello@rim.studio"],
     columnStudio: "Studio",
@@ -325,16 +639,16 @@ export const pl: Dictionary = {
     },
     serviceItems: [
       { href: "/services/wheel-painting", label: "Lakierowanie felg" },
-      { href: "/services/wheel-repair", label: "Naprawa felg" },
-      {
-        href: "/services/diamond-cutting",
-        label: "Szlifowanie diamentowe felg",
-      },
       {
         href: "/services/tire-mounting",
         label: "Montaż opon (zapis online)",
       },
+      { href: "/services/wheel-repair", label: "Naprawa felg" },
       { href: "/services/caliper-painting", label: "Lakierowanie zacisków" },
+      {
+        href: "/services/diamond-cutting",
+        label: "Szlifowanie diamentowe felg",
+      },
       {
         href: "/services/lip-polishing",
         label: "Polerowanie rantów felg",

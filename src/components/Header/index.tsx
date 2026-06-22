@@ -2,12 +2,13 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { ArrowRightIcon } from "./icons";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { RevealText } from "./RevealText";
 import styles from "./style.module.css";
+import { useHeaderScrollBehavior } from "./useHeaderScrollBehavior";
 
 const ease = [0.76, 0, 0.24, 1] as const;
 const easeOutQuart = [0.165, 0.84, 0.44, 1] as const;
@@ -30,31 +31,11 @@ export function Header({
   const prefersReducedMotion = useReducedMotion();
   const { t } = useLocale();
 
-  /* When scrolled past the threshold, the header collapses into a glass
-     pill (border-radius animates with a delay so the bar shrinks first
-     and *then* rounds out — symmetrical reverse on the way back). The
-     menu overlay handles its own background, so the pill is suppressed
-     while the menu is open. */
-  const SCROLL_THRESHOLD = 32;
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    if (globalThis.window === undefined) return;
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      setIsScrolled(window.scrollY > SCROLL_THRESHOLD);
-    };
-    update();
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(update);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
+  const { mode, isScrolled, isBannerPinned } = useHeaderScrollBehavior(
+    isMenuOpen,
+    headerRef,
+  );
+  const isConcealed = mode === "concealed" && !isMenuOpen;
   const surfaceActive = isScrolled && !isMenuOpen;
 
   const handleMenuClick = useCallback(() => {
@@ -76,6 +57,9 @@ export function Header({
       ref={headerRef}
       className={styles.header}
       data-scrolled={surfaceActive ? "true" : "false"}
+      data-banner={mode === "hero" ? "true" : "false"}
+      data-pinned={isBannerPinned ? "true" : "false"}
+      data-concealed={isConcealed ? "true" : "false"}
     >
       {/* Decorative glass pill — sibling of `.headerInner`, so the
           motion transform on the inner wrapper does not affect the

@@ -32,19 +32,28 @@
 .bgBase {
   position: absolute;
   inset: 0;
-  background: var(--brand-pearl-100);
+  /* Darker than pearl-100 so crossfade gaps never read as a white flash. */
+  background: var(--brand-ink-500);
+}
+
+.bgStage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
 }
 
 .bgStack {
   position: absolute;
   inset: 0;
+  z-index: 1;
+  transform-origin: center center;
+  will-change: opacity, transform;
 }
 
 .bgVisual {
   position: absolute;
   inset: 0;
   transform-origin: center center;
-  will-change: transform, opacity;
 }
 
 .bgImage {
@@ -75,13 +84,46 @@
 
 @media (max-width: 991px) {
   .section {
-    padding: 10vw 6vw 4vw;
+    padding: clamp(5rem, 14vw, 7rem) clamp(1rem, 4vw, 1.5rem) clamp(2rem, 8vw, 3rem);
+    min-height: auto;
+  }
+
+  .panel {
+    gap: clamp(1rem, 3vh, 1.5rem);
+    font-size: clamp(0.78rem, 2.8vw, 0.92rem);
+  }
+
+  .tabsBar {
+    align-self: stretch;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .tableArea {
+    padding-bottom: 0.5rem;
   }
 }
 
 @media (max-width: 479px) {
   .section {
-    padding: 16vw 5vw 6vw;
+    padding: clamp(4.5rem, 18vw, 6rem) 0 clamp(1.75rem, 10vw, 2.5rem);
+  }
+
+  .inner {
+    padding-inline: clamp(0.85rem, 4vw, 1.15rem);
+  }
+
+  .panel {
+    gap: 0.85rem;
+  }
+
+  .tabsBar {
+    margin-inline: -0.15rem;
+  }
+
+  .tableScroll {
+    border-radius: 0.85rem;
   }
 }
 
@@ -125,7 +167,7 @@
 .tabsBar {
   flex: 0 1 auto;
   align-self: flex-start;
-  width: min(100%, 32rem);
+  width: min(100%, 54rem);
   margin: 0 0 4px;
 }
 

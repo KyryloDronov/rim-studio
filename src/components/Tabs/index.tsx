@@ -62,8 +62,30 @@ export function Tabs({
   );
 
   const rootRef = useRef<HTMLElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const notchRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+
+  const scrollActiveTabIntoView = useCallback(() => {
+    const scrollEl = scrollRef.current;
+    const activeBtn = tabRefs.current.get(activeId);
+    if (!scrollEl || !activeBtn) return;
+
+    const maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+    if (maxScroll <= 0) return;
+
+    const scrollRect = scrollEl.getBoundingClientRect();
+    const btnRect = activeBtn.getBoundingClientRect();
+    const relativeLeft =
+      btnRect.left - scrollRect.left + scrollEl.scrollLeft;
+    const target =
+      relativeLeft - (scrollEl.clientWidth - btnRect.width) / 2;
+
+    scrollEl.scrollTo({
+      left: Math.max(0, Math.min(target, maxScroll)),
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+  }, [activeId, prefersReducedMotion]);
 
   const positionNotch = useCallback(() => {
     const root = rootRef.current;
@@ -72,11 +94,12 @@ export function Tabs({
     if (!root || !notch || !activeBtn) return;
 
     const rootRect = root.getBoundingClientRect();
-    const tabRect = activeBtn.getBoundingClientRect();
+    const iconSlot = activeBtn.querySelector<HTMLElement>("[data-tab-icon-slot]");
+    const anchorRect = iconSlot?.getBoundingClientRect() ?? activeBtn.getBoundingClientRect();
     const left =
-      tabRect.left -
+      anchorRect.left -
       rootRect.left +
-      (tabRect.width - notch.offsetWidth) / 2;
+      (anchorRect.width - notch.offsetWidth) / 2;
 
     notch.style.transform = `translate3d(${Math.round(left)}px, 0, 0) scaleY(-1)`;
 
@@ -92,15 +115,18 @@ export function Tabs({
 
   useLayoutEffect(() => {
     positionNotch();
-  }, [positionNotch, items.length]);
+    scrollActiveTabIntoView();
+  }, [positionNotch, scrollActiveTabIntoView, items.length]);
 
   useEffect(() => {
     positionNotch();
     const root = rootRef.current;
+    const scrollEl = scrollRef.current;
     if (!root) return;
 
     const ro = new ResizeObserver(() => positionNotch());
     ro.observe(root);
+    if (scrollEl) ro.observe(scrollEl);
     for (const btn of tabRefs.current.values()) {
       ro.observe(btn);
     }
@@ -109,10 +135,15 @@ export function Tabs({
     if (anchor) ro.observe(anchor);
 
     const onResize = () => positionNotch();
+    const onScroll = () => positionNotch();
+
     window.addEventListener("resize", onResize);
+    scrollEl?.addEventListener("scroll", onScroll, { passive: true });
+
     return () => {
       ro.disconnect();
       window.removeEventListener("resize", onResize);
+      scrollEl?.removeEventListener("scroll", onScroll);
     };
   }, [metricsAnchorRef, positionNotch]);
 
@@ -149,40 +180,59 @@ export function Tabs({
         }}
       />
 
-      <ul className={styles.list} role="tablist">
-        {items.map((item) => {
-          const isActive = item.id === activeId;
-          return (
-            <li key={item.id} className={styles.item} role="presentation">
-              <button
-                ref={(el) => {
-                  if (el) tabRefs.current.set(item.id, el);
-                  else tabRefs.current.delete(item.id);
-                }}
-                type="button"
-                role="tab"
-                id={`tab-${item.id}`}
-                aria-selected={isActive}
-                aria-controls={`tabpanel-${item.id}`}
-                tabIndex={isActive ? 0 : -1}
-                className={styles.tab}
-                data-active={isActive ? "true" : "false"}
-                onClick={() => {
-                  if (item.id === activeId) return;
-                  setActiveId(item.id);
-                }}
-              >
-                <span className={styles.iconSlot}>
-                  <span className={styles.icon} aria-hidden>
-                    {item.icon}
+      <div
+        ref={scrollRef}
+        className={styles.scrollViewport}
+        data-lenis-prevent-horizontal
+      >
+        <ul className={styles.list} role="tablist">
+          {items.map((item) => {
+            const isActive = item.id === activeId;
+            return (
+              <li key={item.id} className={styles.item} role="presentation">
+                <button
+                  ref={(el) => {
+                    if (el) tabRefs.current.set(item.id, el);
+                    else tabRefs.current.delete(item.id);
+                  }}
+                  type="button"
+                  role="tab"
+                  id={`tab-${item.id}`}
+                  aria-selected={isActive}
+                  aria-controls={`tabpanel-${item.id}`}
+                  tabIndex={isActive ? 0 : -1}
+                  className={styles.tab}
+                  data-active={isActive ? "true" : "false"}
+                  onClick={() => {
+                    if (item.id === activeId) return;
+                    setActiveId(item.id);
+                  }}
+                >
+                  <span className={styles.iconSlot} data-tab-icon-slot>
+                    <span className={styles.icon} aria-hidden>
+                      {item.icon}
+                    </span>
                   </span>
-                </span>
-                <span className={styles.label}>{item.label}</span>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+                  <span className={styles.label}>
+                    {item.labelLines ? (
+                      <>
+                        <span className={styles.labelLine}>
+                          {item.labelLines[0]}
+                        </span>
+                        <span className={styles.labelLine}>
+                          {item.labelLines[1]}
+                        </span>
+                      </>
+                    ) : (
+                      item.label
+                    )}
+                  </span>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </nav>
   );
 }

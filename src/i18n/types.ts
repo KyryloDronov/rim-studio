@@ -31,9 +31,40 @@ export type Dictionary = Readonly<{
     contact: string;
   }>;
   menu: Readonly<{
-    home: string;
-    work: string;
-    lab: string;
+    servicesHeading: string;
+    studioHeading: string;
+    services: Readonly<{
+      wheelPainting: string;
+      wheelRepair: string;
+      diamondCutting: string;
+      tireMounting: string;
+      caliperPainting: string;
+      motorcycleWheelPainting: string;
+      tigWelding: string;
+    }>;
+    studio: Readonly<{
+      about: string;
+      contact: string;
+    }>;
+  }>;
+  pages: Readonly<{
+    services: Readonly<
+      Record<
+        | "wheelPainting"
+        | "wheelRepair"
+        | "diamondCutting"
+        | "tireMounting"
+        | "caliperPainting"
+        | "motorcycleWheelPainting"
+        | "tigWelding",
+        Readonly<{
+          title: string;
+          lead: string;
+        }>
+      >
+    >;
+    about: Readonly<{ title: string; lead: string }>;
+    contact: Readonly<{ title: string; lead: string }>;
   }>;
   /**
    * Home / hero banner.
@@ -92,9 +123,16 @@ export type Dictionary = Readonly<{
     tabsAriaLabel: string;
     panels: Readonly<
       Record<
-        "paint" | "repair" | "tire" | "finish",
+        | "paint"
+        | "repair"
+        | "diamond"
+        | "tire"
+        | "caliper"
+        | "motorcycle"
+        | "tig",
         Readonly<{
-          tabLabel: string;
+          tabLabelLine1: string;
+          tabLabelLine2: string;
           table: Readonly<{
             title: string;
             columns: ReadonlyArray<string>;
@@ -109,21 +147,28 @@ export type Dictionary = Readonly<{
       >
     >;
   }>;
-  /** Horizontal card carousel below pricing. */
+  /** Horizontal card carousel — one card per service landing in `pages.services`. */
   showcase: Readonly<{
     titleStrong: string;
     titleMuted: string;
     sliderAriaLabel: string;
     prevLabel: string;
     nextLabel: string;
-    cards: ReadonlyArray<
-      Readonly<{
-        id: string;
-        category: string;
-        title: string;
-        href: string;
-        linkLabel: string;
-      }>
+    cards: Readonly<
+      Record<
+        | "wheelPainting"
+        | "wheelRepair"
+        | "diamondCutting"
+        | "tireMounting"
+        | "caliperPainting"
+        | "motorcycleWheelPainting"
+        | "tigWelding",
+        Readonly<{
+          category: string;
+          title: string;
+          linkLabel: string;
+        }>
+      >
     >;
   }>;
   /** Before/after comparison block with thumbnail switcher. */
@@ -144,8 +189,15 @@ export type Dictionary = Readonly<{
         thumbAlt: string;
       }>
     >;
+    booking: Readonly<{
+      eyebrow: string;
+      title: string;
+      titleAccent: string;
+      body: string;
+      cta: Readonly<{ label: string; href: string }>;
+    }>;
   }>;
-  /** Dark benefits grid with CTA form. */
+  /** Dark benefits hub — side cards + center video. */
   benefits: Readonly<{
     titleStrong: string;
     titleMuted: string;
@@ -176,6 +228,95 @@ export type Dictionary = Readonly<{
       privacyLinkLabel: string;
       privacyHref: string;
     }>;
+  }>;
+  /** Full-viewport about-the-studio hub (6 cards + header). */
+  aboutSection: Readonly<{
+    heading: string;
+    lead: string;
+    cta: Readonly<{ label: string; href: string }>;
+    cards: Readonly<{
+      studio: Readonly<{ label: string }>;
+      timeline: ReadonlyArray<
+        Readonly<{
+          period: string;
+          role: string;
+          detail: string;
+        }>
+      >;
+      warranty: Readonly<{
+        label: string;
+        title: string;
+        body: string;
+      }>;
+      stat: Readonly<{ value: string; caption: string }>;
+      equipment: Readonly<{ label: string }>;
+      advantage: Readonly<{
+        label: string;
+        title: string;
+        body: string;
+      }>;
+    }>;
+  }>;
+  /** How rim/studio works — four-step process diagram. */
+  process: Readonly<{
+    titleMuted: string;
+    titleStrong: string;
+    videoAlt: string;
+    diagramAriaLabel: string;
+    cta: Readonly<{ label: string; href: string }>;
+    steps: ReadonlyArray<
+      Readonly<{
+        id: string;
+        label: string;
+        description: string;
+      }>
+    >;
+  }>;
+  /** Cumulative loyalty / discount program section. */
+  loyalty: Readonly<{
+    eyebrow: string;
+    claimRuns: ReadonlyArray<
+      Readonly<{
+        text: string;
+        group: "strong" | "muted";
+        breakAfter?: boolean;
+      }>
+    >;
+    body: string;
+    carouselAriaLabel: string;
+    cta: Readonly<{ label: string; href: string }>;
+    secondaryCta: Readonly<{ label: string; href: string }>;
+    tiers: Readonly<
+      Record<
+        "silver" | "gold" | "platinum",
+        Readonly<{
+          level: string;
+          discount: string;
+          discountLabel: string;
+          thresholdLabel: string;
+          threshold: string;
+          perks: ReadonlyArray<string>;
+        }>
+      >
+    >;
+  }>;
+  /** Quote carousel above the footer. */
+  testimonials: Readonly<{
+    eyebrow: string;
+    sliderAriaLabel: string;
+    prevLabel: string;
+    nextLabel: string;
+    /** Screen reader: "{current}" and "{total}" are replaced at runtime. */
+    counterAriaLabel: string;
+    items: ReadonlyArray<
+      Readonly<{
+        id: string;
+        quote: string;
+        author: string;
+        role: string;
+        initials: string;
+      }>
+    >;
   }>;
   footer: Readonly<{
     addressLines: ReadonlyArray<string>;

@@ -153,28 +153,34 @@
 @media (max-width: 767px) {
   .table {
     min-width: 44rem;
+    --table-sticky-head-bg: rgb(32 38 43);
+    --table-sticky-label-bg: rgb(214 214 218);
+    --table-sticky-label-bg-alt: rgb(204 204 208);
+    --table-sticky-label-bg-hover: rgb(236 214 178);
   }
 
   .headCell:first-child {
     position: sticky;
     left: 0;
     z-index: 2;
-    box-shadow: 4px 0 12px rgb(0 0 0 / 0.06);
+    background-color: var(--table-sticky-head-bg);
+    box-shadow: 4px 0 14px rgb(0 0 0 / 0.1);
   }
 
   .rowLabel {
     position: sticky;
     left: 0;
     z-index: 1;
-    box-shadow: 4px 0 12px rgb(0 0 0 / 0.04);
+    background-color: var(--table-sticky-label-bg);
+    box-shadow: 4px 0 12px rgb(0 0 0 / 0.08);
   }
 
   .row:nth-child(even) .rowLabel {
-    background-color: var(--table-cell-glass-bg-alt);
+    background-color: var(--table-sticky-label-bg-alt);
   }
 
   .row:hover .rowLabel {
-    background-color: rgb(255 153 0 / 0.12);
+    background-color: var(--table-sticky-label-bg-hover);
   }
 }
 

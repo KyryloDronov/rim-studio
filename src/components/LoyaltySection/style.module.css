@@ -1,0 +1,566 @@
+/* ===========================================================
+   Loyalty — dark band, footer-style claim + 3D card carousel
+   =========================================================== */
+
+.section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  padding: clamp(1.35rem, 3.2vh, 2.25rem) 0 clamp(1.25rem, 2.8vh, 2rem);
+  box-sizing: border-box;
+  background: var(--brand-ink-700);
+  color: var(--brand-white);
+  overflow-x: clip;
+  overflow-y: hidden;
+  isolation: isolate;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: min(100%, 88rem);
+  min-height: 0;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  min-height: 0;
+}
+
+@media (min-width: 992px) {
+  .section {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .inner {
+    justify-content: center;
+  }
+
+  .layout {
+    flex: 0 1 auto;
+    width: 100%;
+  }
+
+  .copy,
+  .carouselCol {
+    align-self: center;
+    min-height: 0;
+  }
+
+  .carouselCol {
+    overflow: hidden;
+  }
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 36rem;
+  min-height: 0;
+}
+
+.eyebrow {
+  margin: 0 0 clamp(0.85rem, 2vh, 1.25rem);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-accent-500);
+}
+
+.claim {
+  margin: 0;
+  font-size: clamp(1.75rem, 3.4vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  font-weight: 500;
+  color: var(--brand-white);
+}
+
+.claimWordWrap {
+  display: inline-block;
+  white-space: pre;
+}
+
+.claimWord {
+  display: inline-block;
+  will-change: filter, opacity, transform;
+  filter: blur(10px);
+  transform: translateX(-14px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.claimWordWrap[data-group="muted"] .claimWord {
+  color: rgb(255 255 255 / 0.5);
+}
+
+.body {
+  margin: clamp(1rem, 2.5vh, 1.5rem) 0 0;
+  max-width: 32rem;
+  font-size: clamp(0.95rem, 1.35vw, 1.05rem);
+  line-height: 1.55;
+  color: rgb(255 255 255 / 0.62);
+  text-wrap: pretty;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.bodyChar,
+.secondaryChar {
+  display: inline-block;
+  vertical-align: baseline;
+  will-change: filter, opacity, transform;
+  filter: blur(10px);
+  transform: translateX(-12px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  margin-top: clamp(1.35rem, 3vh, 2rem);
+}
+
+.ctaItem {
+  display: inline-flex;
+  will-change: transform, opacity;
+  transform: translateY(18px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.secondaryLink {
+  display: inline-block;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.72);
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.secondaryLinkLabel {
+  position: relative;
+  display: inline;
+}
+
+.secondaryUnderline {
+  position: absolute;
+  left: 0;
+  bottom: calc(0.08em - 2px);
+  width: 100%;
+  height: 1px;
+  background: rgb(255 255 255 / 0.22);
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: background-color 180ms ease;
+}
+
+.secondaryLink:hover {
+  color: var(--brand-white);
+}
+
+.secondaryLink:hover .secondaryUnderline {
+  background: rgb(255 255 255 / 0.45);
+}
+
+.carouselCol {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-inline: clamp(1.25rem, 5vw, 3.5rem);
+}
+
+@media (min-width: 992px) {
+  .carouselCol {
+    padding-inline: clamp(0.75rem, 2vw, 1.75rem);
+    padding-block: 0;
+  }
+
+  .carouselCol::before,
+  .carouselCol::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 16%;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .carouselCol::before {
+    top: 0;
+    background: linear-gradient(
+      to bottom,
+      var(--brand-ink-700) 0%,
+      rgb(25 31 36 / 0.6) 45%,
+      transparent 100%
+    );
+  }
+
+  .carouselCol::after {
+    bottom: 0;
+    background: linear-gradient(
+      to top,
+      var(--brand-ink-700) 0%,
+      rgb(25 31 36 / 0.6) 45%,
+      transparent 100%
+    );
+  }
+}
+
+.carouselRoot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+  min-height: 0;
+  user-select: none;
+  overflow: visible;
+}
+
+.carouselViewport {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  padding-block: 1rem;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+@media (min-width: 992px) {
+  .carouselRoot {
+    width: 100%;
+    max-width: min(100%, 26rem);
+    min-height: 17.5rem;
+    flex: none;
+  }
+
+  .carouselViewport {
+    height: 100%;
+    padding-block: 0;
+    overflow: hidden;
+  }
+
+  .carouselPerspective,
+  .carouselTrack {
+    height: 100%;
+  }
+}
+
+.carouselPerspective {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  perspective: 2200px;
+  perspective-origin: 50% 50%;
+  overflow: visible;
+}
+
+.carouselTrack {
+  position: relative;
+  margin-inline: auto;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.cardShell {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-style: preserve-3d;
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  overflow: visible;
+}
+
+.cardSlice {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: rgb(38 46 54);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  backface-visibility: hidden;
+  pointer-events: none;
+}
+
+.cardSliceGroup {
+  position: absolute;
+  inset: 0;
+  transform: translateZ(1px);
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 6px 14px rgb(0 0 0 / 0.18));
+}
+
+.cardFace {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: linear-gradient(
+    155deg,
+    rgb(45 54 63 / 0.96) 0%,
+    rgb(25 31 36 / 0.98) 100%
+  );
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.1);
+  backface-visibility: hidden;
+}
+
+.cardGlow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 125% 115% at 24% 18%,
+    var(--tier-glow) 0%,
+    color-mix(in srgb, var(--tier-glow) 28%, transparent) 45%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
+.cardFrontInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: clamp(0.55rem, 1.2vw, 0.78rem);
+}
+
+.cardTopRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.cardBrand {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.cardLevel {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tier-accent);
+}
+
+.cardDiscountBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+
+.cardDiscountValue {
+  font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--brand-white);
+}
+
+.cardDiscountLabel {
+  font-size: 0.58rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.55);
+}
+
+.cardThreshold {
+  display: flex;
+  flex-direction: column;
+  gap: 0.06rem;
+  padding-top: 0.28rem;
+  border-top: 1px solid var(--tier-stripe);
+}
+
+.cardThresholdLabel {
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.45);
+}
+
+.cardThresholdValue {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: rgb(255 255 255 / 0.82);
+}
+
+.cardPerksInline {
+  margin: 0.35rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.14rem;
+}
+
+.cardPerksInline li {
+  font-size: 0.58rem;
+  line-height: 1.3;
+  color: rgb(255 255 255 / 0.62);
+}
+
+.cardPerksInline li::before {
+  content: "·";
+  margin-right: 0.3rem;
+  color: var(--tier-accent);
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.staticStack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 360px;
+  margin-inline: auto;
+}
+
+.staticCard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: rgb(38 46 54 / 0.55);
+}
+
+.staticLevel {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tier-accent);
+}
+
+.staticDiscount {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--brand-white);
+}
+
+.staticThreshold {
+  font-size: 0.75rem;
+  color: rgb(255 255 255 / 0.55);
+}
+
+.revealEyebrow {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaItem {
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .bodyChar,
+  .secondaryChar {
+    filter: none;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .secondaryUnderline {
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 991px) {
+  .section {
+    max-height: none;
+    min-height: 100dvh;
+  }
+
+  .layout {
+    flex: 1 1 auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .copy {
+    order: 1;
+    justify-content: flex-start;
+  }
+
+  .carouselCol {
+    order: 2;
+    min-height: clamp(22rem, 52vh, 36rem);
+  }
+}
+
+@media (max-width: 767px) {
+  .section {
+    min-height: auto;
+    max-height: none;
+    padding-bottom: clamp(2rem, 5vh, 3rem);
+  }
+
+  .copy {
+    align-items: stretch;
+  }
+
+  .carouselCol {
+    min-height: clamp(20rem, 48vh, 32rem);
+  }
+}

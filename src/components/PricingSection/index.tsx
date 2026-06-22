@@ -1,12 +1,6 @@
 "use client";
 
 import gsap from "gsap";
-import {
-  CircleDot,
-  Layers,
-  Paintbrush,
-  Wrench,
-} from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import {
   useCallback,
@@ -35,46 +29,51 @@ import {
   TAB_NOTCH_WIDTH,
 } from "@/components/Tabs/notch";
 import { Tabs, type TabItem, type TabNotchMetrics } from "@/components/Tabs";
+import {
+  PRICING_TAB_ICONS,
+  preloadPricingTabBackground,
+  resolvePricingTabOrder,
+  type PricingTabId,
+} from "@/content/pricing-tabs";
 import { useLocale } from "@/i18n/LocaleProvider";
-import type { Dictionary } from "@/i18n/types";
 
 import styles from "./style.module.css";
 
 /** Anchor id — hero scroll hint targets this section. */
 export const PRICING_SECTION_ID = "pricing";
 
-type PricingTabId = keyof Dictionary["pricing"]["panels"];
+export type PricingSectionProps = Readonly<{
+  /**
+   * Tab placed first and selected on mount — use on service pages so
+   * the relevant price list leads the bar.
+   */
+  featuredTab?: PricingTabId;
+}>;
 
-const TAB_ORDER: ReadonlyArray<PricingTabId> = [
-  "paint",
-  "repair",
-  "tire",
-  "finish",
-];
-
-const TAB_ICONS = {
-  paint: Paintbrush,
-  repair: Wrench,
-  tire: CircleDot,
-  finish: Layers,
-} as const;
-
-export function PricingSection() {
+export function PricingSection({ featuredTab = "paint" }: PricingSectionProps) {
   const { t } = useLocale();
   const { pricing } = t;
   const prefersReducedMotion = useReducedMotion();
   const tableNotchClipId = useId().replaceAll(":", "");
   const panelRef = useRef<HTMLDivElement>(null);
   const blurTweenRef = useRef<gsap.core.Tween | null>(null);
+  const tabOrder = useMemo(
+    () => resolvePricingTabOrder(featuredTab),
+    [featuredTab],
+  );
   const [notchMetrics, setNotchMetrics] = useState<TabNotchMetrics>({
     left: 0,
     width: 0,
   });
-  const [activeTab, setActiveTab] = useState<PricingTabId>("paint");
+  const [activeTab, setActiveTab] = useState<PricingTabId>(featuredTab);
   const [tableEnterDone, setTableEnterDone] = useState(true);
   const [bgBlurPx, setBgBlurPx] = useState(PRICING_BLUR_REST_PX);
   const [bgWash, setBgWash] = useState(PRICING_WASH_REST);
   const [tableEnterDelay, setTableEnterDelay] = useState(0);
+
+  useEffect(() => {
+    setActiveTab(featuredTab);
+  }, [featuredTab]);
 
   const handleNotchMetrics = useCallback((metrics: TabNotchMetrics) => {
     setNotchMetrics(metrics);
@@ -116,6 +115,7 @@ export function PricingSection() {
         return;
       }
 
+      preloadPricingTabBackground(next);
       setTableEnterDone(false);
       setActiveTab(next);
       runBlurReveal();
@@ -136,15 +136,17 @@ export function PricingSection() {
 
   const tabItems = useMemo<ReadonlyArray<TabItem>>(
     () =>
-      TAB_ORDER.map((id) => {
-        const Icon = TAB_ICONS[id];
+      tabOrder.map((id) => {
+        const panel = pricing.panels[id];
+        const Icon = PRICING_TAB_ICONS[id];
         return {
           id,
-          label: pricing.panels[id].tabLabel,
+          label: `${panel.tabLabelLine1} ${panel.tabLabelLine2}`,
+          labelLines: [panel.tabLabelLine1, panel.tabLabelLine2] as const,
           icon: <Icon strokeWidth={1.75} />,
         };
       }),
-    [pricing.panels],
+    [pricing.panels, tabOrder],
   );
 
   const activePanel = pricing.panels[activeTab];

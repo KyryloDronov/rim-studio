@@ -2,7 +2,10 @@ import type { ReactNode, RefObject } from "react";
 
 export type TabItem = Readonly<{
   id: string;
+  /** Accessible / fallback single-line label. */
   label: string;
+  /** Two-line tab title — rendered stacked when provided. */
+  labelLines?: readonly [string, string];
   icon: ReactNode;
 }>;
 

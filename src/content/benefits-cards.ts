@@ -1,4 +1,4 @@
-/** Benefit tile ids — images live in `/public/img`. */
+/** Benefit tile ids — copy in i18n; center column uses video instead of image. */
 export type BenefitCardId =
   | "warranty"
   | "prepayment"
@@ -8,22 +8,21 @@ export type BenefitCardId =
   | "equipment"
   | "dimet";
 
-export const BENEFIT_CARD_IMAGE: Record<BenefitCardId, string> = {
-  warranty: "/img/5-min.png.webp",
-  prepayment: "/img/6-min.png.webp",
-  parking: "/img/3-min.png.webp",
-  colors: "/img/2-min.png.webp",
-  storage: "/img/1-min.png.webp",
-  equipment: "/img/-min.png.webp",
-  dimet: "/img/1-min.png.webp",
-};
+/** Featured benefit in the center column (video card). */
+export const BENEFITS_CENTER_FEATURE_ID = "prepayment" satisfies BenefitCardId;
 
-export const BENEFIT_CARD_ORDER: ReadonlyArray<BenefitCardId> = [
+export const BENEFITS_CENTER_VIDEO =
+  "/img/advantages/hf_20260421_072701_f6a01abb-eb30-4559-9d6e-774362defbc3.mp4";
+
+/** Side columns — three compact text cards each. */
+export const BENEFITS_SIDE_LEFT: ReadonlyArray<BenefitCardId> = [
   "warranty",
-  "prepayment",
-  "parking",
   "colors",
   "storage",
+];
+
+export const BENEFITS_SIDE_RIGHT: ReadonlyArray<BenefitCardId> = [
+  "parking",
   "equipment",
   "dimet",
 ];

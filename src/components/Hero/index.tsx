@@ -26,6 +26,7 @@ import { PRICING_SECTION_ID } from "@/components/PricingSection";
 import { ProductCards } from "@/components/ProductCards";
 import { useReady } from "@/components/ReadyProvider";
 import { ScrollDown } from "@/components/ScrollDown";
+import { PAGE_BANNER_ATTR } from "@/content/page-banner";
 import { SHOWCASE_WORK_CARDS } from "@/content/showcase-cards";
 import { useLocale } from "@/i18n/LocaleProvider";
 import styles from "./style.module.css";
@@ -223,7 +224,12 @@ export function Hero() {
   /* eslint-enable react-hooks/set-state-in-effect */
 
   return (
-    <section ref={rootRef} className={styles.hero} aria-labelledby="hero-title">
+    <section
+      ref={rootRef}
+      className={styles.hero}
+      {...{ [PAGE_BANNER_ATTR]: true }}
+      aria-labelledby="hero-title"
+    >
       {/* --- BG layer ----------------------------------------------- */}
       <div className={styles.videoBackground} aria-hidden="true">
         <video
