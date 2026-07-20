@@ -80,12 +80,6 @@ const navItemVariants: Variants = {
     y: 0,
     transition: { duration: 0.55, ease: easeOutQuart },
   },
-  dimmed: {
-    opacity: 0.22,
-    filter: "blur(8px)",
-    y: 0,
-    transition: { duration: 0.55, ease: easeOutQuart },
-  },
 };
 
 const sectionVariants: Variants = {
@@ -103,12 +97,6 @@ const sectionVariants: Variants = {
   neutral: {
     opacity: 1,
     filter: "blur(0px)",
-    y: 0,
-    transition: { duration: 0.55, ease: easeOutQuart },
-  },
-  dimmed: {
-    opacity: 0.35,
-    filter: "blur(6px)",
     y: 0,
     transition: { duration: 0.55, ease: easeOutQuart },
   },
@@ -322,11 +310,10 @@ export function Menu({
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, onClose]);
 
-  const itemAnimateState = (i: number) => {
+  const itemAnimateState = () => {
     if (!isOpen) return "closed";
     if (!hasEntered) return "open";
-    if (hoveredIndex === null) return "neutral";
-    return hoveredIndex === i ? "neutral" : "dimmed";
+    return "neutral";
   };
 
   const renderLink = (
@@ -338,10 +325,11 @@ export function Menu({
       key={link.href}
       className={styles.navItem}
       data-variant={variant}
+      data-active={hasEntered && hoveredIndex === index ? "true" : "false"}
       custom={index}
       variants={navItemVariants}
       initial="closed"
-      animate={itemAnimateState(index)}
+      animate={itemAnimateState()}
       onMouseEnter={() => handleItemEnter(index)}
       onMouseLeave={handleItemLeave}
       onFocus={() => handleItemEnter(index)}
@@ -387,6 +375,7 @@ export function Menu({
               playsInline
               preload="auto"
             />
+            <div className={styles.videoOverlay} aria-hidden />
           </div>
         )}
 
@@ -398,14 +387,7 @@ export function Menu({
               variants={sectionVariants}
               initial="closed"
               animate={
-                !isOpen
-                  ? "closed"
-                  : !hasEntered
-                    ? "open"
-                    : hoveredIndex === null ||
-                        hoveredIndex < serviceLinks.length
-                      ? "neutral"
-                      : "dimmed"
+                !isOpen ? "closed" : !hasEntered ? "open" : "neutral"
               }
               aria-label={t.menu.servicesHeading}
             >
@@ -421,14 +403,7 @@ export function Menu({
               variants={sectionVariants}
               initial="closed"
               animate={
-                !isOpen
-                  ? "closed"
-                  : !hasEntered
-                    ? "open"
-                    : hoveredIndex === null ||
-                        hoveredIndex >= serviceLinks.length
-                      ? "neutral"
-                      : "dimmed"
+                !isOpen ? "closed" : !hasEntered ? "open" : "neutral"
               }
               aria-label={t.menu.studioHeading}
             >

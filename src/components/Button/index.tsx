@@ -63,6 +63,11 @@ type CommonProps = Readonly<{
    * flips to `true` — e.g. after a parent GSAP intro on the CTA row.
    */
   expandWhen?: boolean;
+  /**
+   * With `expandFromIcon`, keeps the icon circle pinned on the trailing
+   * edge while the pill grows to the left (header). Default grows right.
+   */
+  expandGrowLeft?: boolean;
 }>;
 
 type LinkProps = CommonProps &
@@ -104,6 +109,7 @@ function buildClassName(
   size: Size,
   hasIcon: boolean,
   expandFromIcon: boolean,
+  expandGrowLeft: boolean,
   introDone: boolean,
   extra: string | undefined,
 ) {
@@ -113,6 +119,7 @@ function buildClassName(
     styles[`size-${size}`],
     hasIcon ? null : styles.noIcon,
     expandFromIcon && hasIcon ? styles.introFromIcon : null,
+    expandFromIcon && hasIcon && expandGrowLeft ? styles.introGrowLeft : null,
     expandFromIcon && hasIcon && introDone ? styles.introFromIconExpanded : null,
     extra,
   ]
@@ -150,6 +157,7 @@ export const Button = forwardRef<
     ariaLabel,
     expandFromIcon = false,
     expandWhen,
+    expandGrowLeft = false,
   } = props;
 
   const prefersReducedMotion = useReducedMotion();
@@ -216,6 +224,7 @@ export const Button = forwardRef<
     size,
     hasIcon,
     useIntro,
+    expandGrowLeft,
     useIntro && introExpanded,
     className,
   );

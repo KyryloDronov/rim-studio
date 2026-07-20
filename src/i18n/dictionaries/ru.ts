@@ -10,7 +10,7 @@ export const ru: Dictionary = {
   header: {
     menu: "Меню",
     close: "Закрыть",
-    contact: "Поговорим",
+    contact: "Связаться с нами",
   },
   menu: {
     servicesHeading: "Услуги",

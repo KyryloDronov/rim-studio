@@ -28,6 +28,7 @@ export type Dictionary = Readonly<{
   header: Readonly<{
     menu: string;
     close: string;
+    /** Header CTA pill — e.g. «Связаться с нами». */
     contact: string;
   }>;
   menu: Readonly<{

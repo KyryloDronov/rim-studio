@@ -1,18 +1,20 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import { MessageCircle } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Button } from "@/components/Button";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { AnimatedLogo } from "./AnimatedLogo";
-import { ArrowRightIcon } from "./icons";
 import { LocaleSwitcher } from "./LocaleSwitcher";
-import { RevealText } from "./RevealText";
 import styles from "./style.module.css";
 import { useHeaderScrollBehavior } from "./useHeaderScrollBehavior";
 
 const ease = [0.76, 0, 0.24, 1] as const;
 const easeOutQuart = [0.165, 0.84, 0.44, 1] as const;
+/** After header entrance — then contact pill expands from icon. */
+const CONTACT_EXPAND_DELAY_MS = 520;
 
 type HeaderProps = Readonly<{
   onMenuToggle?: (isOpen: boolean) => void;
@@ -38,6 +40,36 @@ export function Header({
   );
   const isConcealed = mode === "concealed" && !isMenuOpen;
   const surfaceActive = isScrolled && !isMenuOpen;
+  const [contactIntroDone, setContactIntroDone] = useState(false);
+  const [contactHovered, setContactHovered] = useState(false);
+
+  useEffect(() => {
+    if (!ready) {
+      setContactIntroDone(false);
+      return;
+    }
+    if (prefersReducedMotion) {
+      setContactIntroDone(true);
+      return;
+    }
+    setContactIntroDone(false);
+    const id = window.setTimeout(
+      () => setContactIntroDone(true),
+      CONTACT_EXPAND_DELAY_MS,
+    );
+    return () => window.clearTimeout(id);
+  }, [ready, prefersReducedMotion]);
+
+  const contactPillExpanded =
+    contactIntroDone && (!surfaceActive || contactHovered);
+
+  const handleContactHoverStart = useCallback(() => {
+    setContactHovered(true);
+  }, []);
+
+  const handleContactHoverEnd = useCallback(() => {
+    setContactHovered(false);
+  }, []);
 
   const handleMenuClick = useCallback(() => {
     const next = !isMenuOpen;
@@ -112,42 +144,27 @@ export function Header({
 
       <div className={styles.right}>
         <div className={styles.rightInner}>
-          <LocaleSwitcher />
-          <motion.a
-            href="mailto:hello@rim-studio.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Send us an email"
-            className={styles.contact}
-            initial="rest"
-            animate="rest"
-            whileHover="hover"
-            whileFocus="hover"
+          <span
+            className={styles.contactBtnWrap}
+            onMouseEnter={handleContactHoverStart}
+            onMouseLeave={handleContactHoverEnd}
           >
-            <RevealText className={styles.contactText}>
+            <Button
+              type="button"
+              variant="accent"
+              size="sm"
+              className={styles.contactBtn}
+              icon={<MessageCircle strokeWidth={1.75} />}
+              ariaLabel={t.header.contact}
+              expandFromIcon
+              expandGrowLeft
+              expandWhen={contactPillExpanded}
+              onClick={() => undefined}
+            >
               {t.header.contact}
-            </RevealText>
-            <span className={styles.arrow}>
-              <motion.span
-                className={styles.arrowIcon}
-                variants={{
-                  rest: { x: "-110%" },
-                  hover: { x: "0%", transition: { duration: 0.4, ease } },
-                }}
-              >
-                <ArrowRightIcon />
-              </motion.span>
-              <motion.span
-                className={styles.arrowIcon}
-                variants={{
-                  rest: { x: "0%" },
-                  hover: { x: "110%", transition: { duration: 0.4, ease } },
-                }}
-              >
-                <ArrowRightIcon />
-              </motion.span>
-            </span>
-          </motion.a>
+            </Button>
+          </span>
+          <LocaleSwitcher />
         </div>
       </div>
       </motion.div>

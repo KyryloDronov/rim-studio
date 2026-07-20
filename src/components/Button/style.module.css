@@ -133,19 +133,18 @@
 /* ---------- Intro: expand from trailing icon (viewport, Hero CTAs) ---------- */
 
 /* Don't set overflow:hidden on the pill — animating max-width would clip
-   the trailing icon circle mid-transition. Clip only the label row instead. */
-.introFromIcon {
-  transition:
-    max-width 1s cubic-bezier(0.22, 0.68, 0, 1),
-    min-width 1s cubic-bezier(0.22, 0.68, 0, 1),
-    padding 1s cubic-bezier(0.22, 0.68, 0, 1);
-}
+   the trailing icon circle mid-transition. Clip only the label row instead.
+   Expand: pill first → label. Collapse: label out → pill (inverted). */
 
 .introFromIcon:not(.introFromIconExpanded) {
   justify-content: flex-end;
   max-width: calc(var(--btn-icon-size) + var(--btn-pad) * 2);
   min-width: calc(var(--btn-icon-size) + var(--btn-pad) * 2);
   padding: var(--btn-pad);
+  transition:
+    max-width 1s cubic-bezier(0.22, 0.68, 0, 1) 0.48s,
+    min-width 1s cubic-bezier(0.22, 0.68, 0, 1) 0.48s,
+    padding 1s cubic-bezier(0.22, 0.68, 0, 1) 0.48s;
 }
 
 .introFromIcon.introFromIconExpanded {
@@ -153,6 +152,31 @@
   max-width: min(100vw, 22rem);
   min-width: 0;
   padding: var(--btn-pad) var(--btn-pad) var(--btn-pad) var(--btn-pad-l);
+  transition:
+    max-width 1s cubic-bezier(0.22, 0.68, 0, 1) 0s,
+    min-width 1s cubic-bezier(0.22, 0.68, 0, 1) 0s,
+    padding 1s cubic-bezier(0.22, 0.68, 0, 1) 0s;
+}
+
+/* Header contact: trailing icon pinned, pill grows left. */
+.introGrowLeft.introFromIcon:not(.introFromIconExpanded) {
+  justify-content: flex-end;
+  transition:
+    max-width 1s cubic-bezier(0.22, 0.68, 0, 1) 0.48s,
+    min-width 1s cubic-bezier(0.22, 0.68, 0, 1) 0.48s,
+    padding 1s cubic-bezier(0.22, 0.68, 0, 1) 0.48s;
+}
+
+.introGrowLeft.introFromIcon.introFromIconExpanded {
+  justify-content: flex-end;
+  transition:
+    max-width 1s cubic-bezier(0.22, 0.68, 0, 1) 0s,
+    min-width 1s cubic-bezier(0.22, 0.68, 0, 1) 0s,
+    padding 1s cubic-bezier(0.22, 0.68, 0, 1) 0s;
+}
+
+.introGrowLeft.introFromIcon .iconSlot {
+  margin-inline-start: 0;
 }
 
 /* Trailing icon stays at the end of the row while the pill grows — same as
@@ -175,6 +199,10 @@
   padding-right: 0;
   overflow: hidden;
   pointer-events: none;
+  transition:
+    opacity 0.48s cubic-bezier(0.22, 0.68, 0, 1) 0s,
+    max-width 0.48s cubic-bezier(0.22, 0.68, 0, 1) 0s,
+    padding 0.48s cubic-bezier(0.22, 0.68, 0, 1) 0s;
 }
 
 .introFromIcon.introFromIconExpanded .label {
@@ -182,7 +210,10 @@
   opacity: 1;
   max-width: 100%;
   overflow: hidden;
-  transition: opacity 0.55s cubic-bezier(0.22, 0.68, 0, 1) 0.48s;
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 0.68, 0, 1) 0.48s,
+    max-width 0.55s cubic-bezier(0.22, 0.68, 0, 1) 0.48s,
+    padding 0.55s cubic-bezier(0.22, 0.68, 0, 1) 0.48s;
 }
 
 /* ---------- Inner parts ---------- */

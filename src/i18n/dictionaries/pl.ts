@@ -10,7 +10,7 @@ export const pl: Dictionary = {
   header: {
     menu: "Menu",
     close: "Zamknij",
-    contact: "Pogadajmy",
+    contact: "Skontaktuj się",
   },
   menu: {
     servicesHeading: "Usługi",

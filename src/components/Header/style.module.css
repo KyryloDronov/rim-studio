@@ -304,6 +304,7 @@
 .rightInner {
   display: inline-flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 1rem;
 }
 
@@ -313,118 +314,109 @@
   }
 }
 
-/* ---------- Locale switcher ---------- */
-.localeSwitcher {
+/* ---------- Locale switch (glass pill + sliding thumb) ---------- */
+.localeTrack {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  line-height: 1;
+  padding: 0.2rem;
+  border-radius: 999px;
+  background-color: rgb(171 171 171 / 0.32);
+  box-shadow: 0 2px 12px rgb(0 0 0 / 0.05);
+  -webkit-backdrop-filter: blur(10px) saturate(1.35);
+  backdrop-filter: blur(10px) saturate(1.35);
 }
 
-@media (min-width: 1200px) {
-  .localeSwitcher {
-    font-size: 0.82rem;
-  }
-}
-
-.localeBtn {
+.localeOption {
   position: relative;
-  display: inline-block;
-  padding: 0 0 4px 0;
-  background: transparent;
-  border: 0;
-  color: var(--foreground);
-  font: inherit;
-  font-weight: 500;
-  letter-spacing: inherit;
-  line-height: 1;
-  opacity: 0.5;
-  cursor: pointer;
-  transition:
-    opacity 0.35s cubic-bezier(0.76, 0, 0.24, 1),
-    color 0.35s cubic-bezier(0.76, 0, 0.24, 1);
-}
-
-@media (hover: hover) {
-  .localeBtn:hover {
-    opacity: 1;
-  }
-}
-
-.localeBtn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 4px;
-  opacity: 1;
-}
-
-.localeBtn[data-active="true"] {
-  opacity: 1;
-  color: var(--accent);
-}
-
-.localeActiveUnderline {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: currentColor;
-  border-radius: 1px;
-}
-
-/* ---------- Contact (right) ---------- */
-.contact {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: inherit;
-}
-
-.contactText {
-  font-size: 0.85rem;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-@media (min-width: 1200px) {
-  .contactText {
-    font-size: 0.9rem;
-  }
-}
-
-.arrow {
-  display: none;
-  position: relative;
-  flex-shrink: 0;
-  width: 0.85rem;
-  height: 0.85rem;
-  overflow: hidden;
-}
-
-@media (min-width: 1200px) {
-  .arrow {
-    display: inline-flex;
-  }
-}
-
-.arrowIcon {
-  position: absolute;
-  inset: 0;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: currentColor;
-  will-change: transform;
+  min-width: 2.15rem;
+  height: 1.85rem;
+  padding: 0 0.62rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  color: var(--brand-ink-700);
+  transition: color 0.35s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-.arrowIcon svg {
-  width: 100%;
-  height: 100%;
+@media (min-width: 1200px) {
+  .localeOption {
+    min-width: 2.25rem;
+    height: 1.95rem;
+    padding: 0 0.68rem;
+  }
 }
 
-/* ---------- Reveal text ---------- */
+.localeOption[data-active="true"] {
+  color: var(--brand-white);
+}
+
+@media (hover: hover) {
+  .localeOption[data-active="false"]:hover {
+    color: var(--brand-ink-500);
+  }
+}
+
+.localeOption:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.localeThumb {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 999px;
+  background-color: var(--brand-ink-700);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.12);
+}
+
+.localeLabel {
+  position: relative;
+  z-index: 1;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  line-height: 1;
+}
+
+@media (min-width: 1200px) {
+  .localeLabel {
+    font-size: 0.72rem;
+  }
+}
+
+/* ---------- Contact CTA (header pill) ---------- */
+.contactBtnWrap {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.contactBtn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 479px) {
+  .contactBtn {
+    --btn-pad-l: 0.85rem;
+    --btn-font-size: 0.68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .localeOption {
+    transition: none;
+  }
+}
+
+/* ---------- Reveal text (menu label roll) ---------- */
 .reveal {
   position: relative;
   display: inline-grid;
