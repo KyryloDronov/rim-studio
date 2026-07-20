@@ -81,6 +81,8 @@ type ButtonElProps = CommonProps &
     onClick?: () => void;
     type?: "button" | "submit" | "reset";
     disabled?: boolean;
+    /** Associates the button with a form element outside the DOM subtree. */
+    form?: string;
     external?: never;
   }>;
 
@@ -265,6 +267,7 @@ export const Button = forwardRef<
     <button
       ref={setMergedRef as React.Ref<HTMLButtonElement>}
       type={props.type ?? "button"}
+      form={props.form}
       onClick={props.onClick}
       disabled={props.disabled}
       className={cls}

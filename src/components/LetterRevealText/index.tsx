@@ -1,4 +1,5 @@
 import type { QuoteTextSegment } from "@/animations";
+import { Fragment } from "react";
 
 import styles from "./style.module.css";
 
@@ -22,17 +23,9 @@ export function LetterRevealText({
 }: LetterRevealTextProps) {
   return (
     <>
-      {segments.map((segment) => {
-        if (segment.type === "space") {
-          return (
-            <span key={segment.key} className={styles.space}>
-              {" "}
-            </span>
-          );
-        }
-
-        return (
-          <span key={segment.key} className={wordClassName}>
+      {segments.map((segment) => (
+        <Fragment key={segment.key}>
+          <span className={wordClassName}>
             {segment.chars.map(({ char, key }) => {
               const extra = getCharClassName?.(char);
               const cls = extra ? `${charClassName} ${extra}` : charClassName;
@@ -44,8 +37,9 @@ export function LetterRevealText({
               );
             })}
           </span>
-        );
-      })}
+          {segment.trailingSpace ? " " : null}
+        </Fragment>
+      ))}
     </>
   );
 }

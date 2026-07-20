@@ -4,8 +4,9 @@
   --before-after-gutter: clamp(1.25rem, 4vw, 2.5rem);
   --before-after-max: 88rem;
   padding: clamp(3.5rem, 9vh, 6rem) 0 clamp(3rem, 8vh, 5rem);
-  background: var(--brand-pearl-100);
-  color: var(--brand-pearl-alpha-88);
+  background: var(--brand-ink-700);
+  color: var(--brand-white);
+  isolation: isolate;
 }
 
 .inner {
@@ -15,25 +16,49 @@
 }
 
 .header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(1rem, 3vw, 2.5rem);
   margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
 }
 
-.title {
+.tabsBar {
+  flex: 0 1 auto;
+  align-self: flex-start;
+  width: min(100%, 54rem);
   margin: 0;
-  max-width: 42rem;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12em;
+  margin: 0;
+  min-width: 0;
+  max-width: min(100%, 26rem);
+  flex: 0 1 auto;
   font-size: clamp(1.65rem, 3.8vw, 2.65rem);
-  font-weight: 600;
-  line-height: 1.12;
+  font-weight: 500;
+  line-height: 1.08;
   letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.titleStrong,
+.titleMuted {
+  display: block;
+  white-space: nowrap;
 }
 
 .titleStrong {
-  color: var(--brand-pearl-alpha-88);
+  color: var(--brand-white);
+  font-weight: 600;
 }
 
 .titleMuted {
-  color: var(--brand-pearl-alpha-56);
-  font-weight: 500;
+  color: rgb(255 255 255 / 0.52);
+  font-weight: 400;
 }
 
 .layout {
@@ -41,23 +66,94 @@
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: clamp(1rem, 2vw, 1.75rem);
   align-items: stretch;
-  max-height: 75vh;
-  max-height: 75dvh;
+  min-height: 0;
+  height: min(75vh, 75dvh);
+  max-height: min(75vh, 75dvh);
 }
 
 .sliderCol {
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.mediaShell {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.mediaStack {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  flex: 1 1 auto;
   gap: clamp(0.5rem, 1vw, 0.85rem);
   min-width: 0;
   min-height: 0;
-  max-height: 75vh;
-  max-height: 75dvh;
+  height: 100%;
+}
+
+.mediaViewport {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 900px) {
+  .mediaViewport {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .mediaStack {
+    height: auto;
+    grid-template-rows: auto auto;
+  }
+}
+
+.mediaMainLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.thumbSlot {
+  --card-size: clamp(64px, 5.5vw, 96px);
+  width: 100%;
+  align-self: end;
+}
+
+.mediaPanel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vw, 0.85rem);
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
 }
 
 .compareWrap {
   flex: 1 1 auto;
   min-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mediaShellReveal {
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
 }
 
 .compareReveal {
@@ -69,8 +165,7 @@
 .cardCol {
   min-width: 0;
   min-height: 0;
-  max-height: 75vh;
-  max-height: 75dvh;
+  height: 100%;
 }
 
 .bookingCard {
@@ -81,10 +176,11 @@
   min-height: 100%;
   height: 100%;
   padding: clamp(1.15rem, 2.2vw, 2rem);
+  border: 1px solid rgb(255 255 255 / 0.08);
   border-radius: clamp(22px, 2.2vw, 28px);
   overflow: hidden;
-  background: var(--brand-ink-700);
-  box-shadow: 0 12px 40px rgb(51 62 72 / 0.22);
+  background: rgb(12 14 16 / 0.92);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
 }
 
 .bookingReveal {
@@ -200,6 +296,12 @@
   width: 100%;
 }
 
+.thumbItem {
+  display: flex;
+  width: var(--card-size);
+  height: var(--card-size);
+}
+
 .thumbReveal {
   display: flex;
   width: var(--card-size);
@@ -270,31 +372,60 @@
   .thumbRegion {
     --card-size: clamp(56px, 8vw, 80px);
   }
+
+  .thumbSlot {
+    --card-size: clamp(56px, 8vw, 80px);
+  }
 }
 
 @media (max-width: 479px) {
   .thumbRegion {
     --card-size: clamp(56px, 14vw, 72px);
   }
+
+  .thumbSlot {
+    --card-size: clamp(56px, 14vw, 72px);
+  }
 }
 
 @media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .titleStrong,
+  .titleMuted {
+    white-space: normal;
+  }
+
+  .tabsBar {
+    align-self: stretch;
+    width: 100%;
+    max-width: 100%;
+  }
+
   .layout {
     grid-template-columns: 1fr;
+    height: auto;
     max-height: none;
   }
 
   .sliderCol {
-    max-height: none;
+    height: auto;
+  }
+
+  .mediaShell {
+    height: auto;
   }
 
   .compareWrap {
-    aspect-ratio: 4 / 3;
     flex: none;
+    height: 100%;
   }
 
   .cardCol {
-    max-height: none;
+    height: auto;
   }
 
   .bookingCard {
@@ -307,6 +438,7 @@
     transition: none;
   }
 
+  .mediaShellReveal,
   .compareReveal,
   .thumbReveal,
   .bookingReveal {

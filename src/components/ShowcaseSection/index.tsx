@@ -74,7 +74,7 @@ export function ShowcaseSection({
       <div className={styles.inner}>
         <header className={styles.header}>
           <h2 id={`${sectionId}-title`} className={styles.title}>
-            <span className={styles.titleStrong}>{showcase.titleStrong}</span>{" "}
+            <span className={styles.titleStrong}>{showcase.titleStrong}</span>
             <span className={styles.titleMuted}>{showcase.titleMuted}</span>
           </h2>
         </header>

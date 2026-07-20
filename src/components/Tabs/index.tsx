@@ -47,6 +47,8 @@ export function Tabs({
   onChange,
   className,
   ariaLabel = "Tabs",
+  theme = "dark",
+  showNotch = true,
   metricsAnchorRef,
   onNotchMetrics,
 }: TabsProps) {
@@ -88,6 +90,8 @@ export function Tabs({
   }, [activeId, prefersReducedMotion]);
 
   const positionNotch = useCallback(() => {
+    if (!showNotch) return;
+
     const root = rootRef.current;
     const notch = notchRef.current;
     const activeBtn = tabRefs.current.get(activeId);
@@ -111,7 +115,7 @@ export function Tabs({
         width: notch.offsetWidth,
       });
     }
-  }, [activeId, metricsAnchorRef, onNotchMetrics]);
+  }, [activeId, metricsAnchorRef, onNotchMetrics, showNotch]);
 
   useLayoutEffect(() => {
     positionNotch();
@@ -149,7 +153,14 @@ export function Tabs({
 
   if (items.length === 0) return null;
 
-  const rootClass = [styles.tabs, className].filter(Boolean).join(" ");
+  const rootClass = [
+    styles.tabs,
+    theme === "light" ? styles.tabsLight : null,
+    showNotch ? null : styles.tabsNoNotch,
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <nav
@@ -170,15 +181,17 @@ export function Tabs({
         </defs>
       </svg>
 
-      <div
-        ref={notchRef}
-        className={styles.notch}
-        aria-hidden
-        style={{
-          clipPath: `url(#${clipId})`,
-          WebkitClipPath: `url(#${clipId})`,
-        }}
-      />
+      {showNotch ? (
+        <div
+          ref={notchRef}
+          className={styles.notch}
+          aria-hidden
+          style={{
+            clipPath: `url(#${clipId})`,
+            WebkitClipPath: `url(#${clipId})`,
+          }}
+        />
+      ) : null}
 
       <div
         ref={scrollRef}

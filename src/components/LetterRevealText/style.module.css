@@ -6,11 +6,6 @@
   max-width: 100%;
 }
 
-.space {
-  display: inline;
-  white-space: pre;
-}
-
 .charWrap {
   display: inline;
   vertical-align: baseline;

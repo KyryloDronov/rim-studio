@@ -14,7 +14,7 @@ export function setShowcaseRevealReducedMotion(
 
 /**
  * Run inside `gsap.context(fn, root)` from `<ShowcaseSection>`.
- * Enter: cards (stagger R→L), then nav pills. Exit on reverse: nav first, then cards.
+ * Enter once: cards (stagger R→L), then nav pills — no reverse on scroll out.
  */
 export function runShowcaseScrollReveal(
   triggerEl: HTMLElement,
@@ -79,19 +79,10 @@ export function runShowcaseScrollReveal(
   ScrollTrigger.create({
     trigger: cardTrigger,
     start: sc.triggerStart,
-    end: sc.triggerEnd,
     invalidateOnRefresh: true,
+    once: true,
     onEnter: () => {
       tl.play();
-    },
-    onLeave: () => {
-      tl.reverse();
-    },
-    onEnterBack: () => {
-      tl.play();
-    },
-    onLeaveBack: () => {
-      tl.reverse();
     },
   });
 

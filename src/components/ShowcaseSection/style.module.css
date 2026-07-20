@@ -11,9 +11,10 @@
   --showcase-card-width: 28.2352941176rem;
   --showcase-card-height: 29.4117647059rem;
   padding: clamp(3.5rem, 9vh, 6rem) 0 clamp(3rem, 8vh, 5rem);
-  background: var(--brand-pearl-200);
-  color: var(--brand-pearl-alpha-88);
+  background: var(--brand-ink-700);
+  color: var(--brand-white);
   overflow-x: clip;
+  isolation: isolate;
 }
 
 .inner {
@@ -25,24 +26,29 @@
 .header {
   max-width: none;
   margin-bottom: clamp(2rem, 4.5vh, 3rem);
+  text-align: start;
 }
 
 .title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
   margin: 0;
   max-width: 42rem;
   font-size: clamp(1.65rem, 3.8vw, 2.65rem);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.12;
   letter-spacing: -0.03em;
 }
 
 .titleStrong {
-  color: var(--brand-pearl-alpha-88);
+  color: var(--brand-white);
+  font-weight: 600;
 }
 
 .titleMuted {
-  color: var(--brand-pearl-alpha-56);
-  font-weight: 500;
+  color: rgb(255 255 255 / 0.52);
+  font-weight: 400;
 }
 
 .slider {
@@ -80,7 +86,9 @@
   text-decoration: none;
   color: inherit;
   border-radius: 18px;
-  box-shadow: 2px 4px 12px rgb(0 0 0 / 0.08);
+  box-shadow:
+    0 4px 22px rgb(255 255 255 / 0.1),
+    0 14px 40px rgb(255 255 255 / 0.06);
   transition:
     box-shadow 0.3s cubic-bezier(0, 0, 0.5, 1),
     transform 0.3s cubic-bezier(0, 0, 0.5, 1);
@@ -96,7 +104,9 @@
 }
 
 .cardLink:hover {
-  box-shadow: 2px 4px 16px rgb(0 0 0 / 0.16);
+  box-shadow:
+    0 6px 28px rgb(255 255 255 / 0.14),
+    0 18px 48px rgb(255 255 255 / 0.09);
   transform: scale3d(1.01, 1.01, 1.01);
 }
 

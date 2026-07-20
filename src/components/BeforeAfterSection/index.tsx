@@ -2,61 +2,73 @@
 
 import gsap from "gsap";
 import { CalendarCheck } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "motion/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { runBeforeAfterScrollReveal } from "@/animations";
-import { BeforeAfterCompare } from "@/components/BeforeAfterCompare";
 import { Button } from "@/components/Button";
-import {
-  CardSlider,
-  CardSliderNav,
-  CardSliderSlide,
-  useCardSlider,
-} from "@/components/CardSlider";
 import cardSliderStyles from "@/components/CardSlider/style.module.css";
+import { Tabs, type TabItem } from "@/components/Tabs";
+import { BEFORE_AFTER_BOOKING_VIDEO } from "@/content/before-after-pairs";
+import { getBeforeAfterTabCatalog } from "@/content/before-after-catalog";
 import {
-  BEFORE_AFTER_BOOKING_VIDEO,
-  BEFORE_AFTER_ITEMS,
-} from "@/content/before-after-pairs";
+  PRICING_TAB_ICONS,
+  resolvePricingTabOrder,
+  type PricingTabId,
+} from "@/content/pricing-tabs";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { localizedPath } from "@/i18n/paths";
 
+import { CategoryMediaPanel } from "./CategoryMediaPanel";
 import styles from "./style.module.css";
 
 export const BEFORE_AFTER_SECTION_ID = "before-after";
 
-const THUMB_SPRING = {
-  type: "spring" as const,
-  stiffness: 220,
-  damping: 26,
-  mass: 0.6,
-};
+export type BeforeAfterSectionProps = Readonly<{
+  /**
+   * Tab placed first and selected on mount — use on service pages so
+   * the relevant category leads the bar.
+   */
+  featuredTab?: PricingTabId;
+}>;
 
-/** Maps demo item ids to dictionary pair metadata. */
-const THUMB_META_ID: Record<string, string> = {
-  "demo-01": "amg-r19-a",
-  "demo-03": "amg-r19-a",
-  "demo-05": "amg-r19-a",
-  "demo-07": "amg-r19-a",
-  "demo-09": "amg-r19-a",
-  "demo-02": "amg-r19-b",
-  "demo-04": "amg-r19-b",
-  "demo-06": "amg-r19-b",
-  "demo-08": "amg-r19-b",
-  "demo-10": "amg-r19-b",
-};
-
-export function BeforeAfterSection() {
+export function BeforeAfterSection({
+  featuredTab = "paint",
+}: BeforeAfterSectionProps) {
   const { locale, t } = useLocale();
-  const { beforeAfter } = t;
+  const { beforeAfter, pricing } = t;
   const prefersReducedMotion = useReducedMotion();
-  const thumbSlider = useCardSlider();
   const sectionRef = useRef<HTMLElement>(null);
   const layoutRef = useRef<HTMLDivElement>(null);
   const bookingVideoRef = useRef<HTMLVideoElement>(null);
   const [mounted, setMounted] = useState(false);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [activeId, setActiveId] = useState(BEFORE_AFTER_ITEMS[0]?.id ?? "");
+  const tabOrder = useMemo(
+    () => resolvePricingTabOrder(featuredTab),
+    [featuredTab],
+  );
+  const [activeTab, setActiveTab] = useState<PricingTabId>(featuredTab);
+
+  const tabItems = useMemo<ReadonlyArray<TabItem>>(
+    () =>
+      tabOrder.map((id) => {
+        const panel = pricing.panels[id];
+        const Icon = PRICING_TAB_ICONS[id];
+        return {
+          id,
+          label: `${panel.tabLabelLine1} ${panel.tabLabelLine2}`,
+          labelLines: [panel.tabLabelLine1, panel.tabLabelLine2] as const,
+          icon: <Icon strokeWidth={1.75} />,
+        };
+      }),
+    [pricing.panels, tabOrder],
+  );
+
+  const handleTabChange = useCallback((id: string) => {
+    setActiveTab(id as PricingTabId);
+  }, []);
+
+  useEffect(() => {
+    setActiveTab(featuredTab);
+  }, [featuredTab]);
 
   useEffect(() => {
     setMounted(true);
@@ -76,7 +88,7 @@ export function BeforeAfterSection() {
       runBeforeAfterScrollReveal(
         trigger,
         {
-          compareReveal: styles.compareReveal,
+          compareReveal: styles.mediaShellReveal,
           thumbReveal: styles.thumbReveal,
           controlsReveal: cardSliderStyles.controlsReveal,
           bookingReveal: styles.bookingReveal,
@@ -86,19 +98,10 @@ export function BeforeAfterSection() {
     }, root);
 
     return () => ctx.revert();
-  }, [prefersReducedMotion, locale, BEFORE_AFTER_ITEMS.length]);
+  }, [locale, prefersReducedMotion]);
 
-  const thumbTransition =
-    mounted && !prefersReducedMotion ? THUMB_SPRING : { duration: 0 };
-
-  const activeItem =
-    BEFORE_AFTER_ITEMS.find((item) => item.id === activeId) ??
-    BEFORE_AFTER_ITEMS[0];
-
-  if (!activeItem) return null;
-
-  const metaId = THUMB_META_ID[activeItem.id];
-  const activeMeta = beforeAfter.pairs.find((pair) => pair.id === metaId);
+  const activeCatalog = getBeforeAfterTabCatalog(activeTab);
+  const activeCategoryCopy = beforeAfter.categories[activeTab];
   const { booking } = beforeAfter;
 
   return (
@@ -107,88 +110,35 @@ export function BeforeAfterSection() {
       id={BEFORE_AFTER_SECTION_ID}
       className={styles.section}
       aria-labelledby={`${BEFORE_AFTER_SECTION_ID}-title`}
+      data-active-tab={activeTab}
     >
       <div className={styles.inner}>
         <header className={styles.header}>
           <h2 id={`${BEFORE_AFTER_SECTION_ID}-title`} className={styles.title}>
-            <span className={styles.titleStrong}>{beforeAfter.titleStrong}</span>{" "}
+            <span className={styles.titleStrong}>{beforeAfter.titleStrong}</span>
             <span className={styles.titleMuted}>{beforeAfter.titleMuted}</span>
           </h2>
+
+          <Tabs
+            items={tabItems}
+            value={activeTab}
+            onChange={handleTabChange}
+            ariaLabel={pricing.tabsAriaLabel}
+            theme="light"
+            showNotch={false}
+            className={styles.tabsBar}
+          />
         </header>
 
         <div ref={layoutRef} className={styles.layout}>
           <div className={styles.sliderCol}>
-            <div className={`${styles.compareWrap} ${styles.compareReveal}`}>
-              <BeforeAfterCompare
-                beforeSrc={activeItem.beforeSrc}
-                afterSrc={activeItem.afterSrc}
-                beforeLabel={beforeAfter.beforeLabel}
-                afterLabel={beforeAfter.afterLabel}
-                beforeAlt={activeMeta?.beforeAlt ?? beforeAfter.beforeLabel}
-                afterAlt={activeMeta?.afterAlt ?? beforeAfter.afterLabel}
-              />
-            </div>
-
-            <div
-              className={styles.thumbRegion}
-              role="tablist"
-              aria-label={beforeAfter.thumbsAriaLabel}
-              data-lenis-prevent-horizontal
-            >
-              <CardSlider
-                emblaRef={thumbSlider.emblaRef}
-                className={styles.thumbSlider}
-              >
-                {BEFORE_AFTER_ITEMS.map((item) => {
-                  const meta = beforeAfter.pairs.find(
-                    (pair) => pair.id === THUMB_META_ID[item.id],
-                  );
-                  const isActive = item.id === activeId;
-                  const isHovered = mounted && hoveredId === item.id;
-
-                  return (
-                    <CardSliderSlide key={item.id}>
-                      <div className={styles.thumbReveal}>
-                        <motion.button
-                          type="button"
-                          role="tab"
-                          aria-selected={isActive}
-                          className={`${styles.thumb} ${isActive ? styles.thumbActive : ""}`}
-                          onClick={() => setActiveId(item.id)}
-                          onMouseEnter={() => setHoveredId(item.id)}
-                          onMouseLeave={() => setHoveredId(null)}
-                          onFocus={() => setHoveredId(item.id)}
-                          onBlur={() => setHoveredId(null)}
-                          animate={{
-                            scale:
-                              mounted && !prefersReducedMotion && isHovered
-                                ? 1.06
-                                : 1,
-                          }}
-                          transition={thumbTransition}
-                        >
-                          <div
-                            className={styles.thumbImage}
-                            style={{ backgroundImage: `url(${item.afterSrc})` }}
-                            role="img"
-                            aria-label={
-                              meta?.thumbAlt ?? beforeAfter.thumbAltFallback
-                            }
-                          />
-                        </motion.button>
-                      </div>
-                    </CardSliderSlide>
-                  );
-                })}
-              </CardSlider>
-
-              <CardSliderNav
-                prevLabel={beforeAfter.prevLabel}
-                nextLabel={beforeAfter.nextLabel}
-                canScrollPrev={thumbSlider.canScrollPrev}
-                canScrollNext={thumbSlider.canScrollNext}
-                onPrev={thumbSlider.scrollPrev}
-                onNext={thumbSlider.scrollNext}
+            <div className={`${styles.mediaShell} ${styles.mediaShellReveal}`}>
+              <CategoryMediaPanel
+                tabId={activeTab}
+                catalog={activeCatalog}
+                categoryCopy={activeCategoryCopy}
+                beforeAfter={beforeAfter}
+                mounted={mounted}
               />
             </div>
           </div>

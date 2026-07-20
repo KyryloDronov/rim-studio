@@ -89,8 +89,6 @@ export const FOOTER_SCROLL = {
 export const SHOWCASE_SCROLL = {
   /** Viewport bottom crosses 33% height of the card — top third visible, then enter. */
   triggerStart: "33% bottom",
-  /** Viewport top crosses vertical center of the card — exit on scroll down. */
-  triggerEnd: "center top",
   defaultsEase: EASE.punchy,
   cards: {
     xFrom: 64,

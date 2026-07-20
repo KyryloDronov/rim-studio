@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { useLenis } from "lenis/react";
-import { Camera, Clock, Phone, Send, Shield, Wallet } from "lucide-react";
+import { Camera, Clock, Phone, Shield, Wallet } from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import {
   type ComponentType,
@@ -21,7 +21,6 @@ import {
   splitWords,
 } from "@/animations";
 import { Button } from "@/components/Button";
-import { Modal } from "@/components/Modal";
 import { PRICING_SECTION_ID } from "@/components/PricingSection";
 import { ProductCards } from "@/components/ProductCards";
 import { useReady } from "@/components/ReadyProvider";
@@ -29,6 +28,7 @@ import { ScrollDown } from "@/components/ScrollDown";
 import { PAGE_BANNER_ATTR } from "@/content/page-banner";
 import { SHOWCASE_WORK_CARDS } from "@/content/showcase-cards";
 import { useLocale } from "@/i18n/LocaleProvider";
+import { DiskPhotoModalForm } from "./DiskPhotoModalForm";
 import styles from "./style.module.css";
 
 /* Hard cap on how long we wait for the bg video to load before
@@ -187,6 +187,15 @@ export function Hero() {
 
   const [ctaPillExpand, setCtaPillExpand] = useState(false);
   const [photoModalOpen, setPhotoModalOpen] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (photoModalOpen) {
+      video.pause();
+    }
+  }, [photoModalOpen]);
 
   const onAfterCtaReveal = useCallback(() => {
     setCtaPillExpand(true);
@@ -389,26 +398,10 @@ export function Hero() {
         </div>
       </div>
 
-      <Modal
+      <DiskPhotoModalForm
         open={photoModalOpen}
         onOpenChange={setPhotoModalOpen}
-        title={hero.photoModal.title}
-        footer={
-          <Button
-            type="button"
-            variant="accent"
-            size="md"
-            expandFromIcon
-            expandWhen
-            icon={<Send strokeWidth={1.75} aria-hidden />}
-            onClick={() => setPhotoModalOpen(false)}
-          >
-            {hero.photoModal.submitLabel}
-          </Button>
-        }
-      >
-        <p>{hero.photoModal.body}</p>
-      </Modal>
+      />
     </section>
   );
 }

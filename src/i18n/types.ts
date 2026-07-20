@@ -106,6 +106,34 @@ export type Dictionary = Readonly<{
       title: string;
       body: string;
       submitLabel: string;
+      successTitle: string;
+      successBody: string;
+      photosCount: string;
+      privacyBefore: string;
+      privacyLinkLabel: string;
+      privacyHref: string;
+      fields: Readonly<{
+        nameLabel: string;
+        namePlaceholder: string;
+        phoneLabel: string;
+        phonePlaceholder: string;
+        emailLabel: string;
+        emailPlaceholder: string;
+        optionalLabel: string;
+        photosLabel: string;
+        photosDropTitle: string;
+        photosDropHint: string;
+        removePhotoLabel: string;
+        commentLabel: string;
+        commentPlaceholder: string;
+        commentHint: string;
+      }>;
+      errors: Readonly<{
+        nameRequired: string;
+        phoneRequired: string;
+        emailInvalid: string;
+        photosRequired: string;
+      }>;
     }>;
     /** Companion dark CTA (e.g. "Call us"). `tel:` / `mailto:` is fine. */
     ctaSecondary: Readonly<{ label: string; href: string }>;
@@ -177,17 +205,34 @@ export type Dictionary = Readonly<{
     titleMuted: string;
     beforeLabel: string;
     afterLabel: string;
-    thumbsAriaLabel: string;
     prevLabel: string;
     nextLabel: string;
     thumbAltFallback: string;
-    pairs: ReadonlyArray<
-      Readonly<{
-        id: string;
-        beforeAlt: string;
-        afterAlt: string;
-        thumbAlt: string;
-      }>
+    galleryCounter: string;
+    galleryOpenLabel: string;
+    galleryCloseLabel: string;
+    categories: Readonly<
+      Record<
+        | "paint"
+        | "repair"
+        | "diamond"
+        | "tire"
+        | "caliper"
+        | "motorcycle"
+        | "tig",
+        Readonly<{
+          thumbsAriaLabel: string;
+          compareFallback?: Readonly<{
+            beforeAlt: string;
+            afterAlt: string;
+            thumbAlt: string;
+          }>;
+          galleryFallback?: Readonly<{
+            alt: string;
+            thumbAlt: string;
+          }>;
+        }>
+      >
     >;
     booking: Readonly<{
       eyebrow: string;

@@ -1,35 +1,36 @@
 import type { CharSegment } from "@/animations/types";
 
-export type QuoteTextSegment = Readonly<
-  | { type: "space"; key: string }
-  | { type: "chars"; key: string; chars: ReadonlyArray<CharSegment> }
->;
+export type QuoteTextSegment = Readonly<{
+  type: "word";
+  key: string;
+  chars: ReadonlyArray<CharSegment>;
+  /** Glued to the word end so line wraps never start with a stray space. */
+  trailingSpace?: boolean;
+}>;
 
 /**
- * Split copy into word chunks + normal spaces.
- * Keeps wrapping natural — pair with `<LetterRevealText>` so each word
- * uses `white-space: nowrap` and never breaks mid-glyph.
+ * Split copy into word chunks for letter reveals.
+ * Inter-word spaces are attached to the preceding word (not separate nodes)
+ * so wrapped lines stay flush on the left.
  */
 export function splitQuoteSegments(
   text: string,
   keyPrefix: string,
 ): ReadonlyArray<QuoteTextSegment> {
   const normalized = text.replace(/\s+/g, " ").trim();
-  const parts = normalized.split(/(\s)/).filter((part) => part.length > 0);
+  if (!normalized) return [];
 
-  return parts.map((part, index) => {
-    if (part === " ") {
-      return { type: "space", key: `${keyPrefix}-sp-${index}` };
-    }
-    return {
-      type: "chars",
-      key: `${keyPrefix}-w-${index}`,
-      chars: Array.from(part).map((char, i) => ({
-        char,
-        key: `${keyPrefix}-w-${index}-${i}-${char}`,
-      })),
-    };
-  });
+  const words = normalized.split(" ");
+
+  return words.map((word, index) => ({
+    type: "word" as const,
+    key: `${keyPrefix}-w-${index}`,
+    trailingSpace: index < words.length - 1,
+    chars: Array.from(word).map((char, i) => ({
+      char,
+      key: `${keyPrefix}-w-${index}-${i}-${char}`,
+    })),
+  }));
 }
 
 /** @deprecated Prefer `splitQuoteSegments` for rendered quote copy. */

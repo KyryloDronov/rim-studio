@@ -106,8 +106,37 @@ export const pl: Dictionary = {
     ctaPrimary: { label: "Wyślij zdjęcie felg", href: "/contact" },
     photoModal: {
       title: "Zdjęcia Twoich felg",
-      body: "Zrób kilka zdjęć kół w świetle dziennym i prześlij je do nas — na ich podstawie ocenimy stan i zaproponujemy opcje renowacji i lakierowania.",
+      body: "Zrób kilka zdjęć kół w świetle dziennym — na ich podstawie ocenimy stan i zaproponujemy opcje renowacji i lakierowania.",
       submitLabel: "Wyślij",
+      successTitle: "Zgłoszenie gotowe",
+      successBody:
+        "Wysyłka działa na razie w trybie demo. Zapisz dane — podłączymy backend w kolejnym kroku.",
+      photosCount: "Dodano {current} z {max} zdjęć",
+      privacyBefore: "Klikając „Wyślij”, akceptujesz ",
+      privacyLinkLabel: "politykę prywatności",
+      privacyHref: "/contact",
+      fields: {
+        nameLabel: "Imię",
+        namePlaceholder: "Jak się do Ciebie zwracać",
+        phoneLabel: "Telefon",
+        phonePlaceholder: "+48 ___ ___ ___",
+        emailLabel: "Email",
+        emailPlaceholder: "name@example.com",
+        optionalLabel: "(opcjonalnie)",
+        photosLabel: "Zdjęcia felg",
+        photosDropTitle: "Dodaj zdjęcia",
+        photosDropHint: "Przeciągnij tutaj lub kliknij — do 10 zdjęć, JPG lub PNG",
+        removePhotoLabel: "Usuń zdjęcie",
+        commentLabel: "Komentarz",
+        commentPlaceholder: "Rozmiar felg, uszkodzenia, preferowany kolor…",
+        commentHint: "Każdy szczegół pomoże szybciej wycenić pracę.",
+      },
+      errors: {
+        nameRequired: "Podaj imię",
+        phoneRequired: "Podaj numer telefonu",
+        emailInvalid: "Sprawdź format email",
+        photosRequired: "Dodaj co najmniej jedno zdjęcie felg",
+      },
     },
     ctaSecondary: { label: "Zadzwoń", href: "tel:+48000000000" },
     recentWorksLabel: "Ostatnie realizacje",
@@ -365,28 +394,72 @@ export const pl: Dictionary = {
     },
   },
   beforeAfter: {
-    titleStrong: "Przed i po.",
-    titleMuted: "Efekt naszej pracy.",
+    titleStrong: "Przykłady",
+    titleMuted: "naszej pracy.",
     beforeLabel: "Przed",
     afterLabel: "Po",
-    thumbsAriaLabel: "Wybór przykładu przed i po",
     prevLabel: "Poprzednia miniatura",
     nextLabel: "Następna miniatura",
     thumbAltFallback: "Przykład pracy",
-    pairs: [
-      {
-        id: "amg-r19-a",
-        beforeAlt: "Felga Mercedes AMG przed renowacją",
-        afterAlt: "Felga Mercedes AMG po renowacji",
-        thumbAlt: "Przykład renowacji felgi Mercedes AMG",
+    galleryCounter: "{current} / {total}",
+    galleryOpenLabel: "Otwórz galerię na pełnym ekranie",
+    galleryCloseLabel: "Zamknij galerię",
+    categories: {
+      paint: {
+        thumbsAriaLabel: "Przykłady lakierowania felg",
+        compareFallback: {
+          beforeAlt: "Felga przed lakierowaniem",
+          afterAlt: "Felga po lakierowaniu",
+          thumbAlt: "Przykład lakierowania felgi",
+        },
       },
-      {
-        id: "amg-r19-b",
-        beforeAlt: "Druga felga Mercedes AMG przed renowacją",
-        afterAlt: "Druga felga Mercedes AMG po renowacji",
-        thumbAlt: "Drugi przykład renowacji felgi Mercedes AMG",
+      tire: {
+        thumbsAriaLabel: "Galeria wulkanizacji",
+        galleryFallback: {
+          alt: "Prace wulkanizacyjne w rim/studio",
+          thumbAlt: "Miniatura wulkanizacji",
+        },
       },
-    ],
+      repair: {
+        thumbsAriaLabel: "Przykłady naprawy felg",
+        compareFallback: {
+          beforeAlt: "Felga przed naprawą",
+          afterAlt: "Felga po naprawie",
+          thumbAlt: "Przykład naprawy felgi",
+        },
+      },
+      caliper: {
+        thumbsAriaLabel: "Przykłady lakierowania zacisków",
+        compareFallback: {
+          beforeAlt: "Zacisk przed lakierowaniem",
+          afterAlt: "Zacisk po lakierowaniu",
+          thumbAlt: "Przykład lakierowania zacisku",
+        },
+      },
+      diamond: {
+        thumbsAriaLabel: "Przykłady szlifowania diamentowego",
+        compareFallback: {
+          beforeAlt: "Felga przed szlifowaniem",
+          afterAlt: "Felga po szlifowaniu",
+          thumbAlt: "Przykład szlifowania diamentowego",
+        },
+      },
+      motorcycle: {
+        thumbsAriaLabel: "Galeria motocyklowych felg i części",
+        galleryFallback: {
+          alt: "Lakierowanie motocyklowej felgi lub części",
+          thumbAlt: "Miniatura pracy motocyklowej",
+        },
+      },
+      tig: {
+        thumbsAriaLabel: "Przykłady spawania TIG",
+        compareFallback: {
+          beforeAlt: "Felga przed spawaniem",
+          afterAlt: "Felga po spawaniu",
+          thumbAlt: "Przykład spawania argonowego",
+        },
+      },
+    },
     booking: {
       eyebrow: "Konsultacja",
       title: "Umów się na",

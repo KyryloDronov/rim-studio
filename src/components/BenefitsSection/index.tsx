@@ -7,6 +7,10 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { runBenefitsScrollReveal } from "@/animations";
 import { Button } from "@/components/Button";
 import {
+  formatPolishPhoneInput,
+  PL_PHONE_PREFIX,
+} from "@/lib/formatPolishPhone";
+import {
   BENEFITS_CENTER_FEATURE_ID,
   BENEFITS_CENTER_VIDEO,
   BENEFITS_SIDE_LEFT,
@@ -18,25 +22,6 @@ import { useLocale } from "@/i18n/LocaleProvider";
 import styles from "./style.module.css";
 
 export const BENEFITS_SECTION_ID = "benefits";
-
-const PL_PHONE_PREFIX = "+48 ";
-
-function formatPolishPhoneInput(raw: string): string {
-  const digits = raw.replace(/\D/g, "");
-  const national = digits.startsWith("48") ? digits.slice(2, 11) : digits.slice(0, 9);
-
-  if (national.length === 0) {
-    return raw.trim().length === 0 ? "" : PL_PHONE_PREFIX;
-  }
-
-  const chunks = [
-    national.slice(0, 3),
-    national.slice(3, 6),
-    national.slice(6, 9),
-  ].filter(Boolean);
-
-  return `${PL_PHONE_PREFIX}${chunks.join(" ")}`;
-}
 
 export function BenefitsSection() {
   const { locale, t } = useLocale();

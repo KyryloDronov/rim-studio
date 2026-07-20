@@ -106,8 +106,37 @@ export const ru: Dictionary = {
     ctaPrimary: { label: "Отправить фото дисков", href: "/contact" },
     photoModal: {
       title: "Фото ваших дисков",
-      body: "Сделайте несколько снимков колёс при дневном свете и отправьте их нам — по фото оценим состояние и предложим варианты реставрации и покраски.",
+      body: "Сделайте несколько снимков колёс при дневном свете — по фото оценим состояние и предложим варианты реставрации и покраски.",
       submitLabel: "Отправить",
+      successTitle: "Заявка готова",
+      successBody:
+        "Пока отправка настроена в демо-режиме. Сохраните данные — подключим отправку на сервер на следующем шаге.",
+      photosCount: "Добавлено {current} из {max} фото",
+      privacyBefore: "Нажимая «Отправить», вы соглашаетесь с ",
+      privacyLinkLabel: "политикой конфиденциальности",
+      privacyHref: "/contact",
+      fields: {
+        nameLabel: "Имя",
+        namePlaceholder: "Как к вам обращаться",
+        phoneLabel: "Телефон",
+        phonePlaceholder: "+48 ___ ___ ___",
+        emailLabel: "Email",
+        emailPlaceholder: "name@example.com",
+        optionalLabel: "(необязательно)",
+        photosLabel: "Фото дисков",
+        photosDropTitle: "Добавить фото",
+        photosDropHint: "Перетащите сюда или нажмите — до 10 снимков, JPG или PNG",
+        removePhotoLabel: "Удалить фото",
+        commentLabel: "Комментарий",
+        commentPlaceholder: "Размер дисков, повреждения, желаемый цвет…",
+        commentHint: "Любые детали помогут быстрее оценить работу.",
+      },
+      errors: {
+        nameRequired: "Укажите имя",
+        phoneRequired: "Укажите номер телефона",
+        emailInvalid: "Проверьте формат email",
+        photosRequired: "Добавьте хотя бы одно фото дисков",
+      },
     },
     ctaSecondary: { label: "Позвонить", href: "tel:+48000000000" },
     recentWorksLabel: "Недавние работы",
@@ -365,28 +394,72 @@ export const ru: Dictionary = {
     },
   },
   beforeAfter: {
-    titleStrong: "До и после.",
-    titleMuted: "Результат нашей работы.",
+    titleStrong: "Примеры",
+    titleMuted: "наших работ.",
     beforeLabel: "До",
     afterLabel: "После",
-    thumbsAriaLabel: "Выбор примера до и после",
     prevLabel: "Предыдущая миниатюра",
     nextLabel: "Следующая миниатюра",
     thumbAltFallback: "Пример работы",
-    pairs: [
-      {
-        id: "amg-r19-a",
-        beforeAlt: "Диск Mercedes AMG до реставрации",
-        afterAlt: "Диск Mercedes AMG после реставрации",
-        thumbAlt: "Пример реставрации диска Mercedes AMG",
+    galleryCounter: "{current} / {total}",
+    galleryOpenLabel: "Открыть галерею на весь экран",
+    galleryCloseLabel: "Закрыть галерею",
+    categories: {
+      paint: {
+        thumbsAriaLabel: "Примеры покраски дисков",
+        compareFallback: {
+          beforeAlt: "Диск до покраски",
+          afterAlt: "Диск после покраски",
+          thumbAlt: "Пример покраски диска",
+        },
       },
-      {
-        id: "amg-r19-b",
-        beforeAlt: "Второй диск Mercedes AMG до реставрации",
-        afterAlt: "Второй диск Mercedes AMG после реставрации",
-        thumbAlt: "Второй пример реставрации диска Mercedes AMG",
+      tire: {
+        thumbsAriaLabel: "Галерея шиномонтажа",
+        galleryFallback: {
+          alt: "Работа шиномонтажа в rim/studio",
+          thumbAlt: "Миниатюра шиномонтажа",
+        },
       },
-    ],
+      repair: {
+        thumbsAriaLabel: "Примеры ремонта дисков",
+        compareFallback: {
+          beforeAlt: "Диск до ремонта",
+          afterAlt: "Диск после ремонта",
+          thumbAlt: "Пример ремонта диска",
+        },
+      },
+      caliper: {
+        thumbsAriaLabel: "Примеры покраски суппортов",
+        compareFallback: {
+          beforeAlt: "Суппорт до покраски",
+          afterAlt: "Суппорт после покраски",
+          thumbAlt: "Пример покраски суппорта",
+        },
+      },
+      diamond: {
+        thumbsAriaLabel: "Примеры алмазной шлифовки",
+        compareFallback: {
+          beforeAlt: "Диск до алмазной шлифовки",
+          afterAlt: "Диск после алмазной шлифовки",
+          thumbAlt: "Пример алмазной шлифовки",
+        },
+      },
+      motorcycle: {
+        thumbsAriaLabel: "Галерея мото дисков и деталей",
+        galleryFallback: {
+          alt: "Покраска мото диска или детали",
+          thumbAlt: "Миниатюра мото работы",
+        },
+      },
+      tig: {
+        thumbsAriaLabel: "Примеры аргонно-дуговой сварки",
+        compareFallback: {
+          beforeAlt: "Диск до сварки",
+          afterAlt: "Диск после сварки",
+          thumbAlt: "Пример аргонно-дуговой сварки",
+        },
+      },
+    },
     booking: {
       eyebrow: "Консультация",
       title: "Запишитесь на",

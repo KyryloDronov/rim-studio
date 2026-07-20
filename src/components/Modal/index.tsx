@@ -52,6 +52,8 @@ export type ModalProps = Readonly<{
   closeOnBackdrop?: boolean;
   /** Close on Escape (via `cancel` + controlled state). Default `true`. */
   closeOnEscape?: boolean;
+  /** Accessible label for the circular close control. */
+  closeLabel?: string;
   /** Override auto-generated title id for `aria-labelledby`. */
   titleId?: string;
 }>;
@@ -74,6 +76,7 @@ export function Modal({
   panelClassName,
   closeOnBackdrop = true,
   closeOnEscape = true,
+  closeLabel = "Close dialog",
   titleId: titleIdProp,
 }: ModalProps) {
   const mounted = useIsClient();
@@ -85,6 +88,7 @@ export function Modal({
   const descriptionId = description ? `${reactId}-modal-desc` : undefined;
 
   const dialogRef = useRef<HTMLDialogElement | null>(null);
+  const scrollRegionRef = useRef<HTMLDivElement | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
   const releaseScrollRef = useRef<(() => void) | undefined>(undefined);
   const [exiting, setExiting] = useState(false);
@@ -146,10 +150,6 @@ export function Modal({
     };
   }, []);
 
-  /**
-   * Lenis keeps scrolling the page unless explicitly stopped — `overflow: hidden`
-   * on html/body is not enough with smooth scroll.
-   */
   useEffect(() => {
     if (!open || !lenis) return;
     lenis.stop();
@@ -157,6 +157,57 @@ export function Modal({
       lenis.start();
     };
   }, [open, lenis]);
+
+  /** Modal is portaled outside `<ReactLenis>` — trap wheel/touch so Lenis
+   *  and ScrollTrigger don't jitter the hero banner behind the scrim. */
+  useEffect(() => {
+    if (!open || !mounted) return;
+
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    const stopWheelBubble = (event: WheelEvent) => {
+      event.stopPropagation();
+    };
+
+    const handleScrollWheel = (event: WheelEvent) => {
+      event.stopPropagation();
+
+      const node = scrollRegionRef.current;
+      if (!node) {
+        event.preventDefault();
+        return;
+      }
+
+      const { scrollTop, scrollHeight, clientHeight } = node;
+      const atTop = scrollTop <= 0;
+      const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+
+      if ((event.deltaY < 0 && atTop) || (event.deltaY > 0 && atBottom)) {
+        event.preventDefault();
+      }
+    };
+
+    const stopTouchBubble = (event: TouchEvent) => {
+      event.stopPropagation();
+    };
+
+    dialog.addEventListener("wheel", stopWheelBubble, { capture: true });
+    dialog.addEventListener("touchmove", stopTouchBubble, { capture: true });
+
+    const scrollRegion = scrollRegionRef.current;
+    scrollRegion?.addEventListener("wheel", handleScrollWheel, {
+      passive: false,
+    });
+
+    return () => {
+      dialog.removeEventListener("wheel", stopWheelBubble, { capture: true });
+      dialog.removeEventListener("touchmove", stopTouchBubble, {
+        capture: true,
+      });
+      scrollRegion?.removeEventListener("wheel", handleScrollWheel);
+    };
+  }, [mounted, open]);
 
   useEffect(() => {
     if (open && closeBtnRef.current) {
@@ -203,6 +254,8 @@ export function Modal({
       className={[styles.dialog, className].filter(Boolean).join(" ")}
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
+      data-active={motionState === "visible" ? "true" : "false"}
+      data-lenis-prevent
       onCancel={handleCancel}
     >
       <div
@@ -230,7 +283,7 @@ export function Modal({
                 ref={closeBtnRef}
                 type="button"
                 className={styles.closeCircle}
-                aria-label="Close dialog"
+                aria-label={closeLabel}
                 onClick={requestClose}
               >
                 <X strokeWidth={2} aria-hidden className={styles.closeIcon} />
@@ -241,13 +294,21 @@ export function Modal({
             </h2>
           </header>
 
-          {description ? (
-            <p id={descriptionId} className={styles.description}>
-              {description}
-            </p>
-          ) : null}
+          {description || children ? (
+            <div
+              ref={scrollRegionRef}
+              className={styles.scrollRegion}
+              data-lenis-prevent
+            >
+              {description ? (
+                <p id={descriptionId} className={styles.description}>
+                  {description}
+                </p>
+              ) : null}
 
-          <div className={styles.body}>{children}</div>
+              {children ? <div className={styles.body}>{children}</div> : null}
+            </div>
+          ) : null}
 
           {footer ? (
             <div className={styles.primaryAction}>{footer}</div>

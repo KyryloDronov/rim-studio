@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
 import { useLocale } from "@/i18n/LocaleProvider";
+import { AnimatedLogo } from "./AnimatedLogo";
 import { ArrowRightIcon } from "./icons";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { RevealText } from "./RevealText";
@@ -105,9 +106,7 @@ export function Header({
 
       <div className={styles.center}>
         <Link href="/" aria-label="rim-studio home" className={styles.logo}>
-          <span>rim</span>
-          <span className={styles.logoMark}>/</span>
-          <span>studio</span>
+          <AnimatedLogo ready={ready} />
         </Link>
       </div>
 
