@@ -24,8 +24,8 @@ const SPIN_DEGREES = SPIN_TURNS * 360;
 const LOGO_SPIN_DURATION = 2.4;
 
 const SPIN_SEQUENCE = {
-  opacity: [0, 0.45, 1, 1, 1, 1, 1, 1, 1],
-  rotate: [-SPIN_DEGREES, -6480, -5400, -3600, -1800, -540, -72, -8, 0],
+  opacity: [0, 0.45, 1, 1, 1, 1, 1, 1, 1] as number[],
+  rotate: [-SPIN_DEGREES, -6480, -5400, -3600, -1800, -540, -72, -8, 0] as number[],
   filter: [
     "blur(8px)",
     "blur(7px)",
@@ -36,14 +36,14 @@ const SPIN_SEQUENCE = {
     "blur(0.2px)",
     "blur(0px)",
     "blur(0px)",
-  ],
-} as const;
+  ] as string[],
+};
 
 const SPIN_TRANSITION = {
   duration: LOGO_SPIN_DURATION,
   ease: "linear" as const,
-  times: [0, 0.015, 0.06, 0.18, 0.38, 0.62, 0.82, 0.94, 1],
-} as const;
+  times: [0, 0.015, 0.06, 0.18, 0.38, 0.62, 0.82, 0.94, 1] as number[],
+};
 
 const LETTER_EASE = [0.22, 1, 0.36, 1] as const;
 const TEXT_EASE = [0.76, 0, 0.24, 1] as const;
