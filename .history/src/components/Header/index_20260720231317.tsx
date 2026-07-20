@@ -105,45 +105,45 @@ export function Header({
         animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: -16 }}
         transition={{ duration: 0.6, delay: 0.1, ease: easeOutQuart }}
       >
-        <div className={styles.left}>
-          <motion.button
-            type="button"
-            aria-label="Toggle navigation menu"
-            aria-expanded={isMenuOpen}
-            className={styles.menuBtn}
-            onClick={handleMenuClick}
-            initial="rest"
-            animate="rest"
-            whileHover="hover"
-            whileFocus="hover"
-          >
-            <Hamburger isOpen={isMenuOpen} />
-            <span className={`${styles.menuText} ${styles.reveal}`}>
-              <motion.span
-                animate={{ y: isMenuOpen ? "-100%" : "0%" }}
-                transition={{ duration: 0.45, ease }}
-              >
-                {t.header.menu}
-              </motion.span>
-              <motion.span
-                animate={{ y: isMenuOpen ? "0%" : "100%" }}
-                transition={{ duration: 0.45, ease }}
-                aria-hidden={!isMenuOpen}
-              >
-                {t.header.close}
-              </motion.span>
-            </span>
-          </motion.button>
-        </div>
+      <div className={styles.left}>
+        <motion.button
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMenuOpen}
+          className={styles.menuBtn}
+          onClick={handleMenuClick}
+          initial="rest"
+          animate="rest"
+          whileHover="hover"
+          whileFocus="hover"
+        >
+          <Hamburger isOpen={isMenuOpen} />
+          <span className={`${styles.menuText} ${styles.reveal}`}>
+            <motion.span
+              animate={{ y: isMenuOpen ? "-100%" : "0%" }}
+              transition={{ duration: 0.45, ease }}
+            >
+              {t.header.menu}
+            </motion.span>
+            <motion.span
+              animate={{ y: isMenuOpen ? "0%" : "100%" }}
+              transition={{ duration: 0.45, ease }}
+              aria-hidden={!isMenuOpen}
+            >
+              {t.header.close}
+            </motion.span>
+          </span>
+        </motion.button>
+      </div>
 
-        <div className={styles.center}>
-          <Link href="/" aria-label="rim-studio home" className={styles.logo}>
-            <AnimatedLogo ready={ready} />
-          </Link>
-        </div>
+      <div className={styles.center}>
+        <Link href="/" aria-label="rim-studio home" className={styles.logo}>
+          <AnimatedLogo ready={ready} />
+        </Link>
+      </div>
 
-        <div className={styles.right}>
-          <div className={styles.rightInner}>
+      <div className={styles.right}>
+        <div className={styles.rightInner}>
           <span
             className={styles.contactBtnWrap}
             onMouseEnter={handleContactHoverStart}
@@ -176,9 +176,9 @@ export function Header({
               </Button>
             </span>
           </span>
-            <LocaleSwitcher />
-          </div>
+          <LocaleSwitcher />
         </div>
+      </div>
       </motion.div>
     </header>
   );

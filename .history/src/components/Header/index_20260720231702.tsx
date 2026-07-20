@@ -144,22 +144,11 @@ export function Header({
 
         <div className={styles.right}>
           <div className={styles.rightInner}>
-          <span
-            className={styles.contactBtnWrap}
-            onMouseEnter={handleContactHoverStart}
-            onMouseLeave={handleContactHoverEnd}
-          >
-            <button
-              type="button"
-              className={styles.contactIconBtn}
-              aria-label={t.header.contact}
-              onClick={() => undefined}
+            <span
+              className={styles.contactBtnWrap}
+              onMouseEnter={handleContactHoverStart}
+              onMouseLeave={handleContactHoverEnd}
             >
-              <span className={styles.contactIconGlyph} aria-hidden="true">
-                <MessageCircle strokeWidth={1.75} width={16} height={16} />
-              </span>
-            </button>
-            <span className={styles.contactBtnDesktop}>
               <Button
                 type="button"
                 variant="accent"
@@ -175,7 +164,6 @@ export function Header({
                 {t.header.contact}
               </Button>
             </span>
-          </span>
             <LocaleSwitcher />
           </div>
         </div>

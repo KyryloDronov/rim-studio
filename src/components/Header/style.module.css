@@ -110,8 +110,46 @@
   }
 }
 
-/* On mobile: logo | contact | menu  */
-/* On desktop: menu | logo | contact */
+/* On mobile/tablet: logo | contact + locale | menu (single row).
+   On desktop (1200+): menu | logo | contact + locale */
+@media (max-width: 1199px) {
+  .headerInner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem;
+  }
+
+  .left,
+  .center,
+  .right {
+    grid-column: auto;
+    justify-self: auto;
+    align-self: auto;
+  }
+
+  .center {
+    order: 1;
+    flex-shrink: 0;
+  }
+
+  .right {
+    order: 2;
+    margin-left: auto;
+    flex-shrink: 0;
+    min-width: 0;
+  }
+
+  .left {
+    order: 3;
+    flex-shrink: 0;
+  }
+
+  .rightInner {
+    gap: 0.5rem;
+  }
+}
+
 .left {
   grid-column: 3;
   justify-self: end;
@@ -284,6 +322,17 @@
   }
 }
 
+@media (max-width: 767px) {
+  .logo {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+  }
+
+  .logoSvg {
+    width: 2.5rem;
+  }
+}
+
 @media (min-width: 768px) {
   .logo {
     min-width: clamp(2.82rem, 3.84vw, 3.18rem);
@@ -397,6 +446,56 @@
 .contactBtnWrap {
   display: inline-flex;
   flex-shrink: 0;
+}
+
+.contactBtnDesktop {
+  display: none;
+}
+
+.contactIconBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.25rem;
+  border: none;
+  border-radius: 999px;
+  background-color: var(--brand-accent-500);
+  color: var(--brand-ink-700);
+  cursor: pointer;
+  transition: background-color 0.35s ease;
+}
+
+.contactIconBtn:hover {
+  background-color: var(--brand-accent-400);
+}
+
+.contactIconBtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.contactIconGlyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background-color: var(--brand-ink-700);
+  color: var(--brand-accent-300);
+}
+
+@media (min-width: 768px) {
+  .contactIconBtn {
+    display: none;
+  }
+
+  .contactBtnDesktop {
+    display: inline-flex;
+  }
 }
 
 .contactBtn {

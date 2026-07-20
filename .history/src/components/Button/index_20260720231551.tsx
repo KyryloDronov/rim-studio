@@ -120,9 +120,7 @@ function buildClassName(
     hasIcon ? null : styles.noIcon,
     expandFromIcon && hasIcon ? styles.introFromIcon : null,
     expandFromIcon && hasIcon && expandGrowLeft ? styles.introGrowLeft : null,
-    expandFromIcon && hasIcon && introDone
-      ? styles.introFromIconExpanded
-      : null,
+    expandFromIcon && hasIcon && introDone ? styles.introFromIconExpanded : null,
     extra,
   ]
     .filter(Boolean)
@@ -165,7 +163,37 @@ export const Button = forwardRef<
   const prefersReducedMotion = useReducedMotion();
   const expandControlled = expandWhen !== undefined;
   const domRef = useRef<HTMLAnchorElement | HTMLButtonElement | null>(null);
+  const labelMeasureRef = useRef<HTMLSpanElement>(null);
   const [viewportRevealed, setViewportRevealed] = useState(false);
+
+  const hasIcon = showIcon && Boolean(icon);
+  const useIntro = Boolean(expandFromIcon && hasIcon);
+
+  const measureIntroWidths = useCallback(() => {
+    const btn = domRef.current;
+    const measure = labelMeasureRef.current;
+    if (!btn || !measure || !useIntro) return;
+
+    const labelWidth = measure.offsetWidth;
+    const root = getComputedStyle(btn);
+    const iconSize = Number.parseFloat(root.getPropertyValue("--btn-icon-size"));
+    const pad = Number.parseFloat(root.getPropertyValue("--btn-pad"));
+    const padL = Number.parseFloat(root.getPropertyValue("--btn-pad-l"));
+    const totalWidth = padL + labelWidth + iconSize + pad;
+
+    btn.style.setProperty("--btn-intro-label-w", `${Math.ceil(labelWidth)}px`);
+    btn.style.setProperty(
+      "--btn-intro-expanded-w",
+      `${Math.ceil(totalWidth)}px`,
+    );
+  }, [useIntro]);
+
+  useLayoutEffect(() => {
+    if (!useIntro) return;
+    measureIntroWidths();
+    window.addEventListener("resize", measureIntroWidths);
+    return () => window.removeEventListener("resize", measureIntroWidths);
+  }, [measureIntroWidths, useIntro, children, size, variant]);
 
   useLayoutEffect(() => {
     if (
@@ -190,7 +218,13 @@ export const Button = forwardRef<
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [expandControlled, expandFromIcon, showIcon, icon, prefersReducedMotion]);
+  }, [
+    expandControlled,
+    expandFromIcon,
+    showIcon,
+    icon,
+    prefersReducedMotion,
+  ]);
 
   const setMergedRef = useCallback(
     (node: HTMLAnchorElement | HTMLButtonElement | null) => {
@@ -198,9 +232,8 @@ export const Button = forwardRef<
       if (typeof ref === "function") {
         ref(node);
       } else if (ref) {
-        (
-          ref as MutableRefObject<HTMLAnchorElement | HTMLButtonElement | null>
-        ).current = node;
+        (ref as MutableRefObject<HTMLAnchorElement | HTMLButtonElement | null>).current =
+          node;
       }
     },
     [ref],
@@ -210,8 +243,6 @@ export const Button = forwardRef<
      "no icon" branch isn't a fallback arrow on purpose — many of the
      brand pills (the `Menu` button in the kit) ship without one, and
      callers that want an arrow can still pass the dedicated `Arrow` icon. */
-  const hasIcon = showIcon && Boolean(icon);
-  const useIntro = Boolean(expandFromIcon && hasIcon);
   const introExpanded =
     !useIntro ||
     prefersReducedMotion === true ||
@@ -220,7 +251,7 @@ export const Button = forwardRef<
     variant,
     size,
     hasIcon,
-    useIntro,
+    expandFromIcon,
     expandGrowLeft,
     useIntro && introExpanded,
     className,
@@ -228,6 +259,11 @@ export const Button = forwardRef<
 
   const inner = (
     <>
+      {useIntro ? (
+        <span className={styles.labelMeasure} aria-hidden ref={labelMeasureRef}>
+          <span className={styles.label}>{children}</span>
+        </span>
+      ) : null}
       <span className={styles.label}>{children}</span>
       {hasIcon ? <IconSlot>{icon}</IconSlot> : null}
     </>
