@@ -5,6 +5,7 @@ import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/Button";
+import { useContactSheet } from "@/components/ContactSheet";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { AnimatedLogo } from "./AnimatedLogo";
 import { LocaleSwitcher } from "./LocaleSwitcher";
@@ -33,6 +34,15 @@ export function Header({
   const headerRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
   const { t } = useLocale();
+  const { openSheet } = useContactSheet();
+
+  const handleContactOpen = useCallback(() => {
+    if (isMenuOpen) {
+      if (!isControlled) setInternalOpen(false);
+      onMenuToggle?.(false);
+    }
+    openSheet();
+  }, [isControlled, isMenuOpen, onMenuToggle, openSheet]);
 
   const { mode, isScrolled, isBannerPinned } = useHeaderScrollBehavior(
     isMenuOpen,
@@ -112,12 +122,10 @@ export function Header({
             aria-expanded={isMenuOpen}
             className={styles.menuBtn}
             onClick={handleMenuClick}
-            initial="rest"
-            animate="rest"
-            whileHover="hover"
-            whileFocus="hover"
           >
-            <Hamburger isOpen={isMenuOpen} />
+            <span className={styles.menuIconSlot} aria-hidden="true">
+              <Hamburger isOpen={isMenuOpen} />
+            </span>
             <span className={`${styles.menuText} ${styles.reveal}`}>
               <motion.span
                 animate={{ y: isMenuOpen ? "-100%" : "0%" }}
@@ -153,7 +161,7 @@ export function Header({
               type="button"
               className={styles.contactIconBtn}
               aria-label={t.header.contact}
-              onClick={() => undefined}
+              onClick={handleContactOpen}
             >
               <span className={styles.contactIconGlyph} aria-hidden="true">
                 <MessageCircle strokeWidth={1.75} width={16} height={16} />
@@ -170,7 +178,7 @@ export function Header({
                 expandFromIcon
                 expandGrowLeft
                 expandWhen={contactPillExpanded}
-                onClick={() => undefined}
+                onClick={handleContactOpen}
               >
                 {t.header.contact}
               </Button>
@@ -190,13 +198,13 @@ type HamburgerProps = Readonly<{ isOpen: boolean }>;
 
 function Hamburger({ isOpen }: HamburgerProps) {
   return (
-    <span className={styles.hamburger} aria-hidden>
+    <span className={styles.hamburger}>
       <motion.span
         className={styles.line}
         animate={
           isOpen
             ? { y: "-50%", rotate: 45 }
-            : { y: "calc(-50% - 0.3rem)", rotate: 0 }
+            : { y: "calc(-50% - 0.22rem)", rotate: 0 }
         }
         transition={{ duration: 0.35, ease }}
       />
@@ -205,7 +213,7 @@ function Hamburger({ isOpen }: HamburgerProps) {
         animate={
           isOpen
             ? { y: "-50%", rotate: -45 }
-            : { y: "calc(-50% + 0.3rem)", rotate: 0 }
+            : { y: "calc(-50% + 0.22rem)", rotate: 0 }
         }
         transition={{ duration: 0.35, ease }}
       />

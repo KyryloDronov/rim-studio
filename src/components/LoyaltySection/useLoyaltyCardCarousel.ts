@@ -185,6 +185,7 @@ export function useLoyaltyCardCarousel({
   const rootRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const inViewRef = useRef(false);
+  const rafActiveRef = useRef(false);
   const pendingTierUpdatesRef = useRef<Map<number, number>>(new Map());
 
   const [slotTiers, setSlotTiers] = useState<number[]>(() =>
@@ -214,16 +215,115 @@ export function useLoyaltyCardCarousel({
     const root = rootRef.current;
     if (!root) return;
 
+    const assignTierOnRespawn = (index: number): number => {
+      const tier = spawnCounterRef.current++ % TIER_COUNT;
+      pendingTierUpdatesRef.current.set(index, tier);
+      return tier;
+    };
+
+    const tick = (ts: number) => {
+      if (!rafActiveRef.current) return;
+
+      const lastTs = lastTsRef.current || ts;
+      const dt = Math.min(0.05, (ts - lastTs) / 1000);
+      lastTsRef.current = ts;
+
+      offsetPxRef.current += SCROLL_SPEED * dt;
+
+      mouse.current.x += (mouse.current.targetX - mouse.current.x) * MOUSE_DAMPING;
+      mouse.current.y += (mouse.current.targetY - mouse.current.y) * MOUSE_DAMPING;
+
+      const { slotH, cardH, viewportH, poolSize, loopH } = metricsRef.current;
+      if (viewportH <= 0 || loopH <= 0) {
+        frameId.current = requestAnimationFrame(tick);
+        return;
+      }
+
+      const offset = offsetPxRef.current;
+      const viewport = viewportRef.current;
+      const copyEl = copyAnchorRef?.current ?? null;
+      const focusY = viewport
+        ? resolveFocusY(viewport, copyEl, viewportH, cardH)
+        : viewportH * 0.5;
+
+      for (let i = 0; i < poolSize; i++) {
+        const card = cardsRefs.current[i];
+        if (!card) continue;
+
+        let y = viewportH - cardH - i * slotH - offset;
+
+        while (y < -cardH) {
+          y += loopH;
+          assignTierOnRespawn(i);
+        }
+
+        while (y > viewportH) {
+          y -= loopH;
+        }
+
+        const centerY = y + cardH / 2;
+        const dist = Math.abs(centerY - focusY) / slotH;
+        const focus = Math.max(0, 1 - dist * 0.68);
+        const edge = edgeDissolve(y, cardH, viewportH);
+
+        const z = 280 * focus - 60 * (1 - focus);
+        const stackTilt = ((centerY - focusY) / slotH) * 10;
+        const focusScale = 0.92 + focus * 0.08;
+        const edgeScale = 0.82 + edge * 0.18;
+        const scale = focusScale * edgeScale;
+        const opacity = Math.min(1, (0.62 + focus * 0.38) * (0.35 + edge * 0.65));
+
+        const personality = CARD_PERSONALITY[i % CARD_PERSONALITY.length];
+
+        const parallaxY = mouse.current.x * 6 * focus;
+        const parallaxX = -mouse.current.y * 4 * focus;
+
+        const rotX = stackTilt + parallaxX + personality.rotX;
+        const rotY = parallaxY + personality.rotY;
+        const rotZ = personality.rotZ;
+
+        card.style.visibility = "visible";
+        card.style.zIndex = String(Math.round(z));
+        card.style.opacity = opacity.toFixed(3);
+        card.style.transform = `translate3d(${personality.x.toFixed(1)}px, ${y.toFixed(2)}px, ${z.toFixed(2)}px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) rotateZ(${rotZ.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      }
+
+      if (pendingTierUpdatesRef.current.size > 0) {
+        flushTierUpdates();
+      }
+
+      frameId.current = requestAnimationFrame(tick);
+    };
+
+    const startRaf = () => {
+      if (rafActiveRef.current) return;
+      rafActiveRef.current = true;
+      inViewRef.current = true;
+      lastTsRef.current = 0;
+      frameId.current = requestAnimationFrame(tick);
+    };
+
+    const stopRaf = () => {
+      rafActiveRef.current = false;
+      inViewRef.current = false;
+      cancelAnimationFrame(frameId.current);
+    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        inViewRef.current = entry?.isIntersecting ?? false;
+        if (entry?.isIntersecting) startRaf();
+        else stopRaf();
       },
       { threshold: 0.12 },
     );
 
     observer.observe(root);
-    return () => observer.disconnect();
-  }, [enabled]);
+
+    return () => {
+      stopRaf();
+      observer.disconnect();
+    };
+  }, [copyAnchorRef, enabled, flushTierUpdates]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -308,94 +408,6 @@ export function useLoyaltyCardCarousel({
       root.removeEventListener("mouseleave", onMouseLeave);
     };
   }, [enabled]);
-
-  useEffect(() => {
-    if (!enabled) return;
-
-    const assignTierOnRespawn = (index: number): number => {
-      const tier = spawnCounterRef.current++ % TIER_COUNT;
-      pendingTierUpdatesRef.current.set(index, tier);
-      return tier;
-    };
-
-    const tick = (ts: number) => {
-      const lastTs = lastTsRef.current || ts;
-      const dt = Math.min(0.05, (ts - lastTs) / 1000);
-      lastTsRef.current = ts;
-
-      if (inViewRef.current) {
-        offsetPxRef.current += SCROLL_SPEED * dt;
-      }
-
-      mouse.current.x += (mouse.current.targetX - mouse.current.x) * MOUSE_DAMPING;
-      mouse.current.y += (mouse.current.targetY - mouse.current.y) * MOUSE_DAMPING;
-
-      const { slotH, cardH, viewportH, poolSize, loopH } = metricsRef.current;
-      if (viewportH <= 0 || loopH <= 0) {
-        frameId.current = requestAnimationFrame(tick);
-        return;
-      }
-
-      const offset = offsetPxRef.current;
-      const viewport = viewportRef.current;
-      const copyEl = copyAnchorRef?.current ?? null;
-      const focusY = viewport
-        ? resolveFocusY(viewport, copyEl, viewportH, cardH)
-        : viewportH * 0.5;
-
-      for (let i = 0; i < poolSize; i++) {
-        const card = cardsRefs.current[i];
-        if (!card) continue;
-
-        let y = viewportH - cardH - i * slotH - offset;
-
-        // Only swap tier when the card has fully left through the top edge.
-        while (y < -cardH) {
-          y += loopH;
-          assignTierOnRespawn(i);
-        }
-
-        while (y > viewportH) {
-          y -= loopH;
-        }
-
-        const centerY = y + cardH / 2;
-        const dist = Math.abs(centerY - focusY) / slotH;
-        const focus = Math.max(0, 1 - dist * 0.68);
-        const edge = edgeDissolve(y, cardH, viewportH);
-
-        const z = 280 * focus - 60 * (1 - focus);
-        const stackTilt = ((centerY - focusY) / slotH) * 10;
-        const focusScale = 0.92 + focus * 0.08;
-        const edgeScale = 0.82 + edge * 0.18;
-        const scale = focusScale * edgeScale;
-        const opacity = Math.min(1, (0.62 + focus * 0.38) * (0.35 + edge * 0.65));
-
-        const personality = CARD_PERSONALITY[i % CARD_PERSONALITY.length];
-
-        const parallaxY = mouse.current.x * 6 * focus;
-        const parallaxX = -mouse.current.y * 4 * focus;
-
-        const rotX = stackTilt + parallaxX + personality.rotX;
-        const rotY = parallaxY + personality.rotY;
-        const rotZ = personality.rotZ;
-
-        card.style.visibility = "visible";
-        card.style.zIndex = String(Math.round(z));
-        card.style.opacity = opacity.toFixed(3);
-        card.style.transform = `translate3d(${personality.x.toFixed(1)}px, ${y.toFixed(2)}px, ${z.toFixed(2)}px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg) rotateZ(${rotZ.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
-      }
-
-      if (pendingTierUpdatesRef.current.size > 0) {
-        flushTierUpdates();
-      }
-
-      frameId.current = requestAnimationFrame(tick);
-    };
-
-    frameId.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId.current);
-  }, [copyAnchorRef, enabled, flushTierUpdates]);
 
   const setCardRef = (index: number) => (el: HTMLDivElement | null) => {
     cardsRefs.current[index] = el;

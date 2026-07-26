@@ -43,12 +43,33 @@ export function AboutSection() {
   const { locale, t } = useLocale();
   const { aboutSection } = t;
   const prefersReducedMotion = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   useEffect(() => {
-    for (const video of videoRefs.current) {
-      video?.play().catch(() => {});
-    }
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const syncVideos = (play: boolean) => {
+      for (const video of videoRefs.current) {
+        if (!video) continue;
+        if (play) {
+          void video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        syncVideos(entry?.isIntersecting ?? false);
+      },
+      { threshold: 0.08, rootMargin: "80px 0px" },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
 
   const registerVideo =
@@ -59,6 +80,7 @@ export function AboutSection() {
 
   return (
     <section
+      ref={sectionRef}
       id={ABOUT_SECTION_ID}
       className={styles.section}
       aria-labelledby={`${ABOUT_SECTION_ID}-heading`}

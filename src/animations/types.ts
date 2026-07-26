@@ -23,6 +23,8 @@ export type HeroIntroClassNames = Readonly<{
   word: string;
   ctaItem: string;
   trustItem: string;
+  serviceRevealItem: string;
+  ctaAsideItem: string;
 }>;
 
 /** Benefits grid scroll-reveal class names passed from `<BenefitsSection>`. */
@@ -78,7 +80,9 @@ export type BeforeAfterRevealClassNames = Readonly<{
 export type HeroIntroElements = Readonly<{
   titleWords: NodeListOf<HTMLElement>;
   ledeWords: NodeListOf<HTMLElement>;
+  serviceHighlightItems: NodeListOf<HTMLElement>;
   ctaItems: NodeListOf<HTMLElement>;
+  ctaAsideItem: HTMLElement | null;
   trustItems: NodeListOf<HTMLElement>;
   recentCardShells: NodeListOf<HTMLElement>;
   recentEyebrow: HTMLElement | null;

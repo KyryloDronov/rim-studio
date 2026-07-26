@@ -35,36 +35,304 @@ export const pl: Dictionary = {
         title: "Lakierowanie felg",
         lead:
           "Proszkowe lakierowanie i renowacja felg w Warszawie — dobierzemy kolor, przygotujemy powierzchnię i przywrócimy fabryczny wygląd.",
+        banner: {
+          layout: "tiles",
+          titleLines: [
+            { text: "Lakierowanie felg" },
+            { text: "w Warszawie", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Chcesz odświeżyć wygląd kół? Dobierzemy odcień i przywrócimy felgom ",
+            },
+            { text: "fabryczny wygląd.", accent: true },
+          ],
+          highlights: [
+            {
+              id: "powder",
+              icon: "sparkles",
+              title: "Lakier proszkowy",
+              subtitle: "Równa powłoka i trwały kolor",
+            },
+            {
+              id: "prep",
+              icon: "wrench",
+              title: "Przygotowanie powierzchni",
+              subtitle: "Czyszczenie, szlifowanie, grunt",
+            },
+            {
+              id: "palette",
+              icon: "palette",
+              title: "Katalog kolorów i faktur",
+              subtitle: "RAL, metalik, mat",
+            },
+            {
+              id: "protection",
+              icon: "shieldCheck",
+              title: "Ochrona przed odpryskami",
+              subtitle: "Trwała warstwa na całej felgi",
+            },
+          ],
+          ctaPrimary: { label: "Sprawdź koszt lakierowania" },
+        },
       },
       wheelRepair: {
         title: "Naprawa felg",
         lead:
           "Usuwamy wgniecenia, pęknięcia i korozję. Diagnostyka, prostowanie geometrii i przygotowanie pod lakier — w jednym miejscu.",
+        banner: {
+          layout: "tiles",
+          titleLines: [
+            { text: "Naprawa felg" },
+            { text: "w Warszawie", accent: true },
+          ],
+          ledeParts: [{ text: "Uszkodziłeś felgę? Wiemy, co zrobić." }],
+          highlights: [
+            {
+              id: "geometry",
+              icon: "gauge",
+              title: "Prostowanie geometrii",
+              subtitle: "Walce i kontrola bicia",
+            },
+            {
+              id: "tig",
+              icon: "flame",
+              title: "Spawanie argonowe",
+              subtitle: "Lokalna naprawa pęknięć",
+            },
+            {
+              id: "cracks",
+              icon: "sparkles",
+              title: "Naprawa pęknięć",
+              subtitle: "Po diagnostyce",
+            },
+            {
+              id: "curb",
+              icon: "crosshair",
+              title: "Usuwanie ubytków od krawężnika",
+              subtitle: "Krawędź i front",
+            },
+          ],
+          ctaPrimary: { label: "Umów diagnostykę" },
+        },
       },
       diamondCutting: {
         title: "Szlifowanie diamentowe felg",
         lead:
           "Diamentowe toczenie obrzeży i powierzchni — głęboki połysk, wyraźna faktura i czyste przejścia bez przegrzania metalu.",
+        banner: {
+          layout: "pair",
+          titleLines: [
+            { text: "Diamentowe toczenie" },
+            { text: "i szlif felg" },
+            { text: "w Warszawie", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Przywracamy fabryczny połysk felg metodą ",
+            },
+            { text: "Diamond Cut", accent: true },
+            { text: "." },
+          ],
+          highlights: [
+            {
+              id: "shine",
+              icon: "sparkles",
+              title: "Fabryczny połysk",
+              subtitle: "Lustrzana obrzeż i wyraźna faktura",
+            },
+            {
+              id: "precision",
+              icon: "gem",
+              title: "Precyzyjne toczenie",
+              subtitle: "Bez przegrzania i zbędnego ścierania",
+            },
+          ],
+          ctaPrimary: { label: "Umów konsultację" },
+        },
       },
       tireMounting: {
         title: "Montaż opon",
         lead:
           "Sezonowa wymiana, wyważanie i montaż opon z dbałością o felgi — bez zarysowań i zbędnego obciążenia powłoki.",
+        banner: {
+          layout: "grid",
+          titleLines: [
+            { text: "Nowoczesny montaż opon" },
+            { text: "w Warszawie", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Delikatna wymiana opon i precyzyjne wyważanie. Dbamy o to, by felgi pozostały ",
+            },
+            { text: "w idealnym stanie", accent: true },
+            { text: "." },
+          ],
+          highlights: [
+            {
+              id: "equipment",
+              icon: "circleDot",
+              title: "Nowoczesny sprzęt",
+              subtitle: "Hunter / Corghi",
+            },
+            {
+              id: "care",
+              icon: "shieldCheck",
+              title: "Delikatna praca",
+              subtitle: "Bez uszkodzeń felg",
+            },
+            {
+              id: "balance",
+              icon: "crosshair",
+              title: "Precyzyjne wyważanie",
+              subtitle: "Komfort i bezpieczeństwo",
+            },
+            {
+              id: "season",
+              icon: "sunSnow",
+              title: "Wymiana sezonowa",
+              subtitle: "Lato / zima",
+            },
+          ],
+          ctaPrimary: { label: "Umów montaż opon" },
+        },
       },
       caliperPainting: {
         title: "Lakierowanie zacisków",
         lead:
           "Lakierowanie zacisków hamulcowych w trwałe odcienie proszkowe — od demontażu po montaż, z ochroną powierzchni roboczych.",
+        banner: {
+          layout: "grid",
+          titleLines: [
+            { text: "Lakierowanie zacisków" },
+            { text: "w Warszawie", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Trwałe odcienie proszkowe na zaciski hamulcowe — od demontażu po montaż, z ochroną ",
+            },
+            { text: "powierzchni roboczych", accent: true },
+            { text: "." },
+          ],
+          highlights: [
+            {
+              id: "powder",
+              icon: "circleDot",
+              title: "Powłoka proszkowa",
+              subtitle: "Odporność na ciepło i chemię",
+            },
+            {
+              id: "colors",
+              icon: "palette",
+              title: "Dowolny odcień",
+              subtitle: "Klasyka i mocne akcenty",
+            },
+            {
+              id: "care",
+              icon: "shieldCheck",
+              title: "Ochrona stref montażowych",
+              subtitle: "Tłoczki i prowadnice bez lakieru",
+            },
+            {
+              id: "full",
+              icon: "settings",
+              title: "Pełen cykl prac",
+              subtitle: "Demontaż, przygotowanie, montaż",
+            },
+          ],
+          ctaPrimary: { label: "Umów lakierowanie zacisków" },
+        },
       },
       motorcycleWheelPainting: {
         title: "Lakierowanie felg moto + części",
         lead:
           "Lakierowanie motocyklowych felg, obręczy i dodatków — małe rozmiary, złożone kształty i precyzyjne przygotowanie.",
+        banner: {
+          layout: "tiles",
+          titleLines: [
+            { text: "Lakierowanie felg moto" },
+            { text: "i detali w Warszawie", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Każdy detal ma znaczenie — powłoka proszkowa na felgi, obręcze i elementy dodatkowe.",
+            },
+          ],
+          highlights: [
+            {
+              id: "chips",
+              icon: "shieldCheck",
+              title: "Odporność na odpryski i rysy",
+              subtitle: "Trwała powłoka proszkowa",
+            },
+            {
+              id: "rust",
+              icon: "shieldBadge",
+              title: "Ochrona przed korozją",
+              subtitle: "Szczelna warstwa na całej detali",
+            },
+            {
+              id: "uv",
+              icon: "sun",
+              title: "Nie blaknie na słońcu",
+              subtitle: "Trwałe pigmenty i lakier",
+            },
+            {
+              id: "colors",
+              icon: "palette",
+              title: "Szeroki wybór kolorów i faktur",
+              subtitle: "Dopasujemy odcień do moto",
+            },
+          ],
+          ctaPrimary: { label: "Sprawdź koszt lakierowania" },
+        },
       },
       tigWelding: {
         title: "Spawanie argonowe TIG",
         lead:
           "Spawanie TIG elementów aluminiowych i stalowych felg — lokalna naprawa pęknięć i odtworzenie stref montażowych.",
+        banner: {
+          layout: "tiles",
+          titleLines: [
+            { text: "Spawanie TIG aluminium" },
+            { text: "w Warszawie", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Spawiamy detale aluminiowe do aut, motocykli i innych produktów. Każda naprawa zaczyna się od oceny stanu i możliwości bezpiecznej regeneracji.",
+            },
+          ],
+          highlights: [
+            {
+              id: "aluminum",
+              icon: "flame",
+              title: "Spawanie aluminium",
+              subtitle: "TIG / ochrona argonowa",
+            },
+            {
+              id: "accuracy",
+              icon: "crosshair",
+              title: "Wysoka precyzja",
+              subtitle: "Staranny szew bez nadmiernego grzania",
+            },
+            {
+              id: "diagnostics",
+              icon: "search",
+              title: "Wstępna diagnostyka",
+              subtitle: "Ocena przed rozpoczęciem prac",
+            },
+            {
+              id: "scope",
+              icon: "settings",
+              title: "Auto • moto • inne",
+              subtitle: "Lokalna naprawa i odtwarzanie",
+            },
+          ],
+          ctaPrimary: {
+            label: "Wyślij zdjęcie detalu",
+            action: "photo",
+          },
+        },
       },
     },
     about: {
@@ -139,8 +407,40 @@ export const pl: Dictionary = {
       },
     },
     ctaSecondary: { label: "Zadzwoń", href: "tel:+48000000000" },
-    recentWorksLabel: "Ostatnie realizacje",
+    sectionNavLabel: "Nawigacja po sekcjach",
     scrollHint: "Przewiń",
+  },
+  sectionNav: {
+    pricing: "Cennik",
+    beforeAfter: "Realizacje",
+    showcase: "Usługi",
+    loyalty: "Lojalność",
+    about: "O studiu",
+    process: "Proces",
+    benefits: "Atuty",
+    testimonials: "Opinie",
+  },
+  contactSheet: {
+    eyebrow: "rim/studio",
+    title: "Skontaktuj się z nami",
+    closeLabel: "Zamknij panel kontaktowy",
+    mapAriaLabel: "Mapa — lokalizacja studia rim/studio w Warszawie",
+    routeLabel: "Wyznacz trasę",
+    addressTitle: "Adres",
+    addressLine1: "ul. Przykładowa 12",
+    addressLine2: "Warszawa, Polska",
+    phoneTitle: "Telefon",
+    callbackTitle: "Oddzwonienie",
+    callbackBody:
+      "Zostaw numer — oddzwonimy w godzinach pracy i pomożemy dobrać usługę.",
+    callbackPhoneLabel: "Telefon",
+    callbackPhonePlaceholder: "+48 000 000 000",
+    callbackPhoneRequired: "Podaj numer telefonu",
+    callbackCta: "Zamów telefon",
+    callbackSuccessTitle: "Zgłoszenie przyjęte",
+    callbackSuccessBody: "Oddzwonimy w najbliższym czasie roboczym.",
+    socialTitle: "Social media",
+    emailLabel: "Email",
   },
   pricing: {
     tabsAriaLabel: "Kategorie cen",

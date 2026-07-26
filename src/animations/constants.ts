@@ -23,6 +23,17 @@ export const HERO_INTRO = {
     stagger: 0.04,
     overlapPrev: 0.4,
   },
+  serviceHighlights: {
+    duration: 0.68,
+    stagger: 0.08,
+    overlapPrev: 0.35,
+    ease: EASE.punchy,
+  },
+  serviceNotice: {
+    duration: 0.65,
+    overlapPrev: 0.25,
+    ease: EASE.punchy,
+  },
   cta: {
     duration: 0.7,
     stagger: 0.08,

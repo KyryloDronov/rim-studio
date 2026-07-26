@@ -3,6 +3,8 @@
  * `ru` is the default — it sits at the prefix-less root (`/`), `pl` lives
  * under `/pl`. English was deprecated in favour of these two markets.
  */
+import type { ServiceHeroBannerIconId } from "@/content/service-hero-banner-icons";
+
 export const LOCALES = ["ru", "pl"] as const;
 
 export type Locale = (typeof LOCALES)[number];
@@ -18,6 +20,35 @@ export const LOCALE_NAME: Record<Locale, string> = {
   ru: "Русский",
   pl: "Polski",
 };
+
+/** Optional rich hero for select service landings (tire, repair, …). */
+export type ServicePageBanner = Readonly<{
+  /** `grid` — 2×2; `tiles` — 4 cards; `pair` — 2 wide; `rail` — 4 compact icon-top columns. */
+  layout: "grid" | "tiles" | "pair" | "rail";
+  titleLines: ReadonlyArray<
+    Readonly<{ text: string; accent?: boolean }>
+  >;
+  ledeParts: ReadonlyArray<
+    Readonly<{ text: string; accent?: boolean }>
+  >;
+  highlights: ReadonlyArray<
+    Readonly<{
+      id: string;
+      icon: ServiceHeroBannerIconId;
+      title: string;
+      subtitle: string;
+    }>
+  >;
+  ctaPrimary: Readonly<{
+    label: string;
+    /** Default: opens contact sheet. */
+    action?: "contact" | "photo";
+  }>;
+  ctaAside?: Readonly<{
+    icon: ServiceHeroBannerIconId;
+    text: string;
+  }>;
+}>;
 
 export type Dictionary = Readonly<{
   meta: Readonly<{
@@ -61,6 +92,7 @@ export type Dictionary = Readonly<{
         Readonly<{
           title: string;
           lead: string;
+          banner?: ServicePageBanner;
         }>
       >
     >;
@@ -139,13 +171,22 @@ export type Dictionary = Readonly<{
     /** Companion dark CTA (e.g. "Call us"). `tel:` / `mailto:` is fine. */
     ctaSecondary: Readonly<{ label: string; href: string }>;
     /**
-     * Eyebrow shown above the recent-works fan-out stack — the same
-     * interaction pattern as the footer's product cards but anchored
-     * inside the hero.
+     * Eyebrow on the collapsed section-nav stack in the hero / page banner.
      */
-    recentWorksLabel: string;
+    sectionNavLabel: string;
     /** Label under the bottom-center scroll hint ("mouse" affordance). */
     scrollHint: string;
+  }>;
+  /** Short labels for banner section-nav fan-out (anchor targets on the page). */
+  sectionNav: Readonly<{
+    pricing: string;
+    beforeAfter: string;
+    showcase: string;
+    loyalty: string;
+    about: string;
+    process: string;
+    benefits: string;
+    testimonials: string;
   }>;
   /** Full-viewport pricing block below the hero. */
   pricing: Readonly<{
@@ -363,6 +404,27 @@ export type Dictionary = Readonly<{
         initials: string;
       }>
     >;
+  }>;
+  contactSheet: Readonly<{
+    eyebrow: string;
+    title: string;
+    closeLabel: string;
+    mapAriaLabel: string;
+    routeLabel: string;
+    addressTitle: string;
+    addressLine1: string;
+    addressLine2: string;
+    phoneTitle: string;
+    callbackTitle: string;
+    callbackBody: string;
+    callbackPhoneLabel: string;
+    callbackPhonePlaceholder: string;
+    callbackPhoneRequired: string;
+    callbackCta: string;
+    callbackSuccessTitle: string;
+    callbackSuccessBody: string;
+    socialTitle: string;
+    emailLabel: string;
   }>;
   footer: Readonly<{
     addressLines: ReadonlyArray<string>;

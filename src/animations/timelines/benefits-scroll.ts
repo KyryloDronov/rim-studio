@@ -114,21 +114,16 @@ export function runBenefitsScrollReveal(
     );
   }
 
+  let played = false;
+
   ScrollTrigger.create({
     trigger: triggerEl,
     start: bs.triggerStart,
     invalidateOnRefresh: true,
     onEnter: () => {
+      if (played) return;
+      played = true;
       tl.play();
-    },
-    onLeave: () => {
-      tl.reverse();
-    },
-    onEnterBack: () => {
-      tl.play();
-    },
-    onLeaveBack: () => {
-      tl.reverse();
     },
   });
 

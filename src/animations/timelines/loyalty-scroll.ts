@@ -54,9 +54,9 @@ export function runLoyaltyScrollReveal(
     scrollTrigger: {
       trigger: triggerEl,
       start: ls.triggerStart,
-      toggleActions: "play none none reverse",
+      once: true,
+      toggleActions: "play none none none",
       onEnter: () => hooks?.onScrollEnter?.(),
-      onLeaveBack: () => hooks?.onScrollLeaveBack?.(),
     },
     defaults: { ease: ls.defaultsEase },
   });

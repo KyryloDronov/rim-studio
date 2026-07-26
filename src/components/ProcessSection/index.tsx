@@ -23,7 +23,8 @@ export function ProcessSection() {
   const prefersReducedMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const inView = useInView(sectionRef, { once: true, margin: "-60px" });
+  const revealInView = useInView(sectionRef, { once: true, margin: "-60px" });
+  const sectionActive = useInView(sectionRef, { margin: "120px 0px", amount: 0.05 });
   const [activeStepId, setActiveStepId] = useState(process.steps[0]?.id ?? "");
 
   const activeStep = useMemo(
@@ -41,13 +42,19 @@ export function ProcessSection() {
     [activeStepId, process.steps],
   );
 
-  const showContent = prefersReducedMotion === true || inView;
-  const animateIn = prefersReducedMotion !== true && inView;
-  const starfieldEnabled = prefersReducedMotion !== true && inView;
+  const showContent = prefersReducedMotion === true || revealInView;
+  const animateIn = prefersReducedMotion !== true && revealInView;
+  const starfieldEnabled = prefersReducedMotion !== true && sectionActive;
 
   useEffect(() => {
-    videoRef.current?.play().catch(() => {});
-  }, []);
+    const video = videoRef.current;
+    if (!video) return;
+    if (sectionActive) {
+      void video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [sectionActive]);
 
   return (
     <section

@@ -1,0 +1,471 @@
+/* Contact sheet — right rail (~1/3 viewport), brand glass surfaces. */
+
+.dialog:not([open]) {
+  display: none;
+}
+
+.dialog[open] {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  background: transparent;
+  overflow: hidden;
+  color: var(--brand-white);
+  isolation: isolate;
+}
+
+.dialog::backdrop {
+  background-color: rgb(0 0 0 / 0);
+  -webkit-backdrop-filter: blur(0);
+  backdrop-filter: blur(0);
+  transition:
+    background-color 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+    backdrop-filter 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dialog[data-active="true"]::backdrop {
+  background-color: rgb(0 0 0 / 0.48);
+  -webkit-backdrop-filter: blur(8px) saturate(1.15);
+  backdrop-filter: blur(8px) saturate(1.15);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  pointer-events: none;
+  background: transparent;
+}
+
+.scrim[data-active="true"] {
+  pointer-events: auto;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: clamp(18rem, 33.333vw, 26rem);
+  max-width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background: linear-gradient(
+    165deg,
+    rgb(38 46 54 / 0.94) 0%,
+    rgb(25 31 36 / 0.97) 48%,
+    rgb(25 31 36 / 0.99) 100%
+  );
+  border-left: 1px solid rgb(255 255 255 / 0.08);
+  box-shadow:
+    -24px 0 64px rgb(0 0 0 / 0.45),
+    inset 1px 0 0 rgb(255 255 255 / 0.06);
+  -webkit-backdrop-filter: blur(22px) saturate(1.2);
+  backdrop-filter: blur(22px) saturate(1.2);
+}
+
+.header {
+  flex-shrink: 0;
+  padding: clamp(1.25rem, 3vh, 1.75rem) clamp(1.25rem, 3vw, 1.65rem) 0.75rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.45);
+}
+
+.headerRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.closeCircle {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.06);
+  color: var(--brand-white);
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.closeCircle:hover {
+  background: rgb(255 255 255 / 0.1);
+  border-color: rgb(255 255 255 / 0.2);
+}
+
+.closeCircle:focus-visible {
+  outline: 2px solid var(--brand-accent-400);
+  outline-offset: 2px;
+}
+
+.closeIcon {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 clamp(1.25rem, 3vw, 1.65rem) clamp(1.5rem, 4vh, 2rem);
+}
+
+/* ---------- Map ---------- */
+
+.mapShell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: clamp(0.85rem, 2vw, 1.1rem);
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: var(--brand-ink-600);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 16px 40px rgb(0 0 0 / 0.35);
+}
+
+.mapCanvas,
+.mapFallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mapFallback {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #e8e8ed, #d2d2d7);
+}
+
+.markerHost,
+.markerHostStatic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.mapVignette {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(25 31 36 / 0.04) 0%,
+    rgb(25 31 36 / 0) 40%,
+    rgb(25 31 36 / 0.22) 100%
+  );
+}
+
+.markerPin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.markerLogoWrap {
+  display: grid;
+  place-items: center;
+  width: 2.65rem;
+  height: 2.65rem;
+  padding: 0.45rem;
+  border-radius: 0.85rem;
+  background: rgb(33 33 33 / 0.82);
+  border: 1px solid rgb(255 255 255 / 0.18);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 10px 24px rgb(0 0 0 / 0.45);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  color: var(--brand-white);
+}
+
+.markerLogo {
+  width: 100%;
+  height: 100%;
+}
+
+.markerStem {
+  display: block;
+  width: 2px;
+  height: 0.65rem;
+  margin-top: 0.15rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    var(--brand-accent-400),
+    var(--brand-accent-600)
+  );
+  box-shadow: 0 0 12px rgb(255 153 0 / 0.55);
+}
+
+.actions {
+  margin-top: 1rem;
+}
+
+.mapSection {
+  margin-top: 1rem;
+}
+
+.routeBtn {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  padding-right: 0.3rem;
+}
+
+/* ---------- Callback form ---------- */
+
+.callbackBlock {
+  margin-top: 0;
+  display: block;
+}
+
+.callbackBlock .blockBody {
+  width: 100%;
+}
+
+.callbackForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+}
+
+.callbackLabel {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.48);
+}
+
+.callbackInput {
+  background: rgb(255 255 255 / 0.08);
+  border-color: rgb(255 255 255 / 0.14);
+  color: var(--brand-white);
+}
+
+.callbackInput::placeholder {
+  color: rgb(255 255 255 / 0.36);
+}
+
+.callbackInput:hover {
+  border-color: rgb(255 255 255 / 0.22);
+}
+
+.callbackError {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: rgb(255 160 160);
+}
+
+.callbackSubmit {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-between;
+  padding-right: 0.3rem;
+  margin-top: 0.35rem;
+}
+
+.callbackSuccess {
+  margin-top: 0.75rem;
+  padding: 0.85rem 0.95rem;
+  border-radius: 0.75rem;
+  background: rgb(255 153 0 / 0.1);
+  border: 1px solid rgb(255 153 0 / 0.22);
+}
+
+.callbackSuccessTitle {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--brand-accent-400);
+}
+
+.callbackSuccessBody {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.72);
+}
+
+/* ---------- Info blocks ---------- */
+
+.block {
+  display: flex;
+  gap: 0.85rem;
+  margin-top: 1.15rem;
+  padding: 1rem 1rem 1.05rem;
+  border-radius: 0.95rem;
+  background: rgb(255 255 255 / 0.04);
+  border: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.blockIcon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.65rem;
+  background: rgb(255 153 0 / 0.12);
+  color: var(--brand-accent-400);
+}
+
+.blockIcon svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.blockBody {
+  min-width: 0;
+}
+
+.blockTitle {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.52);
+}
+
+.blockText {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+.blockMuted {
+  margin: 0.25rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.58);
+}
+
+.blockLink {
+  display: inline-block;
+  margin-top: 0.15rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--brand-white);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.blockLink:hover {
+  color: var(--brand-accent-400);
+}
+
+/* ---------- Social ---------- */
+
+.socialBlock {
+  margin-top: 1.35rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.socialTitle {
+  margin: 0 0 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.52);
+}
+
+.socialRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.socialLink {
+  display: grid;
+  place-items: center;
+  width: 2.65rem;
+  height: 2.65rem;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: rgb(255 255 255 / 0.05);
+  color: var(--brand-white);
+  text-decoration: none;
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.socialLink:hover {
+  background: rgb(255 153 0 / 0.14);
+  border-color: rgb(255 153 0 / 0.35);
+  color: var(--brand-accent-400);
+  transform: translateY(-1px);
+}
+
+.socialLink svg,
+.socialSvg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.xIcon {
+  width: 0.95rem;
+  height: 0.85rem;
+}
+
+@media (max-width: 479px) {
+  .panel {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog::backdrop,
+  .dialog[data-active="true"]::backdrop {
+    transition: none;
+  }
+}

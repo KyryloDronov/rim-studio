@@ -75,7 +75,23 @@ export function BeforeAfterSection({
   }, []);
 
   useEffect(() => {
-    bookingVideoRef.current?.play().catch(() => {});
+    const section = sectionRef.current;
+    const video = bookingVideoRef.current;
+    if (!section || !video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          void video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.08, rootMargin: "80px 0px" },
+    );
+
+    observer.observe(section);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {

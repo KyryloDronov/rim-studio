@@ -48,21 +48,12 @@
   overflow: hidden;
   pointer-events: none;
   /* Soft fallback while the video downloads / when it's missing entirely. */
-  background:
-    radial-gradient(
-      120% 80% at 70% 0%,
-      rgba(255, 153, 0, 0.18) 0%,
-      transparent 55%
-    ),
-    radial-gradient(
-      90% 60% at 0% 100%,
-      rgba(89, 116, 145, 0.35) 0%,
-      transparent 55%
-    ),
-    var(--brand-ink-700);
+  background: var(--brand-ink-700);
 }
 
 .video {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -70,7 +61,7 @@
   display: block;
 }
 
-/* Glass-tint overlay — keeps long-form copy readable over any clip. */
+/* Frosted brand-ink wash — same vocabulary as `Footer .videoOverlay`. */
 .videoOverlay {
   position: absolute;
   inset: 0;
@@ -78,13 +69,13 @@
   background:
     linear-gradient(
       180deg,
-      rgba(25, 31, 36, 0.55) 0%,
-      rgba(25, 31, 36, 0.25) 30%,
-      rgba(25, 31, 36, 0.7) 100%
+      rgb(51 62 72 / 0.7) 0%,
+      rgb(51 62 72 / 0.28) 35%,
+      rgb(51 62 72 / 0.5) 100%
     ),
-    rgba(25, 31, 36, 0.18);
-  -webkit-backdrop-filter: blur(2px) saturate(1.05);
-  backdrop-filter: blur(2px) saturate(1.05);
+    rgb(51 62 72 / 0.18);
+  -webkit-backdrop-filter: blur(4px) saturate(1.05);
+  backdrop-filter: blur(4px) saturate(1.05);
 }
 
 /* ---------- Content container ---------- */
@@ -112,6 +103,31 @@
   gap: 4vw;
 }
 
+@media (min-width: 992px) {
+  .innerService {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 1fr;
+    align-items: end;
+    column-gap: clamp(1.25rem, 2.5vw, 2.5rem);
+  }
+
+  .innerService > header {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    min-width: 0;
+  }
+
+  .innerService > .bottom {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+    justify-content: flex-end;
+    width: auto;
+    flex-shrink: 0;
+  }
+}
+
 /* ---------- Head: title + lede + features + CTAs ---------- */
 
 .head {
@@ -122,6 +138,294 @@
   /* Wider than the previous 44rem to give the two-line title room to
      breathe without forcing extra wrapping at typical desktop widths. */
   max-width: 52rem;
+}
+
+.headService {
+  max-width: min(62rem, 100%);
+  gap: clamp(0.85rem, 1.8vh, 1.35rem);
+}
+
+.headService .lede {
+  margin: 0;
+  max-width: min(40rem, 100%);
+}
+
+.headService .serviceHighlights {
+  margin: 0;
+}
+
+.headService .title {
+  font-size: clamp(2.35rem, 5.2vw, 3.85rem);
+  max-width: 14em;
+}
+
+.headService .titleLine {
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .headService .titleLine {
+    white-space: normal;
+  }
+}
+
+.ledePart {
+  display: inline;
+}
+
+.ledePart[data-lede-join="true"]::before {
+  content: "\00a0";
+}
+
+.ledeAccent {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* ---------- Service landing highlights ---------- */
+
+.serviceHighlights {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 42rem;
+}
+
+.serviceHighlightsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.65rem, 1.2vw, 0.9rem);
+}
+
+.serviceHighlightsTiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.5rem, 1vw, 0.75rem);
+  max-width: 48rem;
+}
+
+.serviceHighlightsPair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.65rem, 1.2vw, 0.9rem);
+  max-width: 34rem;
+}
+
+.serviceHighlightsPair .serviceHighlight {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+  min-height: 5.75rem;
+  padding: clamp(0.85rem, 1.25vw, 1.05rem)
+    clamp(0.9rem, 1.3vw, 1.15rem);
+}
+
+.serviceHighlightsPair .serviceHighlightIconWrap {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.serviceHighlightsRail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  max-width: 46rem;
+}
+
+.serviceHighlightsRail .serviceHighlight {
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.55rem;
+  min-height: auto;
+  padding: 0.65rem 0.75rem;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.serviceHighlightsRail .serviceHighlight + .serviceHighlight::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.serviceHighlightsRail .serviceHighlightIconWrap {
+  width: 2.35rem;
+  height: 2.35rem;
+  border-radius: 999px;
+  background: rgba(255, 153, 0, 0.14);
+}
+
+.serviceHighlightsRail .serviceHighlightTitle {
+  font-size: clamp(0.72rem, 0.85vw, 0.8125rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.serviceHighlight {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: clamp(0.75rem, 1.1vw, 0.9rem) clamp(0.85rem, 1.2vw, 1.05rem);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.serviceRevealItem {
+  will-change: transform, filter, opacity;
+  filter: blur(9px);
+  transform: translateY(18px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .serviceRevealItem {
+    filter: none;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.serviceHighlightsTiles .serviceHighlight {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-height: 5.5rem;
+}
+
+.serviceHighlightIconWrap {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.45rem;
+  background: rgba(255, 153, 0, 0.12);
+}
+
+.serviceHighlightsTiles .serviceHighlightIconWrap {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.serviceHighlightIcon {
+  color: var(--accent);
+}
+
+.serviceHighlightCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.serviceHighlightTitle {
+  font-size: clamp(0.78rem, 0.95vw, 0.875rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--brand-white);
+}
+
+.serviceHighlightSubtitle {
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.ctaAsideItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1 1 100%;
+  max-width: 22rem;
+  padding-top: 0.15rem;
+  filter: blur(9px);
+  transform: translateY(18px);
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, filter, opacity;
+}
+
+.ctaAsideIcon {
+  flex: none;
+  color: var(--accent);
+}
+
+.ctaAsideText {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaAsideItem {
+    filter: none;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 900px) {
+  .serviceHighlightsTiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .serviceHighlightsRail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.5rem, 1vw, 0.75rem);
+  }
+
+  .serviceHighlightsRail .serviceHighlight {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.65rem;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+
+  .serviceHighlightsRail .serviceHighlight + .serviceHighlight::before {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .serviceHighlightsGrid,
+  .serviceHighlightsTiles,
+  .serviceHighlightsPair,
+  .serviceHighlightsRail {
+    grid-template-columns: 1fr;
+  }
+
+  .headService {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 991px) {
+  .serviceHighlights {
+    max-width: 100%;
+  }
 }
 
 .title {
@@ -163,12 +467,13 @@
    and the inner `.word` gets its own transform / filter without
    breaking line-wrap). */
 .wordWrap {
-  display: inline-block;
-  white-space: pre;
+  display: inline;
+  white-space: normal;
 }
 
 .word {
   display: inline-block;
+  vertical-align: baseline;
   will-change: filter, opacity, transform;
   filter: blur(10px);
   transform: translateX(-14px);
@@ -297,6 +602,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: clamp(0.5rem, 1.2vw, 0.875rem);
+  align-items: center;
+}
+
+.headService .cta {
+  margin-top: 0;
 }
 
 /* Per-button wrapper so the intro tween (`translateY` + `autoAlpha`)
@@ -334,6 +644,10 @@
   justify-content: space-between;
   gap: clamp(1.5rem, 3vw, 3rem);
   width: 100%;
+}
+
+.bottomNavRight {
+  justify-content: flex-end;
 }
 
 @media (max-width: 991px) {

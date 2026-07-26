@@ -35,36 +35,306 @@ export const ru: Dictionary = {
         title: "Покраска дисков",
         lead:
           "Порошковая покраска и реставрация дисков в Варшаве — подберём цвет, подготовим поверхность и вернём колёсам заводской вид.",
+        banner: {
+          layout: "tiles",
+          titleLines: [
+            { text: "Покраска дисков" },
+            { text: "в Варшаве", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Хотите обновить внешний вид колёс? Подберём оттенок и вернём дискам ",
+            },
+            { text: "заводской вид.", accent: true },
+          ],
+          highlights: [
+            {
+              id: "powder",
+              icon: "sparkles",
+              title: "Порошковая покраска",
+              subtitle: "Ровное покрытие и стойкий цвет",
+            },
+            {
+              id: "prep",
+              icon: "wrench",
+              title: "Подготовка поверхности",
+              subtitle: "Очистка, шлифовка, грунт",
+            },
+            {
+              id: "palette",
+              icon: "palette",
+              title: "Каталог цветов и фактур",
+              subtitle: "RAL, металлик, мат",
+            },
+            {
+              id: "protection",
+              icon: "shieldCheck",
+              title: "Защита от сколов",
+              subtitle: "Прочный слой на весь диск",
+            },
+          ],
+          ctaPrimary: { label: "Узнать стоимость покраски" },
+        },
       },
       wheelRepair: {
         title: "Ремонт дисков",
         lead:
           "Устраняем вмятины, трещины и следы коррозии. Диагностика, правка геометрии и подготовка под покраску — в одной студии.",
+        banner: {
+          layout: "tiles",
+          titleLines: [
+            { text: "Ремонт дисков" },
+            { text: "в Варшаве", accent: true },
+          ],
+          ledeParts: [
+            { text: "Повредили диск? Мы знаем, что делать." },
+          ],
+          highlights: [
+            {
+              id: "geometry",
+              icon: "gauge",
+              title: "Выравнивание (правка) геометрии",
+              subtitle: "Прокат и контроль биения",
+            },
+            {
+              id: "tig",
+              icon: "flame",
+              title: "Сварка аргоном",
+              subtitle: "Локальный ремонт трещин",
+            },
+            {
+              id: "cracks",
+              icon: "sparkles",
+              title: "Ремонт трещин",
+              subtitle: "После диагностики",
+            },
+            {
+              id: "curb",
+              icon: "crosshair",
+              title: "Устранение сколов от бордюров",
+              subtitle: "Кромка и лицевая поверхность",
+            },
+          ],
+          ctaPrimary: { label: "Записаться на диагностику" },
+        },
       },
       diamondCutting: {
         title: "Алмазная шлифовка дисков",
         lead:
           "Алмазная проточка полок и лицевых поверхностей — глубокий блеск, чёткая фактура и аккуратные переходы без перегрева металла.",
+        banner: {
+          layout: "pair",
+          titleLines: [
+            { text: "Алмазная проточка" },
+            { text: "и шлифовка дисков" },
+            { text: "в Варшаве", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Возвращаем заводской блеск дисков методом ",
+            },
+            { text: "Diamond Cut", accent: true },
+            { text: "." },
+          ],
+          highlights: [
+            {
+              id: "shine",
+              icon: "sparkles",
+              title: "Заводской блеск",
+              subtitle: "Зеркальная полка и чёткая фактура",
+            },
+            {
+              id: "precision",
+              icon: "gem",
+              title: "Точная проточка",
+              subtitle: "Без перегрева и лишнего снятия металла",
+            },
+          ],
+          ctaPrimary: { label: "Записаться на консультацию" },
+        },
       },
       tireMounting: {
         title: "Шиномонтаж",
         lead:
           "Сезонная смена, балансировка и монтаж шин с аккуратной работой на дисках — без царапин и лишней нагрузки на покрытие.",
+        banner: {
+          layout: "grid",
+          titleLines: [
+            { text: "Современный шиномонтаж" },
+            { text: "в Варшаве", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Бережная замена шин и точная балансировка. Работаем так, чтобы ваши диски оставались ",
+            },
+            { text: "в идеальном состоянии", accent: true },
+            { text: "." },
+          ],
+          highlights: [
+            {
+              id: "equipment",
+              icon: "circleDot",
+              title: "Современное оборудование",
+              subtitle: "Hunter / Corghi",
+            },
+            {
+              id: "care",
+              icon: "shieldCheck",
+              title: "Бережная работа",
+              subtitle: "Без повреждения дисков",
+            },
+            {
+              id: "balance",
+              icon: "crosshair",
+              title: "Точная балансировка",
+              subtitle: "Комфорт и безопасность",
+            },
+            {
+              id: "season",
+              icon: "sunSnow",
+              title: "Сезонная замена шин",
+              subtitle: "Лето / зима",
+            },
+          ],
+          ctaPrimary: { label: "Записаться на шиномонтаж" },
+        },
       },
       caliperPainting: {
         title: "Покраска суппортов",
         lead:
           "Покраска тормозных суппортов в стойкие порошковые оттенки — от демонтажа до сборки, с защитой рабочих поверхностей.",
+        banner: {
+          layout: "grid",
+          titleLines: [
+            { text: "Покраска суппортов" },
+            { text: "в Варшаве", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Стойкие порошковые оттенки для тормозных суппортов — от демонтажа до сборки, с защитой ",
+            },
+            { text: "рабочих поверхностей", accent: true },
+            { text: "." },
+          ],
+          highlights: [
+            {
+              id: "powder",
+              icon: "circleDot",
+              title: "Порошковое покрытие",
+              subtitle: "Стойкость к нагреву и химии",
+            },
+            {
+              id: "colors",
+              icon: "palette",
+              title: "Любой оттенок",
+              subtitle: "Классика и яркие акценты",
+            },
+            {
+              id: "care",
+              icon: "shieldCheck",
+              title: "Защита посадочных зон",
+              subtitle: "Поршни и направляющие не красим",
+            },
+            {
+              id: "full",
+              icon: "settings",
+              title: "Полный цикл работ",
+              subtitle: "Демонтаж, подготовка, сборка",
+            },
+          ],
+          ctaPrimary: { label: "Записаться на покраску суппортов" },
+        },
       },
       motorcycleWheelPainting: {
         title: "Покраска мото дисков + деталей",
         lead:
           "Лакировка мотоциклетных дисков, ободов и сопутствующих деталей — компактные размеры, сложные формы и точная подготовка.",
+        banner: {
+          layout: "tiles",
+          titleLines: [
+            { text: "Покраска мото дисков" },
+            { text: "и деталей в Варшаве", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Каждая деталь имеет значение — порошковое покрытие для дисков, ободов и сопутствующих элементов.",
+            },
+          ],
+          highlights: [
+            {
+              id: "chips",
+              icon: "shieldCheck",
+              title: "Устойчивость к сколам и царапинам",
+              subtitle: "Прочное порошковое покрытие",
+            },
+            {
+              id: "rust",
+              icon: "shieldBadge",
+              title: "Защита от коррозии",
+              subtitle: "Герметичный слой по всей детали",
+            },
+            {
+              id: "uv",
+              icon: "sun",
+              title: "Не выцветает на солнце",
+              subtitle: "Стойкие пигменты и лак",
+            },
+            {
+              id: "colors",
+              icon: "palette",
+              title: "Большой выбор цветов и текстур",
+              subtitle: "Подберём оттенок под мото",
+            },
+          ],
+          ctaPrimary: { label: "Узнать стоимость покраски" },
+        },
       },
       tigWelding: {
         title: "Аргонно-дуговая сварка",
         lead:
           "Аргонно-дуговая сварка алюминиевых и стальных элементов дисков — локальный ремонт трещин и восстановление посадочных зон.",
+        banner: {
+          layout: "tiles",
+          titleLines: [
+            { text: "Аргонно-дуговая сварка" },
+            { text: "алюминия в Варшаве", accent: true },
+          ],
+          ledeParts: [
+            {
+              text: "Свариваем алюминиевые детали для авто, мото и других изделий. Каждый ремонт начинается с оценки состояния и возможности восстановления.",
+            },
+          ],
+          highlights: [
+            {
+              id: "aluminum",
+              icon: "flame",
+              title: "Сварка алюминия",
+              subtitle: "TIG / аргонная защита шва",
+            },
+            {
+              id: "accuracy",
+              icon: "crosshair",
+              title: "Высокая точность",
+              subtitle: "Аккуратный шов без лишнего прогрева",
+            },
+            {
+              id: "diagnostics",
+              icon: "search",
+              title: "Предварительная диагностика",
+              subtitle: "Оценка до начала работ",
+            },
+            {
+              id: "scope",
+              icon: "settings",
+              title: "Авто • мото • другие изделия",
+              subtitle: "Локальный ремонт и восстановление",
+            },
+          ],
+          ctaPrimary: {
+            label: "Отправить фото детали",
+            action: "photo",
+          },
+        },
       },
     },
     about: {
@@ -139,8 +409,40 @@ export const ru: Dictionary = {
       },
     },
     ctaSecondary: { label: "Позвонить", href: "tel:+48000000000" },
-    recentWorksLabel: "Недавние работы",
+    sectionNavLabel: "Навигация по разделам",
     scrollHint: "Листайте",
+  },
+  sectionNav: {
+    pricing: "Цены",
+    beforeAfter: "Примеры",
+    showcase: "Услуги",
+    loyalty: "Лояльность",
+    about: "О студии",
+    process: "Процесс",
+    benefits: "Преимущества",
+    testimonials: "Отзывы",
+  },
+  contactSheet: {
+    eyebrow: "rim/studio",
+    title: "Связаться с нами",
+    closeLabel: "Закрыть панель контактов",
+    mapAriaLabel: "Карта — расположение студии rim/studio в Варшаве",
+    routeLabel: "Проложить маршрут",
+    addressTitle: "Адрес",
+    addressLine1: "ul. Przykładowa 12",
+    addressLine2: "Варшава, Польша",
+    phoneTitle: "Телефон",
+    callbackTitle: "Обратный звонок",
+    callbackBody:
+      "Оставьте номер — перезвоним в рабочее время и ответим на вопросы по покраске и ремонту дисков.",
+    callbackPhoneLabel: "Телефон",
+    callbackPhonePlaceholder: "+48 000 000 000",
+    callbackPhoneRequired: "Укажите номер телефона",
+    callbackCta: "Заказать звонок",
+    callbackSuccessTitle: "Заявка принята",
+    callbackSuccessBody: "Мы перезвоним вам в ближайшее рабочее время.",
+    socialTitle: "Соцсети",
+    emailLabel: "Email",
   },
   pricing: {
     tabsAriaLabel: "Категории цен",

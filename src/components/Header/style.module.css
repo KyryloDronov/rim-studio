@@ -148,6 +148,33 @@
   .rightInner {
     gap: 0.5rem;
   }
+
+  .menuBtn {
+    box-sizing: border-box;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.25rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* `.reveal` sets display:inline-grid and overrides `.menuText { display:none }`. */
+  .menuText,
+  .menuText.reveal {
+    display: none !important;
+    width: 0;
+    max-width: 0;
+    padding: 0;
+    overflow: hidden;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .menuIconSlot {
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+  }
 }
 
 .left {
@@ -185,31 +212,59 @@
   }
 }
 
-/* ---------- Menu button (left) ---------- */
+/* ---------- Menu button (left) — white pill, icon circle on the left ---------- */
 .menuBtn {
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  background: transparent;
+  flex-shrink: 0;
+  gap: 0;
+  padding: 0.25rem;
   border: 0;
-  padding: 0;
-  color: inherit;
+  border-radius: 999px;
+  background-color: var(--brand-white);
+  color: var(--brand-ink-700);
   cursor: pointer;
   font: inherit;
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color 0.35s ease;
+}
+
+.menuBtn:hover {
+  background-color: #f0f6f8;
+}
+
+.menuBtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.menuIconSlot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background-color: var(--brand-ink-700);
+  color: var(--brand-white);
+  transition: background-color 0.35s ease;
+}
+
+.menuBtn:hover .menuIconSlot {
+  background-color: var(--brand-ink-600);
 }
 
 .hamburger {
   position: relative;
   flex-shrink: 0;
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-@media (min-width: 1200px) {
-  .hamburger {
-    width: 1rem;
-    height: 1rem;
-  }
+  width: 1.125rem;
+  height: 1.125rem;
 }
 
 /* The lines themselves are rendered as motion spans (see component). */
@@ -226,14 +281,26 @@
 
 .menuText {
   display: none;
-  font-size: 0.875rem;
-  letter-spacing: -0.02em;
+  padding-left: 0.625rem;
+  padding-right: 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   line-height: 1;
 }
 
 @media (min-width: 1200px) {
-  .menuText {
-    display: inline-block;
+  .menuBtn {
+    padding: 0.25rem 0.25rem 0.25rem 0.25rem;
+  }
+
+  .menuText,
+  .menuText.reveal {
+    display: inline-grid;
+    width: auto;
+    max-width: none;
+    visibility: visible;
+    pointer-events: auto;
   }
 }
 

@@ -1,7 +1,15 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+} from "react";
+import { useScrollToSection } from "@/hooks/useScrollToSection";
 import styles from "./style.module.css";
 
 /* ---------- Public API -------------------------------------------------- */
@@ -32,6 +40,14 @@ type ProductCardsProps = Readonly<{
    * live on the wrapper so transforms don't fight.
    */
   stackIntro?: boolean;
+  /** Smaller cards + type — banner section-nav (Hero / PageBanner). */
+  density?: "default" | "compact";
+  /**
+   * `hover` — only the card under the cursor shows its title (footer showcase).
+   * `expanded` — when the stack is open, every row shows a label; hover
+   * highlights one in brand orange.
+   */
+  labelVisibility?: "hover" | "expanded";
 }>;
 
 /* ---------- Geometry constants ----------------------------------------- *
@@ -43,7 +59,7 @@ type ProductCardsProps = Readonly<{
 
 const CARD_GAP_RATIO = 0.125; // gap between fanned cards (12.5% of size)
 const STACK_PEEK_RATIO = 0.21875; // visible sliver of each stacked card
-const FALLBACK_CARD_SIZE = 64; // px — used until the first measurement
+const FALLBACK_CARD_SIZE = { default: 64, compact: 32 } as const;
 
 /* ----------------------------------------------------------------------- *
  *  ProductCards — vertical stack that fans UP on hover.
@@ -69,16 +85,20 @@ export function ProductCards({
   eyebrowLabel,
   className,
   stackIntro = false,
+  density = "default",
+  labelVisibility = "hover",
 }: ProductCardsProps) {
   const prefersReducedMotion = useReducedMotion();
+  const scrollToSection = useScrollToSection();
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const fallbackSize = FALLBACK_CARD_SIZE[density];
 
   /* Measure the actual card size from the wrap (it's `clamp(...)` in CSS,
      so size depends on viewport). Pixel-perfect positioning relies on
      this — re-measure on viewport resizes via ResizeObserver. */
   const wrapRef = useRef<HTMLDivElement | null>(null);
-  const [cardSize, setCardSize] = useState<number>(FALLBACK_CARD_SIZE);
+  const [cardSize, setCardSize] = useState<number>(fallbackSize);
 
   useEffect(() => {
     if (globalThis.window === undefined) return;
@@ -92,7 +112,7 @@ export function ProductCards({
     const ro = new ResizeObserver(update);
     ro.observe(wrap);
     return () => ro.disconnect();
-  }, []);
+  }, [density]);
 
   const N = cards.length;
   const cardGap = cardSize * CARD_GAP_RATIO;
@@ -115,9 +135,25 @@ export function ProductCards({
     setHoveredId(null);
   }, []);
 
-  const wrapClassName = className
-    ? `${styles.wrap} ${className}`
-    : styles.wrap;
+  const handleCardClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+      if (!href.startsWith("#")) return;
+      const sectionId = href.slice(1);
+      if (!sectionId) return;
+      event.preventDefault();
+      scrollToSection(sectionId);
+    },
+    [scrollToSection],
+  );
+
+  const wrapClassName = [
+    styles.wrap,
+    density === "compact" ? styles.wrapCompact : "",
+    labelVisibility === "expanded" ? styles.wrapExpandedLabels : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div ref={wrapRef} className={wrapClassName} style={{ height: restHeight }}>
@@ -168,30 +204,30 @@ export function ProductCards({
           </motion.span>
         )}
 
-        {/* Active card title — one per card, positioned at the card's
-            natural row. Only the hovered one is visible. */}
-        {cards.map((card, i) => {
-          const isActive = hoveredId === card.id;
-          return (
-            <motion.span
-              key={`title-${card.id}`}
-              className={styles.title}
-              style={{ bottom: i * step, height: cardSize }}
-              animate={{ opacity: isActive ? 1 : 0, x: isActive ? 0 : 6 }}
-              transition={{ duration: 0.22, ease: [0.6, 0, 0.2, 1] }}
-              aria-hidden={!isActive}
-            >
-              {card.title}
-            </motion.span>
-          );
-        })}
+        {labelVisibility !== "expanded"
+          ? cards.map((card, i) => {
+              const isActive = hoveredId === card.id;
+              return (
+                <motion.span
+                  key={`title-${card.id}`}
+                  className={`${styles.title} ${isActive ? styles.titleActive : ""}`}
+                  style={{ bottom: i * step, height: cardSize }}
+                  animate={{
+                    opacity: isActive ? 1 : 0,
+                    x: isActive ? 0 : 6,
+                  }}
+                  transition={{ duration: 0.22, ease: [0.6, 0, 0.2, 1] }}
+                  aria-hidden={!isActive}
+                >
+                  {card.title}
+                </motion.span>
+              );
+            })
+          : null}
 
-        {/* Cards. `bottom: i * step` is the spread position; `y` collapses
-            them in rest. z-index puts card[0] on top (front of stack).
-            With `stackIntro`, a shell owns bottom/z-index so GSAP can own
-            blur + x on the shell without clashing with Motion on `y`. */}
         {cards.map((card, i) => {
           const isActive = hoveredId === card.id;
+          const labelsExpanded = labelVisibility === "expanded" && isOpen;
           const surfaceStyle: React.CSSProperties = card.image
             ? {
                 backgroundImage: `url(${card.image})`,
@@ -201,27 +237,97 @@ export function ProductCards({
               }
             : { background: card.gradient };
 
+          const bindRowHover =
+            labelVisibility === "expanded"
+              ? {
+                  onMouseEnter: () => setHoveredId(card.id),
+                  onMouseLeave: () => setHoveredId(null),
+                }
+              : {};
+
           const motionCard = (
             <motion.a
               href={card.href}
               aria-label={card.title}
               className={styles.card}
+              onClick={(event) => handleCardClick(event, card.href)}
               style={
                 stackIntro
                   ? { bottom: 0 }
-                  : { bottom: i * step, zIndex: N - i }
+                  : labelVisibility === "expanded"
+                    ? undefined
+                    : { bottom: i * step, zIndex: N - i }
               }
               animate={{
                 y: isOpen ? 0 : i * stackDrop,
                 scale: isActive ? 1.06 : 1,
               }}
               transition={transition}
-              onMouseEnter={() => setHoveredId(card.id)}
-              onMouseLeave={() => setHoveredId(null)}
+              onMouseEnter={
+                labelVisibility === "expanded"
+                  ? undefined
+                  : () => setHoveredId(card.id)
+              }
+              onMouseLeave={
+                labelVisibility === "expanded"
+                  ? undefined
+                  : () => setHoveredId(null)
+              }
             >
               <div className={styles.image} style={surfaceStyle} />
             </motion.a>
           );
+
+          if (labelVisibility === "expanded") {
+            const titleOpacity = isOpen ? (isActive ? 1 : 0.58) : 0;
+            const titleX = isActive ? -3 : 0;
+
+            return (
+              <div
+                key={card.id}
+                className={styles.navRow}
+                style={{
+                  bottom: i * step,
+                  height: cardSize,
+                  zIndex: N - i,
+                }}
+                {...bindRowHover}
+              >
+                <motion.a
+                  href={card.href}
+                  className={`${styles.title} ${styles.titleLink} ${isActive ? styles.titleActive : ""}`}
+                  animate={{
+                    opacity: titleOpacity,
+                    x: titleX,
+                    scale: labelsExpanded && isActive ? 1.03 : 1,
+                  }}
+                  transition={{ duration: 0.22, ease: [0.6, 0, 0.2, 1] }}
+                  onClick={(event) => handleCardClick(event, card.href)}
+                  aria-hidden={!isOpen}
+                  tabIndex={isOpen ? 0 : -1}
+                  style={{ pointerEvents: isOpen ? "auto" : "none" }}
+                >
+                  {card.title}
+                </motion.a>
+                {stackIntro ? (
+                  <div
+                    className={styles.cardShellIntro}
+                    data-hero-recent-card=""
+                    style={{
+                      position: "relative",
+                      width: "var(--card-size)",
+                      height: "var(--card-size)",
+                      flexShrink: 0,
+                    }}
+                  >
+                    {motionCard}
+                  </div>
+                ) : (
+                  motionCard
+                )}
+              </div>
+            );
+          }
 
           if (stackIntro) {
             return (

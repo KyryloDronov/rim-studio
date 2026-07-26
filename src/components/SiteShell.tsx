@@ -5,10 +5,15 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Header } from "@/components/Header";
+import {
+  ContactSheet,
+  ContactSheetProvider,
+} from "@/components/ContactSheet";
 import { Menu } from "@/components/Menu";
 import Preloader from "@/components/Preloader";
 import { ReadyProvider } from "@/components/ReadyProvider";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { RouteTransition } from "@/components/RouteTransition";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
 import { detectLocaleFromPath } from "@/i18n/paths";
 import { LOCALE_BCP47 } from "@/i18n/types";
@@ -123,7 +128,13 @@ export function SiteShell({ children }: SiteShellProps) {
 
   return (
     <LocaleProvider locale={locale}>
-      <SmoothScroll>
+      <ContactSheetProvider>
+        <SmoothScroll>
+        <RouteTransition
+          introBootstrapped={contentVisible}
+          onIntroGate={setIntroReady}
+          onNavigationStart={handleMenuClose}
+        >
         {decided && showPreloader && (
           <Preloader
             onContentVisible={handleContentVisible}
@@ -153,7 +164,10 @@ export function SiteShell({ children }: SiteShellProps) {
             <FooterLazy ready={contentVisible} />
           </div>
         </ReadyProvider>
+        <ContactSheet />
+        </RouteTransition>
       </SmoothScroll>
+      </ContactSheetProvider>
     </LocaleProvider>
   );
 }

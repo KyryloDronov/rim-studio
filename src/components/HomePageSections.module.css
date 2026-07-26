@@ -1,0 +1,12 @@
+/* Skip paint/layout for off-screen marketing sections (scroll perf). */
+.stack > section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stack > section {
+    content-visibility: visible;
+    contain-intrinsic-size: none;
+  }
+}

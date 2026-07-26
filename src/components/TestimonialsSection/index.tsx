@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useReducedMotion } from "motion/react";
+import { useInView, useReducedMotion } from "motion/react";
 import {
   useCallback,
   useEffect,
@@ -101,6 +101,7 @@ export function TestimonialsSection() {
   const quoteRef = useRef<HTMLParagraphElement>(null);
   const metaRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const sectionActive = useInView(sectionRef, { margin: "100px 0px", amount: 0.05 });
   const isAnimatingRef = useRef(false);
 
   const [displayIndex, setDisplayIndex] = useState(0);
@@ -227,6 +228,7 @@ export function TestimonialsSection() {
               displayIndex={displayIndex}
               reducedMotion={reducedMotion}
               interactionRootRef={sectionRef}
+              parallaxEnabled={sectionActive}
             />
           </div>
 

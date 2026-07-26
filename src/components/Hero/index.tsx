@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { useLenis } from "lenis/react";
-import { Camera, Clock, Phone, Shield, Wallet } from "lucide-react";
+import { Camera, CalendarClock, Clock, Phone, Shield, Wallet } from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import {
   type ComponentType,
@@ -21,15 +21,26 @@ import {
   splitWords,
 } from "@/animations";
 import { Button } from "@/components/Button";
+import { useContactSheet } from "@/components/ContactSheet/ContactSheetContext";
 import { PRICING_SECTION_ID } from "@/components/PricingSection";
 import { ProductCards } from "@/components/ProductCards";
 import { useReady } from "@/components/ReadyProvider";
 import { ScrollDown } from "@/components/ScrollDown";
 import { PAGE_BANNER_ATTR } from "@/content/page-banner";
-import { SHOWCASE_WORK_CARDS } from "@/content/showcase-cards";
+import {
+  sectionNavItemsToProductCards,
+  type PageSectionNavItem,
+} from "@/content/section-nav";
 import { useLocale } from "@/i18n/LocaleProvider";
+import type { ServicePageBanner } from "@/i18n/types";
+import { SERVICE_HERO_BANNER_ICONS } from "@/content/service-hero-banner-icons";
+import {
+  DEFAULT_HERO_BACKGROUND_VIDEO,
+} from "@/content/hero-background-videos";
 import { DiskPhotoModalForm } from "./DiskPhotoModalForm";
 import styles from "./style.module.css";
+
+const VIDEO_END_EPSILON = 0.04;
 
 /* Hard cap on how long we wait for the bg video to load before
    un-gating the intro animation. Keeps the title from sitting blurred
@@ -60,12 +71,37 @@ const FEATURE_ICONS: Record<"shield" | "clock" | "wallet", LucideIcon> = {
    the mask reveal) is what kicks the bg video off — so the video
    is already rolling by the time the mask is gone and the cascade
    starts. */
-export function Hero() {
+type HeroProps = Readonly<{
+  /** Sections on the current page — fan-out cards scroll to `#sectionId`. */
+  sectionNavItems: ReadonlyArray<PageSectionNavItem>;
+  /** Service landings: same hero shell, page-specific H1 + lede. */
+  headline?: Readonly<{
+    title: string;
+    lede: string;
+  }>;
+  /** Rich service landing banner (tire, repair, …). */
+  serviceBanner?: ServicePageBanner;
+  /** Full-cover background clip (service-specific or home default). */
+  backgroundVideoSrc?: string;
+}>;
+
+export function Hero({
+  sectionNavItems,
+  headline,
+  serviceBanner,
+  backgroundVideoSrc = DEFAULT_HERO_BACKGROUND_VIDEO,
+}: HeroProps) {
   const { t } = useLocale();
   const { hero } = t;
+  const { openSheet } = useContactSheet();
   const { contentVisible, introReady } = useReady();
   const prefersReducedMotion = useReducedMotion();
   const lenis = useLenis();
+
+  const sectionNavCards = useMemo(
+    () => sectionNavItemsToProductCards(sectionNavItems),
+    [sectionNavItems],
+  );
 
   const scrollToPricing = useCallback(() => {
     const target = document.getElementById(PRICING_SECTION_ID);
@@ -83,49 +119,51 @@ export function Hero() {
     });
   }, [lenis, prefersReducedMotion]);
 
+  const [photoModalOpen, setPhotoModalOpen] = useState(false);
+
   /* ---------- Background video --------------------------------------- */
 
-  /* Freeze the background clip on its last frame instead of looping or
-     resetting to the poster. We seek a hair before the end (`-0.05s`)
-     because seeking to exactly `duration` makes some browsers (notably
-     Safari) re-display the poster, and then `pause()` to stop the
-     `ended` -> rewind cycle some autoplay policies trigger. */
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const handleVideoEnded = useCallback(() => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (Number.isFinite(v.duration)) {
-      v.currentTime = Math.max(0, v.duration - 0.05);
-    }
-    v.pause();
-  }, []);
+  const videoLoop = !prefersReducedMotion;
+
+  const startVideo = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.loop = videoLoop;
+    void video.play().catch(() => {});
+  }, [videoLoop]);
 
   /* `loadeddata` fires when the first frame is decoded — at that point
      the video has visible content under the soon-to-reveal title. */
   const [videoReady, setVideoReady] = useState(false);
   const handleVideoLoadedData = useCallback(() => setVideoReady(true), []);
 
-  /* Cached / fast-loading clips can have `loadeddata` fire BEFORE React
-     attaches `onLoadedData` — peek at `readyState` on mount and flip
-     the gate immediately if frames are already decoded. `HAVE_CURRENT_DATA`
-     (2) is the moment the first frame is paintable. */
+  const handleVideoEnded = useCallback(() => {
+    if (videoLoop) return;
+    const video = videoRef.current;
+    if (!video) return;
+    if (Number.isFinite(video.duration)) {
+      video.currentTime = Math.max(0, video.duration - VIDEO_END_EPSILON);
+    }
+    video.pause();
+  }, [videoLoop]);
+
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
     if (v.readyState >= 2) setVideoReady(true);
-  }, []);
+  }, [backgroundVideoSrc]);
 
-  /* Kick the bg video off the moment the preloader mask hits ~80 %.
-     We don't carry `autoPlay` on the element itself: with the page
-     hidden behind the preloader, browser autoplay heuristics are
-     inconsistent (paused on some, decoding on others, some pin to
-     poster). Triggering `play()` here gives us a deterministic
-     "video starts the second the user can see it" — `currentTime = 0`
-     guarantees we open on frame 1 even if a previous mount kept it
-     paused mid-clip. The `.catch()` swallows the autoplay-policy
-     rejection on the off chance the browser refuses (muted +
-     playsInline + programmatic should always be allowed, but belt
-     and braces). */
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.getAttribute("src") === backgroundVideoSrc) return;
+    v.pause();
+    v.src = backgroundVideoSrc;
+    v.load();
+    setVideoReady(false);
+  }, [backgroundVideoSrc]);
+
   useEffect(() => {
     if (!contentVisible) return;
     const v = videoRef.current;
@@ -133,13 +171,22 @@ export function Hero() {
     try {
       v.currentTime = 0;
     } catch {
-      /* Some browsers throw if metadata isn't decoded yet — ignore;
-         the video will start from wherever it is. */
+      /* metadata not ready */
     }
-    void v.play().catch(() => {
-      /* Autoplay denied — leave it paused, nothing else to do. */
-    });
-  }, [contentVisible]);
+    if (!photoModalOpen) {
+      startVideo();
+    }
+  }, [contentVisible, photoModalOpen, startVideo]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !contentVisible) return;
+    if (photoModalOpen) {
+      video.pause();
+      return;
+    }
+    startVideo();
+  }, [photoModalOpen, contentVisible, startVideo]);
 
   /* Safety net: if the asset is missing / blocked, don't keep the title
      hidden forever — release the gate after a hard cap. */
@@ -160,21 +207,59 @@ export function Hero() {
      `<AnimatePresence>` route swaps if we ever mount two heroes). */
   const reactId = useId();
   const titleStartWords = useMemo(
-    () => splitWords(hero.titleStart, `${reactId}-ts`),
-    [hero.titleStart, reactId],
+    () =>
+      headline
+        ? splitWords(headline.title, `${reactId}-st`)
+        : splitWords(hero.titleStart, `${reactId}-ts`),
+    [headline, hero.titleStart, reactId],
   );
   const titleEndWords = useMemo(
-    () => splitWords(hero.titleEnd, `${reactId}-te`),
-    [hero.titleEnd, reactId],
+    () =>
+      headline ? [] : splitWords(hero.titleEnd, `${reactId}-te`),
+    [headline, hero.titleEnd, reactId],
   );
   const titleHighlightWords = useMemo(
-    () => splitWords(hero.titleHighlight, `${reactId}-th`),
-    [hero.titleHighlight, reactId],
+    () =>
+      headline ? [] : splitWords(hero.titleHighlight, `${reactId}-th`),
+    [headline, hero.titleHighlight, reactId],
   );
   const ledeWords = useMemo(
-    () => splitWords(hero.lede, `${reactId}-l`),
-    [hero.lede, reactId],
+    () =>
+      headline
+        ? splitWords(headline.lede, `${reactId}-l`)
+        : splitWords(hero.lede, `${reactId}-l`),
+    [headline, hero.lede, reactId],
   );
+
+  const serviceTitleLines = useMemo(() => {
+    if (!serviceBanner) return [];
+    return serviceBanner.titleLines.map((line, li) => ({
+      accent: line.accent === true,
+      words: splitWords(line.text, `${reactId}-stl-${li}`),
+    }));
+  }, [serviceBanner, reactId]);
+
+  const serviceLedeParts = useMemo(() => {
+    if (!serviceBanner) return [];
+    return serviceBanner.ledeParts.map((part, pi) => ({
+      accent: part.accent === true,
+      words: splitWords(part.text, `${reactId}-sld-${pi}`),
+    }));
+  }, [serviceBanner, reactId]);
+
+  const highlightsLayoutClass = useMemo(() => {
+    if (!serviceBanner) return styles.serviceHighlightsGrid;
+    switch (serviceBanner.layout) {
+      case "tiles":
+        return styles.serviceHighlightsTiles;
+      case "pair":
+        return styles.serviceHighlightsPair;
+      case "rail":
+        return styles.serviceHighlightsRail;
+      default:
+        return styles.serviceHighlightsGrid;
+    }
+  }, [serviceBanner]);
 
   /* ---------- Intro timeline ----------------------------------------- */
 
@@ -186,16 +271,6 @@ export function Hero() {
   const canAnimate = introReady && videoReady;
 
   const [ctaPillExpand, setCtaPillExpand] = useState(false);
-  const [photoModalOpen, setPhotoModalOpen] = useState(false);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (photoModalOpen) {
-      video.pause();
-    }
-  }, [photoModalOpen]);
 
   const onAfterCtaReveal = useCallback(() => {
     setCtaPillExpand(true);
@@ -216,6 +291,8 @@ export function Hero() {
         word: styles.word,
         ctaItem: styles.ctaItem,
         trustItem: styles.trustItem,
+        serviceRevealItem: styles.serviceRevealItem,
+        ctaAsideItem: styles.ctaAsideItem,
       });
 
       if (prefersReducedMotion) {
@@ -244,19 +321,11 @@ export function Hero() {
         <video
           ref={videoRef}
           className={styles.video}
-          /* When the asset is missing the element renders nothing — no
-             broken-icon, no console error. */
-          src="/video/video_pain_wheel.mp4"
-          /* Intentionally NO `autoPlay`: we want the clip to start the
-             instant the preloader mask hits ~80 % (see the
-             `contentVisible` effect above), not on mount — otherwise
-             playback drifts during the preloader and the user sees a
-             mid-clip frame the moment the mask exposes the video. */
+          src={backgroundVideoSrc}
           muted
-          /* `loop` intentionally omitted — the clip plays once and
-             `handleVideoEnded` pins it to the final frame. */
           playsInline
           preload="auto"
+          loop={videoLoop}
           onLoadedData={handleVideoLoadedData}
           onEnded={handleVideoEnded}
         />
@@ -265,86 +334,246 @@ export function Hero() {
       </div>
 
       {/* --- Content ------------------------------------------------- */}
-      <div className={styles.inner}>
-        <header className={styles.head}>
+      <div
+        className={
+          serviceBanner
+            ? `${styles.inner} ${styles.innerService}`
+            : styles.inner
+        }
+      >
+        <header
+          className={
+            serviceBanner ? `${styles.head} ${styles.headService}` : styles.head
+          }
+        >
           <h1 id="hero-title" className={styles.title} data-anim-group="title">
-            <span className={styles.titleLine}>
-              {titleStartWords.map((seg, i) => (
-                <span key={seg.key} className={styles.wordWrap}>
-                  <span className={styles.word}>{seg.word}</span>
-                  {i < titleStartWords.length - 1 ? " " : null}
+            {serviceBanner ? (
+              serviceTitleLines.map((line, li) => (
+                <span key={`stl-${li}`} className={styles.titleLine}>
+                  {line.accent ? (
+                    <span className={styles.titleHighlight}>
+                      {line.words.map((seg, i) => (
+                        <span key={seg.key} className={styles.wordWrap}>
+                          <span className={styles.word}>{seg.word}</span>
+                          {i < line.words.length - 1 ? " " : null}
+                        </span>
+                      ))}
+                    </span>
+                  ) : (
+                    line.words.map((seg, i) => (
+                      <span key={seg.key} className={styles.wordWrap}>
+                        <span className={styles.word}>{seg.word}</span>
+                        {i < line.words.length - 1 ? " " : null}
+                      </span>
+                    ))
+                  )}
                 </span>
-              ))}
-            </span>
-            <span className={styles.titleLine}>
-              {titleEndWords.map((seg) => (
-                <span key={seg.key} className={styles.wordWrap}>
-                  <span className={styles.word}>{seg.word}</span>{" "}
+              ))
+            ) : (
+              <>
+                <span className={styles.titleLine}>
+                  {titleStartWords.map((seg, i) => (
+                    <span key={seg.key} className={styles.wordWrap}>
+                      <span className={styles.word}>{seg.word}</span>
+                      {i < titleStartWords.length - 1 ? " " : null}
+                    </span>
+                  ))}
                 </span>
-              ))}
-              <span className={styles.titleHighlight}>
-                {titleHighlightWords.map((seg, i) => (
-                  <span key={seg.key} className={styles.wordWrap}>
-                    <span className={styles.word}>{seg.word}</span>
-                    {i < titleHighlightWords.length - 1 ? " " : null}
+                {titleEndWords.length > 0 || titleHighlightWords.length > 0 ? (
+                  <span className={styles.titleLine}>
+                    {titleEndWords.map((seg) => (
+                      <span key={seg.key} className={styles.wordWrap}>
+                        <span className={styles.word}>{seg.word}</span>{" "}
+                      </span>
+                    ))}
+                    <span className={styles.titleHighlight}>
+                      {titleHighlightWords.map((seg, i) => (
+                        <span key={seg.key} className={styles.wordWrap}>
+                          <span className={styles.word}>{seg.word}</span>
+                          {i < titleHighlightWords.length - 1 ? " " : null}
+                        </span>
+                      ))}
+                    </span>
                   </span>
-                ))}
-              </span>
-            </span>
+                ) : null}
+              </>
+            )}
           </h1>
 
           <p className={styles.lede} data-anim-group="lede">
-            {ledeWords.map((seg, i) => (
-              <span key={seg.key} className={styles.wordWrap}>
-                <span className={styles.word}>{seg.word}</span>
-                {i < ledeWords.length - 1 ? " " : null}
-              </span>
-            ))}
+            {serviceBanner
+              ? serviceLedeParts.map((part, pi) => {
+                  const firstWord = part.words[0]?.word ?? "";
+                  const needsLeadingSpace =
+                    pi > 0 && !/^[\.,!?;:)]/.test(firstWord);
+                  const partClassName = part.accent
+                    ? `${styles.ledePart} ${styles.ledeAccent}`
+                    : styles.ledePart;
+                  return (
+                    <span
+                      key={`sld-${pi}`}
+                      className={partClassName}
+                      data-lede-join={needsLeadingSpace ? "true" : undefined}
+                    >
+                      {part.words.map((seg, i) => (
+                        <span key={seg.key} className={styles.wordWrap}>
+                          <span className={styles.word}>{seg.word}</span>
+                          {i < part.words.length - 1 ? " " : null}
+                        </span>
+                      ))}
+                    </span>
+                  );
+                })
+              : ledeWords.map((seg, i) => (
+                  <span key={seg.key} className={styles.wordWrap}>
+                    <span className={styles.word}>{seg.word}</span>
+                    {i < ledeWords.length - 1 ? " " : null}
+                  </span>
+                ))}
           </p>
 
-          <div className={styles.cta} data-anim-group="cta">
-            {/* Each Button is wrapped so the entrance tween animates a
-                neutral container — Button keeps ownership of its own
-                hover/active `transform: scale(...)` without GSAP and
-                CSS fighting over the same property. */}
-            <span className={styles.ctaItem}>
-              <Button
-                type="button"
-                variant="accent"
-                size="md"
-                expandFromIcon
-                expandWhen={ctaPillExpand}
-                icon={<Camera strokeWidth={1.75} />}
-                onClick={() => setPhotoModalOpen(true)}
+          {serviceBanner ? (
+            <>
+              <ul
+                className={`${styles.serviceHighlights} ${highlightsLayoutClass}`}
+                data-anim-group="service-highlights"
               >
-                {hero.ctaPrimary.label}
-              </Button>
-            </span>
+                {serviceBanner.highlights.map((item) => {
+                  const Icon = SERVICE_HERO_BANNER_ICONS[item.icon];
+                  return (
+                    <li
+                      key={item.id}
+                      className={`${styles.serviceHighlight} ${styles.serviceRevealItem}`}
+                    >
+                      <span className={styles.serviceHighlightIconWrap}>
+                        <Icon
+                          width={22}
+                          height={22}
+                          strokeWidth={1.5}
+                          className={styles.serviceHighlightIcon}
+                          aria-hidden="true"
+                        />
+                      </span>
+                      <span className={styles.serviceHighlightCopy}>
+                        <span className={styles.serviceHighlightTitle}>
+                          {item.title}
+                        </span>
+                        {item.subtitle ? (
+                          <span className={styles.serviceHighlightSubtitle}>
+                            {item.subtitle}
+                          </span>
+                        ) : null}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </>
+          ) : null}
 
-            {/* `tel:` / `mailto:` href: the Button auto-detects this
-                and renders a plain <a> (no next/link prefetch). */}
-            <span className={styles.ctaItem}>
-              <Button
-                href={hero.ctaSecondary.href}
-                variant="dark"
-                size="md"
-                expandFromIcon
-                expandWhen={ctaPillExpand}
-                icon={<Phone strokeWidth={1.75} />}
-              >
-                {hero.ctaSecondary.label}
-              </Button>
-            </span>
+          <div className={styles.cta} data-anim-group="cta">
+            {serviceBanner ? (
+              <>
+                <span className={styles.ctaItem}>
+                  <Button
+                    type="button"
+                    variant="accent"
+                    size="md"
+                    expandFromIcon
+                    expandWhen={ctaPillExpand}
+                    icon={
+                      serviceBanner.ctaPrimary.action === "photo" ? (
+                        <Camera strokeWidth={1.75} />
+                      ) : (
+                        <CalendarClock strokeWidth={1.75} />
+                      )
+                    }
+                    onClick={
+                      serviceBanner.ctaPrimary.action === "photo"
+                        ? () => setPhotoModalOpen(true)
+                        : openSheet
+                    }
+                  >
+                    {serviceBanner.ctaPrimary.label}
+                  </Button>
+                </span>
+                <span className={styles.ctaItem}>
+                  <Button
+                    href={hero.ctaSecondary.href}
+                    variant="dark"
+                    size="md"
+                    expandFromIcon
+                    expandWhen={ctaPillExpand}
+                    icon={<Phone strokeWidth={1.75} />}
+                  >
+                    {hero.ctaSecondary.label}
+                  </Button>
+                </span>
+                {serviceBanner.ctaAside ? (
+                  <span className={styles.ctaAsideItem}>
+                    {(() => {
+                      const AsideIcon =
+                        SERVICE_HERO_BANNER_ICONS[serviceBanner.ctaAside.icon];
+                      return (
+                        <>
+                          <AsideIcon
+                            width={20}
+                            height={20}
+                            strokeWidth={1.5}
+                            className={styles.ctaAsideIcon}
+                            aria-hidden="true"
+                          />
+                          <span className={styles.ctaAsideText}>
+                            {serviceBanner.ctaAside.text}
+                          </span>
+                        </>
+                      );
+                    })()}
+                  </span>
+                ) : null}
+              </>
+            ) : (
+              <>
+                <span className={styles.ctaItem}>
+                  <Button
+                    type="button"
+                    variant="accent"
+                    size="md"
+                    expandFromIcon
+                    expandWhen={ctaPillExpand}
+                    icon={<Camera strokeWidth={1.75} />}
+                    onClick={() => setPhotoModalOpen(true)}
+                  >
+                    {hero.ctaPrimary.label}
+                  </Button>
+                </span>
+                <span className={styles.ctaItem}>
+                  <Button
+                    href={hero.ctaSecondary.href}
+                    variant="dark"
+                    size="md"
+                    expandFromIcon
+                    expandWhen={ctaPillExpand}
+                    icon={<Phone strokeWidth={1.75} />}
+                  >
+                    {hero.ctaSecondary.label}
+                  </Button>
+                </span>
+              </>
+            )}
           </div>
+
         </header>
 
         {/* --- Bottom row: trust strip (left) + recent works (right) -- */}
-        <div className={styles.bottom}>
-          {/* Compact trust strip — small lucide icon, two-line label
-              underneath in footer-grade micro typography. Items are
-              separated by hairline vertical rules. Stays inline with
-              the recent-works fan-out on desktop and falls onto its
-              own row on mobile (where the fan-out is hidden). */}
+        <div
+          className={
+            serviceBanner
+              ? `${styles.bottom} ${styles.bottomNavRight}`
+              : styles.bottom
+          }
+        >
+          {!serviceBanner ? (
           <ul className={styles.trust} data-anim-group="trust">
             {hero.features.map((feature) => {
               const Icon = FEATURE_ICONS[feature.icon];
@@ -365,19 +594,24 @@ export function Hero() {
               );
             })}
           </ul>
+          ) : null}
 
-          <aside
-            className={styles.recent}
-            data-anim-group="recent"
-            aria-label={hero.recentWorksLabel}
-          >
-            <ProductCards
-              cards={SHOWCASE_WORK_CARDS}
-              eyebrowLabel={hero.recentWorksLabel}
-              className={styles.recentCards}
-              stackIntro
-            />
-          </aside>
+          {sectionNavCards.length > 0 ? (
+            <aside
+              className={styles.recent}
+              data-anim-group="recent"
+              aria-label={hero.sectionNavLabel}
+            >
+              <ProductCards
+                cards={sectionNavCards}
+                eyebrowLabel={hero.sectionNavLabel}
+                className={styles.recentCards}
+                stackIntro
+                density="compact"
+                labelVisibility="expanded"
+              />
+            </aside>
+          ) : null}
         </div>
       </div>
 

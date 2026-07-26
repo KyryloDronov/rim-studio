@@ -20,6 +20,7 @@ type TestimonialPhoneVisualProps = Readonly<{
   displayIndex: number;
   reducedMotion: boolean;
   interactionRootRef?: RefObject<HTMLElement | null>;
+  parallaxEnabled?: boolean;
 }>;
 
 function isDesktopParallax(): boolean {
@@ -30,6 +31,7 @@ export function TestimonialPhoneVisual({
   displayIndex,
   reducedMotion,
   interactionRootRef,
+  parallaxEnabled = true,
 }: TestimonialPhoneVisualProps) {
   const stageRef = useRef<HTMLDivElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);
@@ -40,7 +42,7 @@ export function TestimonialPhoneVisual({
   const screenIndex = getTestimonialScreenIndex(displayIndex);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || !parallaxEnabled) return;
 
     const root = interactionRootRef?.current;
     const tilt = tiltRef.current;
@@ -108,7 +110,7 @@ export function TestimonialPhoneVisual({
       cancelAnimationFrame(frameId);
       tilt.style.transform = "";
     };
-  }, [interactionRootRef, reducedMotion]);
+  }, [interactionRootRef, parallaxEnabled, reducedMotion]);
 
   useLayoutEffect(() => {
     const stage = stageRef.current;
@@ -131,7 +133,8 @@ export function TestimonialPhoneVisual({
           scrollTrigger: {
             trigger: stage,
             start: "top 90%",
-            toggleActions: "play none none reverse",
+            once: true,
+            toggleActions: "play none none none",
           },
         },
       );
