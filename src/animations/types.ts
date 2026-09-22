@@ -68,6 +68,20 @@ export type ShowcaseRevealClassNames = Readonly<{
   controlsReveal: string;
 }>;
 
+/** Service categories masonry — scroll reveal class names. */
+export type CategoriesMasonryRevealClassNames = Readonly<{
+  titleReveal: string;
+  cardReveal: string;
+  controlsReveal: string;
+}>;
+
+/** Process expandable carousel scroll reveal. */
+export type ProcessRevealClassNames = Readonly<{
+  titleReveal: string;
+  cardReveal: string;
+  controlsReveal: string;
+}>;
+
 /** Before/after section scroll-reveal class names. */
 export type BeforeAfterRevealClassNames = Readonly<{
   compareReveal: string;

@@ -6,48 +6,42 @@ export type ShowcaseCategoryMedia = Readonly<{
   videoReverse: string;
 }>;
 
-function reverseVideoSrc(forwardSrc: string): string {
-  return forwardSrc.replace(/\.mp4$/i, ".reverse.mp4");
-}
-
-/** Poster + hover video for the services interlinking carousel. */
+/** Poster (frame 0) + forward/reverse hover clips — all under `/public/video/`. */
 export const SHOWCASE_CATEGORY_MEDIA = {
   wheelPainting: {
-    image: "/img/categories/Wheel -painting.png",
-    video: "/img/categories/Wheel -painting.mp4",
-    videoReverse: reverseVideoSrc("/img/categories/Wheel -painting.mp4"),
+    image: "/video/wheel-painting.poster.jpg",
+    video: "/video/wheel-painting.mp4",
+    videoReverse: "/video/wheel-painting.reverse.mp4",
   },
   wheelRepair: {
-    image: "/img/categories/Disc-repair.png",
-    video: "/img/categories/Disc-repair.mp4",
-    videoReverse: reverseVideoSrc("/img/categories/Disc-repair.mp4"),
+    image: "/video/wheel-repair.poster.jpg",
+    video: "/video/wheel-repair.mp4",
+    videoReverse: "/video/wheel-repair.reverse.mp4",
   },
   diamondCutting: {
-    image: "/img/categories/Diamond-grinding-of-discs.png",
-    video: "/img/categories/Diamond-grinding-of-discs.mp4",
-    videoReverse: reverseVideoSrc("/img/categories/Diamond-grinding-of-discs.mp4"),
+    image: "/video/diamond-cutting.poster.jpg",
+    video: "/video/diamond-cutting.mp4",
+    videoReverse: "/video/diamond-cutting.reverse.mp4",
   },
   tireMounting: {
-    image: "/img/categories/Tire-service.png",
-    video: "/img/categories/Tire-service.mp4",
-    videoReverse: reverseVideoSrc("/img/categories/Tire-service.mp4"),
+    image: "/video/tire-mounting.poster.jpg",
+    video: "/video/tire-mounting.mp4",
+    videoReverse: "/video/tire-mounting.reverse.mp4",
   },
   caliperPainting: {
-    image: "/img/categories/Paintin_calipers.png",
-    video: "/img/categories/Paintin_calipers.mp4",
-    videoReverse: reverseVideoSrc("/img/categories/Paintin_calipers.mp4"),
+    image: "/video/caliper-painting.poster.jpg",
+    video: "/video/caliper-painting.mp4",
+    videoReverse: "/video/caliper-painting.reverse.mp4",
   },
   motorcycleWheelPainting: {
-    image: "/img/categories/Painting-motorcycle-wheels -and-parts.png",
-    video: "/img/categories/Painting-motorcycle-wheels -and-parts.mp4",
-    videoReverse: reverseVideoSrc(
-      "/img/categories/Painting-motorcycle-wheels -and-parts.mp4",
-    ),
+    image: "/video/motorcycle-wheel-painting.poster.jpg",
+    video: "/video/motorcycle-wheel-painting.mp4",
+    videoReverse: "/video/motorcycle-wheel-painting.reverse.mp4",
   },
   tigWelding: {
-    image: "/img/categories/Argon-arc-welding.png",
-    video: "/img/categories/Argon-arc-welding.mp4",
-    videoReverse: reverseVideoSrc("/img/categories/Argon-arc-welding.mp4"),
+    image: "/video/tig-welding.poster.jpg",
+    video: "/video/tig-welding.mp4",
+    videoReverse: "/video/tig-welding.reverse.mp4",
   },
 } as const satisfies Record<PageServiceKey, ShowcaseCategoryMedia>;
 

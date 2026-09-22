@@ -1,379 +1,382 @@
 /* ===========================================================
-   Process — how rim/studio works (video + morphing blob diagram)
+   Process — expandable step cards (desktop row / mobile carousel)
    =========================================================== */
 
 .section {
   position: relative;
   width: 100%;
-  padding: clamp(3.5rem, 8vh, 5.5rem) 0;
+  --process-gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --process-max: 88rem;
+  --process-card-rest: clamp(12.5rem, 22vw, 20rem);
+  --process-card-active: clamp(16.875rem, 36vw, 31.25rem);
+  --process-card-height: clamp(17.5rem, 32vw, 24rem);
+  padding: clamp(3.5rem, 9vh, 6rem) 0 clamp(3rem, 8vh, 5rem);
   background: var(--brand-ink-700);
   color: var(--brand-white);
   overflow-x: clip;
   isolation: isolate;
 }
 
-.starfield {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.starfield canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
 .inner {
-  position: relative;
-  z-index: 1;
-  width: min(100%, 88rem);
+  width: min(100%, var(--process-max));
   margin: 0 auto;
-  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+  padding: 0 var(--process-gutter);
 }
 
 .header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: clamp(2.5rem, 6vh, 4.5rem);
-}
-
-.headerCopy {
-  min-width: 0;
+  margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
 }
 
 .title {
   display: flex;
   flex-direction: column;
-  gap: 0.1em;
+  gap: 0.12em;
   margin: 0;
-  font-size: clamp(2rem, 3.4vw, 2.6rem);
-  font-weight: 400;
-  line-height: 1.18;
-  letter-spacing: -0.01em;
+  max-width: 42rem;
+  font-size: clamp(1.65rem, 3.8vw, 2.65rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 .titleMuted {
-  color: rgb(255 255 255 / 0.45);
+  color: rgb(255 255 255 / 0.52);
+  font-weight: 400;
 }
 
 .titleStrong {
   color: var(--brand-white);
+  font-weight: 600;
 }
 
-.headerAction {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  border: 1px solid rgb(255 255 255 / 0.2);
-  border-radius: 0.35rem;
-  color: rgb(255 255 255 / 0.7);
+.titleReveal {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1.25rem);
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+}
+
+.desktopRow {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(0.65rem, 1.1vw, 1rem);
+  width: 100%;
+  min-height: var(--process-card-height);
+}
+
+.desktopItem {
+  flex: 1 1 0;
+  min-width: 0;
+  height: var(--process-card-height);
+  transition: flex 0.48s cubic-bezier(0, 0, 0.5, 1);
+}
+
+.desktopItem[data-active="true"] {
+  flex: 1.62 1 0;
+}
+
+.mobileStage {
+  position: relative;
+  width: 100vw;
+  max-width: 100%;
+  margin-inline: calc(-1 * var(--process-gutter));
+}
+
+.slider {
+  --slide-inset: max(
+    var(--process-gutter),
+    calc((100vw - var(--process-max)) / 2 + var(--process-gutter))
+  );
+  --slide-gap: clamp(0.65rem, 1.2vw, 1.125rem);
+  --slide-size: var(--process-card-rest);
+  width: 100%;
+}
+
+.slide {
+  flex: 0 0 var(--slide-size);
+  width: var(--slide-size);
+  height: var(--process-card-height);
   transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+    flex-basis 0.45s cubic-bezier(0, 0, 0.5, 1),
+    width 0.45s cubic-bezier(0, 0, 0.5, 1);
 }
 
-.headerAction:hover {
-  background: rgb(255 255 255 / 0.1);
-  color: var(--brand-white);
-  border-color: rgb(255 255 255 / 0.35);
+.slideActive {
+  --slide-size: var(--process-card-active);
 }
 
-.headerAction:focus-visible {
+.cardReveal {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1.5rem);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: start;
+  color: inherit;
+  background: var(--brand-ink-600);
+  box-shadow:
+    0 4px 22px rgb(255 255 255 / 0.08),
+    0 14px 40px rgb(0 0 0 / 0.22);
+  transition:
+    box-shadow 0.45s cubic-bezier(0, 0, 0.5, 1),
+    transform 0.45s cubic-bezier(0, 0, 0.5, 1);
+}
+
+.card[data-active="false"] .cardMedia {
+  filter: saturate(0.82) brightness(0.9);
+  transition: filter 0.45s cubic-bezier(0, 0, 0.5, 1);
+}
+
+.card[data-active="true"] {
+  box-shadow:
+    0 12px 40px rgb(0 0 0 / 0.35),
+    0 0 0 1px rgb(255 153 0 / 0.28);
+  transform: translateY(-4px);
+}
+
+.card[data-active="true"] .cardMedia {
+  filter: none;
+}
+
+.card:focus-visible {
   outline: 2px solid var(--brand-accent-400);
   outline-offset: 3px;
 }
 
-.headerAction svg {
-  width: 0.85rem;
-  height: 0.85rem;
-}
-
-.layout {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(2.5rem, 5vw, 3rem);
-}
-
-.leftCol,
-.rightCol {
-  min-width: 0;
-}
-
-.leftCol {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1rem, 2.2vh, 1.35rem);
-}
-
-@media (min-width: 992px) {
-  .layout {
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    gap: clamp(1.5rem, 3vw, 2.5rem);
-  }
-}
-
-.videoCard {
-  position: relative;
-  width: 100%;
-  height: clamp(18rem, 42vh, 22rem);
-  border-radius: clamp(18px, 2vw, 24px);
-  overflow: hidden;
-  background: var(--brand-ink-600);
-  box-shadow: 0 12px 40px rgb(0 0 0 / 0.28);
-}
-
-.videoMedia {
-  display: block;
-  width: 100%;
-  height: 100%;
+.cardMedia {
+  z-index: 0;
   object-fit: cover;
-  pointer-events: none;
+  user-select: none;
 }
 
-.videoReadability {
+.cardScrim {
   position: absolute;
   inset: 0;
+  z-index: 1;
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgb(10 12 14 / 0.08) 0%,
-    rgb(10 12 14 / 0) 42%,
-    rgb(10 12 14 / 0.22) 100%
+    rgb(10 12 14 / 0.12) 0%,
+    rgb(10 12 14 / 0.08) 38%,
+    rgb(10 12 14 / 0.94) 100%
   );
+  transition: opacity 0.45s ease;
 }
 
-.stepCopy {
-  min-width: 0;
+.card[data-active="false"] .cardScrim {
+  opacity: 0.92;
 }
 
-.stepRow {
-  display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: clamp(1rem, 2.5vw, 1.75rem);
-  min-height: clamp(4.75rem, 13vw, 7rem);
-}
-
-.amorphNumber {
-  display: flex;
-  flex: 0 0 auto;
-  align-self: stretch;
-  align-items: stretch;
-}
-
-.amorphDigit {
-  height: 100%;
-  width: auto;
-  aspect-ratio: 1 / 1;
-  min-height: clamp(4.75rem, 13vw, 7rem);
-  min-width: clamp(4rem, 11vw, 6.25rem);
-}
-
-.amorphPath {
-  display: none;
-}
-
-.amorphCircle {
-  fill: #fff;
-  color: #fff;
-}
-
-.stepText {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  justify-content: center;
-  gap: clamp(0.35rem, 0.8vh, 0.5rem);
-  min-width: 0;
-}
-
-.stepLabel {
-  margin: 0;
-  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
-  font-weight: 500;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  color: var(--brand-white);
-}
-
-.stepDescription {
-  margin: 0;
-  font-size: clamp(1rem, 1.45vw, 1.15rem);
-  font-weight: 400;
-  line-height: 1.55;
-  letter-spacing: -0.005em;
-  color: rgb(255 255 255 / 0.82);
-  text-wrap: pretty;
-}
-
-.diagramWrap {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.diagramVisible {
+.card[data-active="true"] .cardScrim {
   opacity: 1;
 }
 
-.rightCol {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: clamp(18rem, 42vh, 22rem);
-}
-
-.diagramInner {
+.cardDesc {
   position: relative;
-  width: min(100%, 100%);
-  max-width: 28rem;
-  aspect-ratio: 1 / 1;
+  z-index: 2;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 clamp(0.85rem, 1.6vw, 1.25rem) clamp(0.85rem, 1.5vw, 1.05rem);
+  color: var(--brand-white);
+  overflow: hidden;
+  transform: translateY(calc(100% - 3.1rem));
+  transition: transform 0.45s cubic-bezier(0, 0, 0.5, 1);
 }
 
-.diagramSvg {
+.card[data-active="true"] .cardDesc {
+  transform: translateY(0);
+}
+
+.stepBadgeWrap {
+  position: absolute;
+  top: clamp(0.75rem, 1.4vw, 1.1rem);
+  left: clamp(0.75rem, 1.4vw, 1.1rem);
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: clamp(2.5rem, 3.4vw, 2.85rem);
+  height: clamp(2.5rem, 3.4vw, 2.85rem);
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.stepBadgeWrap[data-active="false"] {
+  border: 1px solid rgb(255 255 255 / 0.28);
+  background: rgb(0 0 0 / 0.35);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
+}
+
+.stepBadgeWrap[data-active="true"] {
+  border: 1px solid rgb(255 255 255 / 0.35);
+  background: rgb(0 0 0 / 0.42);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.28);
+}
+
+.stepTimerSvg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  overflow: visible;
+  transform: rotate(-90deg);
 }
 
-.blobSector {
-  pointer-events: none;
-  fill: rgb(255 153 0 / 0.34);
-  stroke: none;
-}
-
-.blobStroke {
+.stepTimerTrack {
   fill: none;
-  stroke: rgb(255 255 255 / 0.78);
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-  pointer-events: none;
+  stroke: rgb(255 255 255 / 0.22);
+  stroke-width: 2.5;
 }
 
-.blobStroke:nth-of-type(2) {
-  stroke-width: 0.34;
-  opacity: 0.58;
-}
-
-.blobStroke:nth-of-type(3) {
-  stroke-width: 0.26;
-  opacity: 0.42;
-}
-
-.blobStroke:nth-of-type(4) {
-  stroke-width: 0.2;
-  opacity: 0.3;
-}
-
-.diagramSpoke {
-  stroke: rgb(255 255 255 / 0.35);
-  stroke-width: 0.18;
-  transition:
-    stroke 0.3s ease,
-    stroke-width 0.3s ease,
-    opacity 0.3s ease;
-}
-
-.diagramSpokeActive {
+.stepTimerProgress {
+  fill: none;
   stroke: var(--brand-accent-400);
-  stroke-width: 0.55;
-  opacity: 1;
+  stroke-width: 2.75;
+  stroke-linecap: round;
+  animation: processStepTimerRing var(--process-auto-ms, 4s) linear forwards;
 }
 
-.diagramLabel {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.35rem 0.55rem;
-  border: none;
-  background: transparent;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  opacity: 0;
-  translate: 0 14px;
-  transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.25s ease;
+.stage[data-hovered="true"] .stepTimerProgress,
+.stage[data-in-view="false"] .stepTimerProgress {
+  animation-play-state: paused;
 }
 
-.diagramLabelVisible {
-  opacity: 1;
-  translate: 0 0;
+@keyframes processStepTimerRing {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
-.diagramLabel:focus-visible {
-  outline: 2px solid var(--brand-accent-400);
-  outline-offset: 4px;
-  border-radius: 0.35rem;
-}
-
-.diagramStepLabel {
-  font-size: clamp(0.95rem, 2vw, 1.45rem);
-  font-weight: 300;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  color: rgb(255 255 255 / 0.72);
-  white-space: nowrap;
-  transition:
-    font-weight 0.3s ease,
-    color 0.3s ease,
-    text-shadow 0.3s ease;
-}
-
-.diagramLabelActive .diagramStepLabel {
-  font-weight: 600;
+.stepBadgeDigit {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(0.9rem, 1.15vw, 1rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
   color: var(--brand-white);
-  text-shadow: 0 0 18px rgb(255 153 0 / 0.35);
 }
 
-@media (max-width: 479px) {
-  .videoCard {
-    height: clamp(14rem, 52vw, 18rem);
+.stepBadgeWrap[data-active="true"] .stepBadgeDigit {
+  color: var(--brand-accent-400);
+}
+
+.cardTitle {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1rem, 1.35vw, 1.35rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.cardBody {
+  margin: 0;
+  font-size: clamp(0.8125rem, 1vw, 0.9375rem);
+  font-weight: 400;
+  line-height: 1.52;
+  letter-spacing: -0.005em;
+  color: rgb(255 255 255 / 0.82);
+  text-wrap: pretty;
+  opacity: 0;
+  transform: translateY(1.1rem);
+  transition:
+    opacity 0.4s cubic-bezier(0, 0, 0.5, 1) 0.08s,
+    transform 0.4s cubic-bezier(0, 0, 0.5, 1) 0.08s;
+}
+
+.card[data-active="true"] .cardBody {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 767px) {
+  .section {
+    --process-card-rest: 12.5rem;
+    --process-card-active: 16.875rem;
+    --process-card-height: 17.5rem;
   }
 
-  .rightCol {
-    min-height: auto;
+  .cardDesc {
+    transform: translateY(calc(100% - 2.75rem));
+  }
+}
+
+@media (min-width: 768px) {
+  .cardTitle {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .diagramStepLabel {
-    font-size: clamp(0.88rem, 4vw, 1.05rem);
+  .card[data-active="false"] .cardTitle {
     white-space: normal;
-    text-align: center;
-    max-width: 6.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card[data-active="true"] .cardTitle {
+    white-space: normal;
+    overflow: visible;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .diagramWrap {
+  .titleReveal,
+  .cardReveal {
     opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .desktopItem,
+  .slide {
     transition: none;
   }
 
-  .diagramLabel {
-    opacity: 1;
-    translate: 0 0;
-    transition: color 0.2s ease;
+  .card,
+  .cardDesc,
+  .cardBody,
+  .cardMedia,
+  .stepBadgeDigit,
+  .stepTimerProgress {
+    transition: none;
   }
 
-  .diagramSpoke {
-    transition: stroke 0.2s ease;
+  .stepTimerProgress {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  .card[data-active="true"] {
+    transform: none;
+  }
+
+  .cardBody {
+    opacity: 1;
+    transform: none;
+  }
+
+  .card:not([data-active="true"]) .cardBody {
+    opacity: 0;
   }
 }

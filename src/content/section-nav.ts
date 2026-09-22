@@ -6,7 +6,7 @@ import { BENEFITS_SECTION_ID } from "@/components/BenefitsSection";
 import { LOYALTY_SECTION_ID } from "@/components/LoyaltySection";
 import { PRICING_SECTION_ID } from "@/components/PricingSection";
 import { PROCESS_SECTION_ID } from "@/components/ProcessSection";
-import { SHOWCASE_SECTION_ID } from "@/components/ShowcaseSection";
+import { SERVICE_CATEGORIES_SECTION_ID } from "@/components/ServiceCategoriesMasonry";
 import { TESTIMONIALS_SECTION_ID } from "@/components/TestimonialsSection";
 
 /** One entry in the page banner «section stack» — maps to `id` on a `<section>`. */
@@ -60,7 +60,7 @@ export function buildHomeSectionNavItems(
   return withGradients([
     { sectionId: PRICING_SECTION_ID, title: sectionNav.pricing },
     { sectionId: BEFORE_AFTER_SECTION_ID, title: sectionNav.beforeAfter },
-    { sectionId: SHOWCASE_SECTION_ID, title: sectionNav.showcase },
+    { sectionId: SERVICE_CATEGORIES_SECTION_ID, title: sectionNav.showcase },
     { sectionId: LOYALTY_SECTION_ID, title: sectionNav.loyalty },
     { sectionId: ABOUT_SECTION_ID, title: sectionNav.about },
     { sectionId: PROCESS_SECTION_ID, title: sectionNav.process },

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { HomeHero } from "@/components/Hero/HomeHero";
 import { HomePageSections } from "@/components/HomePageSections";
+import { ServiceCategoriesMasonry } from "@/components/ServiceCategoriesMasonry";
 import { isLocale } from "@/i18n/types";
 
 export default async function Home({ params }: PageProps<"/[lang]">) {
@@ -10,7 +11,8 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
   return (
     <>
       <HomeHero />
-      <HomePageSections />
+      <ServiceCategoriesMasonry />
+      <HomePageSections hideShowcaseSection />
     </>
   );
 }

@@ -96,6 +96,49 @@ export const FOOTER_SCROLL = {
   },
 } as const;
 
+/** Process expandable carousel — title + card strip on scroll. */
+export const PROCESS_SCROLL = {
+  triggerStart: "top 82%",
+  defaultsEase: EASE.punchy,
+  title: {
+    yFrom: 22,
+    duration: 0.68,
+  },
+  cards: {
+    yFrom: 24,
+    duration: 0.72,
+    stagger: 0.09,
+    overlapTitle: 0.36,
+  },
+  nav: {
+    xFrom: 28,
+    duration: 0.45,
+    overlapCards: 0.18,
+  },
+} as const;
+
+/** Home service categories bento — staggered lift on scroll. */
+export const CATEGORIES_MASONRY_SCROLL = {
+  triggerStart: "top 82%",
+  defaultsEase: EASE.punchy,
+  title: {
+    yFrom: 22,
+    duration: 0.68,
+  },
+  cards: {
+    yFrom: 28,
+    scaleFrom: 0.96,
+    duration: 0.72,
+    stagger: 0.07,
+    overlapTitle: 0.38,
+  },
+  nav: {
+    xFrom: 28,
+    duration: 0.45,
+    overlapCards: 0.2,
+  },
+} as const;
+
 /** Showcase carousel — scroll in/out tied to card geometry (ScrollTrigger syntax). */
 export const SHOWCASE_SCROLL = {
   /** Viewport bottom crosses 33% height of the card — top third visible, then enter. */

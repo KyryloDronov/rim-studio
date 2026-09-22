@@ -1,16 +1,15 @@
 /* ===========================================================
-   Showcase — Apple-style horizontal card carousel
-   Card dimensions follow rf-ccard-50 (480×500 art, 18px radius)
+   Home — service categories bento masonry (hover video cards)
    =========================================================== */
 
 .section {
   position: relative;
   width: 100%;
-  --showcase-gutter: clamp(1.25rem, 4vw, 2.5rem);
-  --showcase-max: 88rem;
-  --showcase-card-width: 28.2352941176rem;
-  --showcase-card-height: 29.4117647059rem;
-  padding: clamp(3.5rem, 9vh, 6rem) 0 clamp(3rem, 8vh, 5rem);
+  --categories-gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --categories-max: 88rem;
+  --categories-card-width: 28.2352941176rem;
+  --categories-card-height: 29.4117647059rem;
+  padding: clamp(1.75rem, 4.5vh, 3rem) 0 clamp(3rem, 7vh, 4.5rem);
   background: var(--brand-ink-700);
   color: var(--brand-white);
   overflow-x: clip;
@@ -18,14 +17,14 @@
 }
 
 .inner {
-  width: min(100%, var(--showcase-max));
+  width: min(100%, var(--categories-max));
   margin: 0 auto;
-  padding: 0 var(--showcase-gutter);
+  padding: 0 var(--categories-gutter);
 }
 
 .header {
   max-width: none;
-  margin-bottom: clamp(2rem, 4.5vh, 3rem);
+  margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
   text-align: start;
 }
 
@@ -51,72 +50,99 @@
   font-weight: 400;
 }
 
-.slider {
-  --slide-inset: max(
-    var(--showcase-gutter),
-    calc((100vw - var(--showcase-max)) / 2 + var(--showcase-gutter))
-  );
-  --slide-gap: 18px;
-  --slide-size: var(--showcase-card-width);
+.titleReveal {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1.25rem);
+}
+
+.stage {
+  position: relative;
   width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: minmax(9.5rem, 14.5vw);
+  gap: clamp(0.65rem, 1.2vw, 1.125rem);
 }
 
 .sliderRegion {
   position: relative;
   width: 100vw;
   max-width: 100%;
-  margin-top: 0;
+  margin-inline: calc(-1 * var(--categories-gutter));
 }
 
-.card {
-  height: var(--showcase-card-height);
+.slider {
+  --slide-inset: max(
+    var(--categories-gutter),
+    calc((100vw - var(--categories-max)) / 2 + var(--categories-gutter))
+  );
+  --slide-gap: 18px;
+  --slide-size: var(--categories-card-width);
+  width: 100%;
+}
+
+.cell {
+  min-width: 0;
+  min-height: 0;
   will-change: transform, opacity;
 }
 
-/* GSAP initial state — avoids flash before timeline attaches. */
+.cellCarousel {
+  height: var(--categories-card-height);
+}
+
 .cardReveal {
   opacity: 0;
   visibility: hidden;
-  transform: translateX(4rem);
+  transform: translateY(1.75rem) scale(0.96);
 }
 
-.cardLink {
+.cardButton {
   display: block;
+  width: 100%;
   height: 100%;
-  text-decoration: none;
+  min-height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: inherit;
   color: inherit;
   border-radius: 18px;
   box-shadow:
     0 4px 22px rgb(255 255 255 / 0.1),
     0 14px 40px rgb(255 255 255 / 0.06);
   transition:
-    box-shadow 0.3s cubic-bezier(0, 0, 0.5, 1),
-    transform 0.3s cubic-bezier(0, 0, 0.5, 1);
+    box-shadow 0.32s cubic-bezier(0, 0, 0.5, 1),
+    transform 0.32s cubic-bezier(0, 0, 0.5, 1);
 }
 
-.cardLink:focus-visible {
+.cardButton:focus-visible {
   outline: none;
 }
 
-.cardLink:focus-visible .cardContent {
+.cardButton:focus-visible .cardContent {
   outline: 2px solid var(--brand-accent-400);
   outline-offset: 3px;
 }
 
-.cardLink:hover {
+.cardButton:hover {
   box-shadow:
     0 6px 28px rgb(255 255 255 / 0.14),
     0 18px 48px rgb(255 255 255 / 0.09);
-  transform: scale3d(1.01, 1.01, 1.01);
+  transform: scale3d(1.012, 1.012, 1.012);
 }
 
 .cardContent {
   position: relative;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: var(--showcase-card-width);
-  height: var(--showcase-card-height);
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
   border-radius: 18px;
   background: var(--brand-white);
   overflow: hidden;
@@ -177,13 +203,13 @@
   top: 0;
   z-index: 3;
   box-sizing: border-box;
-  padding: 1.6470588235rem;
+  padding: clamp(1.1rem, 2vw, 1.65rem);
   pointer-events: none;
 }
 
 .cardEyebrow {
   margin: 0;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.45rem;
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.33;
@@ -194,18 +220,58 @@
 
 .cardTitle {
   margin: 0;
-  padding-top: 0;
-  font-size: clamp(1.3125rem, 2vw, 1.75rem);
+  font-size: clamp(1.05rem, 1.35vw, 1.55rem);
   font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: 0.007em;
+  line-height: 1.16;
+  letter-spacing: 0.005em;
   color: var(--brand-white);
+  text-wrap: balance;
+}
+
+.openFab {
+  position: absolute;
+  z-index: 3;
+  bottom: clamp(1rem, 2.2vw, 1.5rem);
+  left: clamp(1rem, 2.2vw, 1.5rem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(2.65rem, 4.2vw, 3.15rem);
+  height: clamp(2.65rem, 4.2vw, 3.15rem);
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.42);
+  background: rgb(255 255 255 / 0.94);
+  color: var(--brand-ink-700);
+  box-shadow: 0 8px 28px rgb(0 0 0 / 0.18);
+  opacity: 0;
+  transform: scale(0.68) translateY(0.65rem);
+  transition:
+    opacity 0.34s cubic-bezier(0, 0, 0.5, 1),
+    transform 0.34s cubic-bezier(0, 0, 0.5, 1),
+    background-color 0.25s ease;
+  pointer-events: none;
+}
+
+.openFabIcon {
+  width: 42%;
+  height: 42%;
+}
+
+.cardButton:hover .openFab,
+.cardButton:focus-visible .openFab {
+  opacity: 1;
+  transform: scale(1) translateY(0);
 }
 
 @media (max-width: 767px) {
   .section {
-    --showcase-card-width: 309px;
-    --showcase-card-height: 450px;
+    --categories-card-width: 309px;
+    --categories-card-height: 450px;
+  }
+
+  .openFab {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 
   .cardInfo {
@@ -220,6 +286,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .titleReveal,
   .cardReveal {
     opacity: 1;
     visibility: visible;
@@ -227,11 +294,26 @@
     will-change: auto;
   }
 
-  .cardLink {
+  .cardButton {
     transition: none;
   }
 
-  .cardLink:hover {
+  .cardButton:hover {
     transform: none;
+  }
+
+  .openFab {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @media (hover: none) {
+    .openFab {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
   }
 }

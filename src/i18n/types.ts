@@ -224,6 +224,9 @@ export type Dictionary = Readonly<{
     sliderAriaLabel: string;
     prevLabel: string;
     nextLabel: string;
+    openCardLabel: string;
+    modalCloseLabel: string;
+    modalPlaceholder: string;
     cards: Readonly<
       Record<
         | "wheelPainting"
@@ -344,13 +347,13 @@ export type Dictionary = Readonly<{
       }>;
     }>;
   }>;
-  /** How rim/studio works — four-step process diagram. */
+  /** How rim/studio works — expandable step carousel. */
   process: Readonly<{
     titleMuted: string;
     titleStrong: string;
-    videoAlt: string;
-    diagramAriaLabel: string;
-    cta: Readonly<{ label: string; href: string }>;
+    carouselAriaLabel: string;
+    prevLabel: string;
+    nextLabel: string;
     steps: ReadonlyArray<
       Readonly<{
         id: string;
@@ -404,6 +407,15 @@ export type Dictionary = Readonly<{
         initials: string;
       }>
     >;
+  }>;
+  /** Full-viewport map block above the footer. */
+  visitMap: Readonly<{
+    title: string;
+    contactsEyebrow: string;
+    contactsTitle: string;
+    bookingEyebrow: string;
+    hoursLabel: string;
+    hoursValue: string;
   }>;
   contactSheet: Readonly<{
     eyebrow: string;

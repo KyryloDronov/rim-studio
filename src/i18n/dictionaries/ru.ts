@@ -657,6 +657,10 @@ export const ru: Dictionary = {
     sliderAriaLabel: "Карусель услуг",
     prevLabel: "Предыдущая карточка",
     nextLabel: "Следующая карточка",
+    openCardLabel: "Открыть услугу",
+    modalCloseLabel: "Закрыть",
+    modalPlaceholder:
+      "Подробное описание, цены и условия появятся здесь на следующем этапе.",
     cards: {
       wheelPainting: {
         category: "Покраска",
@@ -880,12 +884,9 @@ export const ru: Dictionary = {
   process: {
     titleMuted: "Как мы",
     titleStrong: "работаем",
-    videoAlt: "Процесс работы в студии rim/studio",
-    diagramAriaLabel: "Этапы работы rim/studio",
-    cta: {
-      label: "Записаться на консультацию",
-      href: "/contact",
-    },
+    carouselAriaLabel: "Этапы работы rim/studio",
+    prevLabel: "Предыдущий этап",
+    nextLabel: "Следующий этап",
     steps: [
       {
         id: "consultation",
@@ -1002,6 +1003,14 @@ export const ru: Dictionary = {
         initials: "TL",
       },
     ],
+  },
+  visitMap: {
+    title: "Запись и контакты",
+    contactsEyebrow: "Студия",
+    contactsTitle: "Как нас найти",
+    bookingEyebrow: "Сервис",
+    hoursLabel: "Часы работы",
+    hoursValue: "Пн–Сб · 9:00–19:00",
   },
   footer: {
     addressLines: ["Варшава, Польша", "hello@rim.studio"],

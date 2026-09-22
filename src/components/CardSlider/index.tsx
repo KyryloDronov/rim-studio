@@ -102,6 +102,7 @@ export function useCardSlider(options: CardSliderOptions = DEFAULT_OPTIONS) {
 
   return {
     emblaRef,
+    emblaApi,
     scrollPrev,
     scrollNext,
     canScrollPrev,

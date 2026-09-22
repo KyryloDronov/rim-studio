@@ -1,0 +1,10 @@
+.panel {
+  max-width: min(36rem, calc(100vw - 2rem));
+}
+
+.placeholder {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--brand-pearl-alpha-56);
+}

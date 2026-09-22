@@ -655,6 +655,10 @@ export const pl: Dictionary = {
     sliderAriaLabel: "Karuzela usług",
     prevLabel: "Poprzednia karta",
     nextLabel: "Następna karta",
+    openCardLabel: "Otwórz usługę",
+    modalCloseLabel: "Zamknij",
+    modalPlaceholder:
+      "Szczegółowy opis, ceny i warunki pojawią się tutaj w kolejnym kroku.",
     cards: {
       wheelPainting: {
         category: "Lakierowanie",
@@ -877,12 +881,9 @@ export const pl: Dictionary = {
   process: {
     titleMuted: "Jak",
     titleStrong: "pracujemy",
-    videoAlt: "Proces pracy w studiu rim/studio",
-    diagramAriaLabel: "Etapy pracy rim/studio",
-    cta: {
-      label: "Umów konsultację",
-      href: "/contact",
-    },
+    carouselAriaLabel: "Etapy pracy rim/studio",
+    prevLabel: "Poprzedni etap",
+    nextLabel: "Następny etap",
     steps: [
       {
         id: "consultation",
@@ -999,6 +1000,14 @@ export const pl: Dictionary = {
         initials: "TL",
       },
     ],
+  },
+  visitMap: {
+    title: "Zapis i kontakt",
+    contactsEyebrow: "Studio",
+    contactsTitle: "Jak nas znaleźć",
+    bookingEyebrow: "Serwis",
+    hoursLabel: "Godziny otwarcia",
+    hoursValue: "Pn–Sb · 9:00–19:00",
   },
   footer: {
     addressLines: ["Warszawa, Polska", "hello@rim.studio"],

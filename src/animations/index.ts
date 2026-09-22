@@ -4,10 +4,12 @@
  * is registered before any scroll-linked timelines run.
  */
 
-export { FOOTER_CLAIM, FOOTER_SCROLL, HERO_INTRO, LOYALTY_SCROLL, SHOWCASE_SCROLL, BENEFITS_SCROLL, BEFORE_AFTER_SCROLL, TESTIMONIAL_QUOTE, WORD_BLUR_REVEAL, EASE } from "./constants";
+export { FOOTER_CLAIM, FOOTER_SCROLL, HERO_INTRO, LOYALTY_SCROLL, PROCESS_SCROLL, CATEGORIES_MASONRY_SCROLL, SHOWCASE_SCROLL, BENEFITS_SCROLL, BEFORE_AFTER_SCROLL, TESTIMONIAL_QUOTE, WORD_BLUR_REVEAL, EASE } from "./constants";
 export type {
   BeforeAfterRevealClassNames,
   BenefitsRevealClassNames,
+  CategoriesMasonryRevealClassNames,
+  ProcessRevealClassNames,
   FooterRevealClassNames,
   FooterScrollRefs,
   HeroIntroClassNames,
@@ -48,6 +50,14 @@ export {
   runShowcaseScrollReveal,
   setShowcaseRevealReducedMotion,
 } from "./timelines/showcase-scroll";
+export {
+  runCategoriesMasonryScrollReveal,
+  setCategoriesMasonryRevealReducedMotion,
+} from "./timelines/categories-masonry-scroll";
+export {
+  runProcessScrollReveal,
+  setProcessRevealReducedMotion,
+} from "./timelines/process-scroll";
 export {
   resetTestimonialQuote,
   runTestimonialQuoteExit,
