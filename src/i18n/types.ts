@@ -319,32 +319,38 @@ export type Dictionary = Readonly<{
       privacyHref: string;
     }>;
   }>;
-  /** Full-viewport about-the-studio hub (6 cards + header). */
+  /** About-the-studio hub — founder, approach, pillars, journey. */
   aboutSection: Readonly<{
+    eyebrow: string;
     heading: string;
     lead: string;
     cta: Readonly<{ label: string; href: string }>;
-    cards: Readonly<{
-      studio: Readonly<{ label: string }>;
-      timeline: ReadonlyArray<
+    founder: Readonly<{
+      role: string;
+      name: string;
+    }>;
+    approach: Readonly<{
+      label: string;
+      titleStart: string;
+      titleAccent: string;
+      body: string;
+    }>;
+    pillars: ReadonlyArray<
+      Readonly<{
+        id: string;
+        title: string;
+        body: string;
+      }>
+    >;
+    journey: Readonly<{
+      label: string;
+      milestones: ReadonlyArray<
         Readonly<{
-          period: string;
-          role: string;
-          detail: string;
+          year: string;
+          title: string;
+          body: string;
         }>
       >;
-      warranty: Readonly<{
-        label: string;
-        title: string;
-        body: string;
-      }>;
-      stat: Readonly<{ value: string; caption: string }>;
-      equipment: Readonly<{ label: string }>;
-      advantage: Readonly<{
-        label: string;
-        title: string;
-        body: string;
-      }>;
     }>;
   }>;
   /** How rim/studio works — expandable step carousel. */

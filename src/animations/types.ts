@@ -82,6 +82,15 @@ export type ProcessRevealClassNames = Readonly<{
   controlsReveal: string;
 }>;
 
+/** About section scroll reveal. */
+export type AboutRevealClassNames = Readonly<{
+  introReveal: string;
+  founderReveal: string;
+  approachReveal: string;
+  pillarReveal: string;
+  journeyReveal: string;
+}>;
+
 /** Before/after section scroll-reveal class names. */
 export type BeforeAfterRevealClassNames = Readonly<{
   compareReveal: string;

@@ -1,25 +1,24 @@
 "use client";
 
+import gsap from "gsap";
 import {
-  CircleDot,
+  CircleParking,
+  Clock,
+  Gem,
   ClipboardCheck,
-  Gauge,
-  Hammer,
   Layers,
-  Paintbrush,
-  Shield,
-  Sparkles,
-  Wrench,
-  Zap,
   type LucideIcon,
 } from "lucide-react";
+import Image from "next/image";
 import { useReducedMotion } from "motion/react";
 import { useEffect, useRef } from "react";
+import { runAboutScrollReveal, runAboutJourneyProgress } from "@/animations";
 import { Button } from "@/components/Button";
 import {
-  ABOUT_EQUIPMENT_ICONS,
+  ABOUT_PILLAR_BACKGROUNDS,
+  ABOUT_PILLAR_ICONS,
   ABOUT_SECTION_VIDEOS,
-  type AboutEquipmentIconId,
+  type AboutPillarIconId,
 } from "@/content/about-section";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { localizedPath } from "@/i18n/paths";
@@ -28,22 +27,29 @@ import styles from "./style.module.css";
 
 export const ABOUT_SECTION_ID = "about-studio";
 
-const EQUIPMENT_ICON_MAP: Record<AboutEquipmentIconId, LucideIcon> = {
-  paintbrush: Paintbrush,
-  gauge: Gauge,
-  shield: Shield,
-  wrench: Wrench,
+const PILLAR_ICON_MAP: Record<AboutPillarIconId, LucideIcon> = {
   layers: Layers,
-  disc: CircleDot,
-  hammer: Hammer,
-  zap: Zap,
+  gem: Gem,
+  clock: Clock,
+  parking: CircleParking,
 };
+
+const REVEAL_CLASSES = {
+  introReveal: styles.introReveal,
+  founderReveal: styles.founderReveal,
+  approachReveal: styles.approachReveal,
+  pillarReveal: styles.pillarReveal,
+  journeyReveal: styles.journeyReveal,
+} as const;
 
 export function AboutSection() {
   const { locale, t } = useLocale();
   const { aboutSection } = t;
   const prefersReducedMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
+  const journeyRef = useRef<HTMLDivElement>(null);
+  const journeyFillRef = useRef<HTMLDivElement>(null);
+  const milestoneRefs = useRef<(HTMLLIElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
   useEffect(() => {
@@ -72,6 +78,39 @@ export function AboutSection() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    let cleanupJourney: (() => void) | undefined;
+
+    const ctx = gsap.context(() => {
+      runAboutScrollReveal(
+        section,
+        REVEAL_CLASSES,
+        prefersReducedMotion === true,
+      );
+
+      const journeyRoot = journeyRef.current;
+      const fill = journeyFillRef.current;
+      const milestones = milestoneRefs.current.filter(
+        (node): node is HTMLLIElement => node != null,
+      );
+
+      if (journeyRoot && fill && milestones.length > 0) {
+        cleanupJourney = runAboutJourneyProgress(
+          { root: journeyRoot, fill, milestones },
+          prefersReducedMotion === true,
+        );
+      }
+    }, section);
+
+    return () => {
+      cleanupJourney?.();
+      ctx.revert();
+    };
+  }, [prefersReducedMotion]);
+
   const registerVideo =
     (index: number) =>
     (element: HTMLVideoElement | null): void => {
@@ -86,8 +125,9 @@ export function AboutSection() {
       aria-labelledby={`${ABOUT_SECTION_ID}-heading`}
     >
       <div className={styles.inner}>
-        <header className={styles.intro}>
+        <header className={`${styles.intro} ${styles.introReveal}`}>
           <div className={styles.introCopy}>
+            <p className={styles.sectionEyebrow}>{aboutSection.eyebrow}</p>
             <h2 id={`${ABOUT_SECTION_ID}-heading`} className={styles.heading}>
               {aboutSection.heading}
             </h2>
@@ -106,91 +146,110 @@ export function AboutSection() {
           </Button>
         </header>
 
-        <div className={styles.grid}>
-          <article className={`${styles.card} ${styles.videoCard} ${styles.heroCard}`}>
+        <div className={styles.mainGrid}>
+          <article
+            className={`${styles.card} ${styles.founderCard} ${styles.founderReveal}`}
+          >
             <BackgroundVideo
-              src={ABOUT_SECTION_VIDEOS.studio}
+              src={ABOUT_SECTION_VIDEOS.founder}
               videoRef={registerVideo(0)}
             />
-            <div className={styles.heroOverlay} aria-hidden="true" />
-            <p className={styles.eyebrow}>{aboutSection.cards.studio.label}</p>
-            <ul className={styles.timeline}>
-              {aboutSection.cards.timeline.map((item) => (
-                <li key={item.period} className={styles.timelineRow}>
-                  <span className={styles.timelinePeriod}>{item.period}</span>
-                  <Sparkles
-                    className={styles.timelineSep}
-                    strokeWidth={1.5}
-                    aria-hidden
-                  />
-                  <span className={styles.timelineRole}>{item.role}</span>
-                  <span className={styles.timelineDetail}>{item.detail}</span>
-                </li>
-              ))}
-            </ul>
+            <div className={styles.mediaOverlay} aria-hidden="true" />
+            <div className={styles.founderCaption}>
+              <p className={styles.founderRole}>
+                {aboutSection.founder.role}
+                <span className={styles.founderName}>
+                  {aboutSection.founder.name}
+                </span>
+              </p>
+              <span className={styles.founderRule} aria-hidden="true" />
+            </div>
           </article>
 
-          <div className={`${styles.stackCol} ${styles.stackColMid}`}>
+          <div className={styles.rightCol}>
             <article
-              className={`${styles.card} ${styles.tintCard} ${styles.noiseOverlay} ${styles.cardWarranty}`}
-            >
-              <p className={styles.eyebrow}>{aboutSection.cards.warranty.label}</p>
-              <h3 className={styles.cardTitle}>{aboutSection.cards.warranty.title}</h3>
-              <p className={styles.cardBody}>{aboutSection.cards.warranty.body}</p>
-            </article>
-
-            <article
-              className={`${styles.card} ${styles.videoCard} ${styles.statCard} ${styles.cardStat}`}
+              className={`${styles.card} ${styles.approachCard} ${styles.approachReveal}`}
             >
               <BackgroundVideo
-                src={ABOUT_SECTION_VIDEOS.stat}
+                src={ABOUT_SECTION_VIDEOS.approach}
                 videoRef={registerVideo(1)}
               />
-              <div className={styles.cardOverlay} />
-              <p className={styles.statValue}>{aboutSection.cards.stat.value}</p>
-              <p className={styles.statCaption}>
-                {aboutSection.cards.stat.caption}
-              </p>
-            </article>
-          </div>
-
-          <div className={`${styles.stackCol} ${styles.stackColEnd}`}>
-            <article
-              className={`${styles.card} ${styles.videoCard} ${styles.equipmentCard} ${styles.cardEquipment}`}
-            >
-              <BackgroundVideo
-                src={ABOUT_SECTION_VIDEOS.equipment}
-                videoRef={registerVideo(2)}
-              />
-              <div className={styles.cardOverlay} />
-              <p className={styles.eyebrow}>{aboutSection.cards.equipment.label}</p>
-              <div className={styles.marqueeStack}>
-                <IconMarquee
-                  icons={ABOUT_EQUIPMENT_ICONS}
-                  direction="left"
-                  reducedMotion={Boolean(prefersReducedMotion)}
-                />
-                <IconMarquee
-                  icons={[...ABOUT_EQUIPMENT_ICONS].reverse()}
-                  direction="right"
-                  reducedMotion={Boolean(prefersReducedMotion)}
-                />
+              <div className={styles.approachOverlay} aria-hidden="true" />
+              <div className={styles.approachCopy}>
+                <p className={styles.eyebrow}>{aboutSection.approach.label}</p>
+                <h3 className={styles.approachTitle}>
+                  {aboutSection.approach.titleStart}{" "}
+                  <span className={styles.approachAccent}>
+                    {aboutSection.approach.titleAccent}
+                  </span>
+                </h3>
+                <p className={styles.cardBody}>{aboutSection.approach.body}</p>
               </div>
             </article>
 
-            <article
-              className={`${styles.card} ${styles.tintCard} ${styles.noiseOverlay} ${styles.cardAdvantage}`}
-            >
-              <p className={styles.eyebrow}>
-                {aboutSection.cards.advantage.label}
-              </p>
-              <h3 className={styles.cardTitle}>
-                {aboutSection.cards.advantage.title}
-              </h3>
-              <p className={styles.cardBody}>
-                {aboutSection.cards.advantage.body}
-              </p>
-            </article>
+            <div className={styles.pillarsGrid}>
+              {aboutSection.pillars.map((pillar, index) => {
+                const iconId = ABOUT_PILLAR_ICONS[index] ?? "layers";
+                const Icon = PILLAR_ICON_MAP[iconId];
+                const bgSrc = ABOUT_PILLAR_BACKGROUNDS[index];
+
+                return (
+                  <article
+                    key={pillar.id}
+                    className={`${styles.card} ${styles.pillarCard} ${styles.pillarReveal}`}
+                  >
+                    {bgSrc ? (
+                      <Image
+                        src={bgSrc}
+                        alt=""
+                        fill
+                        sizes="(max-width: 991px) 50vw, 20vw"
+                        className={styles.pillarBg}
+                        draggable={false}
+                      />
+                    ) : null}
+                    <div className={styles.pillarScrim} aria-hidden="true" />
+                    <span className={styles.pillarIconWrap}>
+                      <Icon strokeWidth={1.5} aria-hidden />
+                    </span>
+                    <h4 className={styles.pillarTitle}>{pillar.title}</h4>
+                    <p className={styles.pillarBody}>{pillar.body}</p>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div
+          ref={journeyRef}
+          className={`${styles.journey} ${styles.journeyReveal}`}
+        >
+          <p className={styles.journeyLabel}>{aboutSection.journey.label}</p>
+          <div className={styles.journeyTimeline}>
+            <div className={styles.journeyRail} aria-hidden="true">
+              <div className={styles.journeyRailBase} />
+              <div ref={journeyFillRef} className={styles.journeyRailFill} />
+            </div>
+            <ol className={styles.milestoneList}>
+              {aboutSection.journey.milestones.map((item, index) => (
+                <li
+                  key={item.year}
+                  ref={(element) => {
+                    milestoneRefs.current[index] = element;
+                  }}
+                  className={styles.milestone}
+                  data-reached="false"
+                >
+                  <div className={styles.milestoneMarker}>
+                    <span className={styles.milestoneDot} aria-hidden="true" />
+                  </div>
+                  <span className={styles.milestoneYear}>{item.year}</span>
+                  <span className={styles.milestoneTitle}>{item.title}</span>
+                  <span className={styles.milestoneBody}>{item.body}</span>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </div>
@@ -216,37 +275,5 @@ function BackgroundVideo({ src, videoRef }: BackgroundVideoProps) {
       preload="metadata"
       aria-hidden
     />
-  );
-}
-
-type IconMarqueeProps = Readonly<{
-  icons: ReadonlyArray<AboutEquipmentIconId>;
-  direction: "left" | "right";
-  reducedMotion: boolean;
-}>;
-
-function IconMarquee({ icons, direction, reducedMotion }: IconMarqueeProps) {
-  const track = [...icons, ...icons];
-
-  return (
-    <div className={styles.marqueeMask}>
-      <div
-        className={`${styles.marqueeTrack} ${
-          direction === "left" ? styles.marqueeLeft : styles.marqueeRight
-        } ${reducedMotion ? styles.marqueeStatic : ""}`}
-      >
-        {track.map((iconId, index) => {
-          const Icon = EQUIPMENT_ICON_MAP[iconId];
-          return (
-            <span
-              key={`${iconId}-${index}`}
-              className={`${styles.iconTile} ${styles.liquidGlass}`}
-            >
-              <Icon strokeWidth={1.5} aria-hidden />
-            </span>
-          );
-        })}
-      </div>
-    </div>
   );
 }

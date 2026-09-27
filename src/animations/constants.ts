@@ -117,6 +117,45 @@ export const PROCESS_SCROLL = {
   },
 } as const;
 
+/** About studio hub — header, bento cards, journey line. */
+export const ABOUT_SCROLL = {
+  triggerStart: "top 78%",
+  defaultsEase: EASE.punchy,
+  intro: {
+    yFrom: 20,
+    duration: 0.65,
+  },
+  founder: {
+    yFrom: 28,
+    duration: 0.72,
+    overlapIntro: 0.32,
+  },
+  approach: {
+    yFrom: 24,
+    duration: 0.68,
+    overlapFounder: 0.28,
+  },
+  pillars: {
+    yFrom: 20,
+    duration: 0.62,
+    stagger: 0.07,
+    overlapApproach: 0.22,
+  },
+  journey: {
+    yFrom: 18,
+    duration: 0.58,
+    stagger: 0.08,
+    overlapPillars: 0.2,
+  },
+} as const;
+
+/** Horizontal journey line — play once when section enters view. */
+export const ABOUT_JOURNEY = {
+  triggerStart: "top 78%",
+  duration: 2.35,
+  ease: EASE.narrative,
+} as const;
+
 /** Home service categories bento — staggered lift on scroll. */
 export const CATEGORIES_MASONRY_SCROLL = {
   triggerStart: "top 82%",

@@ -34,18 +34,24 @@ export const PRICING_TAB_ICONS: Record<PricingTabId, LucideIcon> = {
   tig: Flame,
 };
 
-/** Decorative backgrounds per tab (demo assets). */
-export const PRICING_TAB_BACKGROUNDS: Partial<
-  Record<PricingTabId, Readonly<{ src: string }>>
+/** Ambient loop per pricing tab — category clips in `/public/img/categories/`. */
+export const PRICING_TAB_VIDEOS: Record<
+  PricingTabId,
+  Readonly<{ src: string }>
 > = {
-  paint: { src: "/img/LH_Performante_Narvi_Forged_1.png" },
-  repair: { src: "/img/RS_Brake_1.png" },
-  diamond: { src: "/img/LH_Performante_Narvi_Forged_1.png" },
-  tire: { src: "/img/GoodWay_Gale_F7_1.png" },
-  caliper: { src: "/img/RS_Brake_1.png" },
-  motorcycle: { src: "/img/3-min.png.webp" },
-  tig: { src: "/img/-min.png.webp" },
+  paint: { src: "/img/categories/Wheel -painting.mp4" },
+  tire: { src: "/img/categories/Tire-service.mp4" },
+  repair: { src: "/img/categories/Disc-repair.mp4" },
+  caliper: { src: "/img/categories/Paintin_calipers.mp4" },
+  diamond: { src: "/img/categories/Diamond-grinding-of-discs.mp4" },
+  motorcycle: {
+    src: "/img/categories/Painting-motorcycle-wheels -and-parts.mp4",
+  },
+  tig: { src: "/img/categories/Argon-arc-welding.mp4" },
 };
+
+/** @deprecated Alias — same paths as `PRICING_TAB_VIDEOS`. */
+export const PRICING_TAB_BACKGROUNDS = PRICING_TAB_VIDEOS;
 
 /** Put `featured` first — for service pages where that tab should lead. */
 export function resolvePricingTabOrder(
@@ -57,11 +63,14 @@ export function resolvePricingTabOrder(
   return [featured, ...PRICING_TAB_ORDER.filter((id) => id !== featured)];
 }
 
-/** Warm the browser cache before the crossfade (raw public path). */
+/** Warm the browser cache before the crossfade. */
 export function preloadPricingTabBackground(tabId: PricingTabId): void {
   if (globalThis.window === undefined) return;
-  const src = PRICING_TAB_BACKGROUNDS[tabId]?.src;
+  const src = PRICING_TAB_VIDEOS[tabId]?.src;
   if (!src) return;
-  const img = new Image();
-  img.src = src;
+  const video = document.createElement("video");
+  video.preload = "auto";
+  video.muted = true;
+  video.src = src;
+  video.load();
 }

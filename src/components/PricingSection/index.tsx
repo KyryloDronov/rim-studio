@@ -14,8 +14,6 @@ import {
 import { PricingTable } from "@/components/PricingTable";
 import { PricingTabBackground } from "@/components/PricingSection/PricingTabBackground";
 import {
-  PRICING_BLUR_PEAK_PX,
-  PRICING_BLUR_REST_PX,
   PRICING_BLUR_SETTLE_S,
   PRICING_REVEAL_DELAY_S,
   PRICING_WASH_PEAK,
@@ -67,7 +65,6 @@ export function PricingSection({ featuredTab = "paint" }: PricingSectionProps) {
   });
   const [activeTab, setActiveTab] = useState<PricingTabId>(featuredTab);
   const [tableEnterDone, setTableEnterDone] = useState(true);
-  const [bgBlurPx, setBgBlurPx] = useState(PRICING_BLUR_REST_PX);
   const [bgWash, setBgWash] = useState(PRICING_WASH_REST);
   const [tableEnterDelay, setTableEnterDelay] = useState(0);
 
@@ -83,7 +80,6 @@ export function PricingSection({ featuredTab = "paint" }: PricingSectionProps) {
     blurTweenRef.current?.kill();
 
     if (prefersReducedMotion) {
-      setBgBlurPx(PRICING_BLUR_REST_PX);
       setBgWash(PRICING_WASH_REST);
       setTableEnterDelay(0);
       return;
@@ -91,18 +87,15 @@ export function PricingSection({ featuredTab = "paint" }: PricingSectionProps) {
 
     setTableEnterDelay(PRICING_REVEAL_DELAY_S);
 
-    const state = { blur: PRICING_BLUR_PEAK_PX, wash: PRICING_WASH_PEAK };
-    setBgBlurPx(state.blur);
+    const state = { wash: PRICING_WASH_PEAK };
     setBgWash(state.wash);
 
     blurTweenRef.current = gsap.to(state, {
-      blur: PRICING_BLUR_REST_PX,
       wash: PRICING_WASH_REST,
       duration: PRICING_BLUR_SETTLE_S,
       delay: PRICING_REVEAL_DELAY_S,
       ease: "power2.out",
       onUpdate: () => {
-        setBgBlurPx(state.blur);
         setBgWash(state.wash);
       },
     });
@@ -161,7 +154,6 @@ export function PricingSection({ featuredTab = "paint" }: PricingSectionProps) {
     >
       <PricingTabBackground
         activeTab={activeTab}
-        blurPx={bgBlurPx}
         washAlpha={bgWash}
       />
 

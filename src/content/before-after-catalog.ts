@@ -29,6 +29,28 @@ const COMPARE_PAIR_B = {
   afterSrc: "/img/3-after.jpg",
 } as const;
 
+const CALIPER_PAINTING_PORTFOLIO = [
+  "/portfolio/caliper-painting/12023d9d-de5d-4db9-ad44-0aec64791704.png",
+  "/portfolio/caliper-painting/14052291-4965-48bf-b9aa-3c5248b893ea.png",
+  "/portfolio/caliper-painting/2ba6027b-4271-461d-8adf-b255e600f148.png",
+  "/portfolio/caliper-painting/322e1562-77f1-42e3-84b1-18392a4329e6.png",
+  "/portfolio/caliper-painting/519eebc7-ce49-42c2-a9eb-6cf7b875fc68-2.png",
+  "/portfolio/caliper-painting/56460b23-b2f5-4db7-8edc-42b43f697a71.png",
+  "/portfolio/caliper-painting/a2735059-944f-4af9-a5ea-d821cb8ebef5.png",
+  "/portfolio/caliper-painting/ab2c5e58-41c7-411b-b860-ddb330bd48b0.png",
+  "/portfolio/caliper-painting/bdf78bb4-f2c5-4d80-9f8a-16825bda7a55-2.png",
+  "/portfolio/caliper-painting/c5081bc4-0b42-4640-bcfa-662403b163e9.png",
+  "/portfolio/caliper-painting/f29139ed-bcb2-46db-b7de-f0694b1ae715-2.png",
+] as const;
+
+const DIAMOND_GRINDING_PORTFOLIO = [
+  "/portfolio/diamond-grinding/01.png",
+  "/portfolio/diamond-grinding/02.png",
+  "/portfolio/diamond-grinding/03.png",
+  "/portfolio/diamond-grinding/04.png",
+  "/portfolio/diamond-grinding/05.png",
+] as const;
+
 function compareItems(
   prefix: string,
   count: number,
@@ -76,12 +98,12 @@ export const BEFORE_AFTER_TAB_CATALOG: Record<PricingTabId, BeforeAfterTabCatalo
       compare: compareItems("repair", 6),
     },
     caliper: {
-      mode: "compare",
-      compare: compareItems("caliper", 6),
+      mode: "gallery",
+      gallery: galleryItems("caliper", CALIPER_PAINTING_PORTFOLIO),
     },
     diamond: {
-      mode: "compare",
-      compare: compareItems("diamond", 6),
+      mode: "gallery",
+      gallery: galleryItems("diamond", DIAMOND_GRINDING_PORTFOLIO),
     },
     motorcycle: {
       mode: "gallery",

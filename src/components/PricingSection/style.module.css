@@ -10,8 +10,8 @@
   min-height: 100vh;
   min-height: 100dvh;
   padding: 6vw 4vw 2vw;
-  background: var(--brand-pearl-100);
-  color: var(--brand-pearl-alpha-88);
+  background: var(--brand-ink-700);
+  color: var(--brand-white);
   overflow: hidden;
   scroll-margin-top: 0;
 }
@@ -32,8 +32,7 @@
 .bgBase {
   position: absolute;
   inset: 0;
-  /* Darker than pearl-100 so crossfade gaps never read as a white flash. */
-  background: var(--brand-ink-500);
+  background: var(--brand-ink-700);
 }
 
 .bgStage {
@@ -45,40 +44,49 @@
 .bgStack {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
   transform-origin: center center;
-  will-change: opacity, transform;
+  will-change: opacity;
 }
 
 .bgVisual {
   position: absolute;
-  inset: 0;
-  transform-origin: center center;
+  inset: -4%;
+  overflow: hidden;
 }
 
-.bgImage {
+.bgVideo {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center center;
+  object-position: center 42%;
+  pointer-events: none;
   user-select: none;
+  filter: blur(12px) saturate(1.08) brightness(0.86);
+  transform: scale(1.04);
 }
 
-/* Frost layer — blur/wash set inline from GSAP (avoid CSS-var override). */
-.bgBlurOverlay {
+/* Ink vignette — symmetric top/bottom, lighter in the center (video readable). */
+.bgScrim {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  will-change: backdrop-filter, background;
+  will-change: background;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .bgVisual,
-  .bgBlurOverlay {
+  .bgVideo,
+  .bgScrim {
     will-change: auto;
+  }
+
+  .bgVideo {
+    filter: blur(8px) saturate(1.05) brightness(0.88);
+    transform: none;
   }
 }
 
@@ -133,21 +141,31 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  align-items: flex-start;
   width: 100%;
   min-height: 0;
 }
 
 .panel {
   --tabs-duration: 0.72s;
-  --table-radius: 1rem;
-  --table-glass-blur: blur(12px) saturate(1.4);
-  --table-glass-bg: rgb(171 171 171 / 0.4);
-  --table-glass-border: rgb(171 171 171 / 0.38);
-  --table-glass-shadow: 0 4px 30px rgb(0 0 0 / 0.1);
-  --table-head-glass-bg: rgb(25 31 36 / 0.58);
-  --table-head-divider: rgb(255 255 255 / 0.06);
-  --table-cell-glass-bg: rgb(255 255 255 / 0.14);
-  --table-cell-glass-bg-alt: rgb(255 255 255 / 0.08);
+  --tabs-bar-bg: var(--brand-ink-700);
+  --table-radius: 1.25rem;
+  --table-radius-top-left: 1.25rem;
+  --table-radius-top-right: 1.25rem;
+  --table-radius-bottom-left: 1.25rem;
+  --table-radius-bottom-right: 1.25rem;
+  --table-glass-blur: blur(0px);
+  --table-glass-bg: var(--brand-ink-700);
+  --table-glass-border: rgb(255 255 255 / 0.08);
+  --table-glass-shadow:
+    0 1px 0 rgb(255 255 255 / 0.06) inset,
+    0 16px 44px rgb(0 0 0 / 0.32);
+  --table-head-glass-bg: var(--brand-ink-600);
+  --table-head-divider: rgb(255 255 255 / 0.08);
+  --table-cell-glass-bg: rgb(255 255 255 / 0.04);
+  --table-cell-glass-bg-alt: rgb(255 255 255 / 0.025);
+  --table-row-label-color: rgb(255 255 255 / 0.88);
+  --table-cell-text-color: rgb(255 255 255 / 0.62);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -189,17 +207,13 @@
   width: 100%;
   height: 100%;
   transform-origin: bottom center;
-  /* Same glass + header tint stack as `.headCell` over `.glassSurface`. */
-  background:
-    linear-gradient(var(--table-head-glass-bg), var(--table-head-glass-bg)),
-    var(--table-glass-bg);
-  -webkit-backdrop-filter: var(--table-glass-blur);
-  backdrop-filter: var(--table-glass-blur);
+  background: var(--table-glass-bg);
   border-bottom: 1px solid var(--table-head-divider);
 }
 
 .tableScroll {
-  border-radius: var(--table-radius, 1rem);
+  border-radius: var(--table-radius);
+  border: 1px solid var(--table-glass-border);
 }
 
 .tableArea {

@@ -733,18 +733,16 @@ export const pl: Dictionary = {
         },
       },
       caliper: {
-        thumbsAriaLabel: "Przykłady lakierowania zacisków",
-        compareFallback: {
-          beforeAlt: "Zacisk przed lakierowaniem",
-          afterAlt: "Zacisk po lakierowaniu",
+        thumbsAriaLabel: "Galeria lakierowania zacisków",
+        galleryFallback: {
+          alt: "Lakierowanie zacisków hamulcowych w rim/studio",
           thumbAlt: "Przykład lakierowania zacisku",
         },
       },
       diamond: {
-        thumbsAriaLabel: "Przykłady szlifowania diamentowego",
-        compareFallback: {
-          beforeAlt: "Felga przed szlifowaniem",
-          afterAlt: "Felga po szlifowaniu",
+        thumbsAriaLabel: "Galeria szlifowania diamentowego",
+        galleryFallback: {
+          alt: "Szlifowanie diamentowe felgi w rim/studio",
           thumbAlt: "Przykład szlifowania diamentowego",
         },
       },
@@ -826,56 +824,75 @@ export const pl: Dictionary = {
     },
   },
   aboutSection: {
-    heading: "rim/studio — renowacja i lakierowanie felg",
+    eyebrow: "O studiu",
+    heading: "Renowacja felg",
     lead:
-      "Studio w Warszawie: przywracamy geometrię, przygotowujemy powierzchnię i lakierujemy komplety tak, by nie odróżnić ich od fabrycznych. Bez przedpłaty, z gwarancją do trzech lat i jasnym terminem przed startem prac.",
+      "Ponad 10 lat w renowacji felg: od lokalnych napraw po pełny cykl lakierowania w Warszawie. Znamy proces w detalach i doprowadzamy każdy komplet do fabrycznego wyglądu.",
     cta: {
       label: "Umów diagnostykę felg",
       href: "/contact",
     },
-    cards: {
-      studio: { label: "Studio" },
-      timeline: [
+    founder: {
+      role: "Założyciel",
+      name: "Giorgi",
+    },
+    approach: {
+      label: "Nasze podejście",
+      titleStart: "Bez kompromisów",
+      titleAccent: "w jakości.",
+      body:
+        "Precyzyjne przygotowanie, kontrola geometrii i lakierowanie technologiczne — bez pośpiechu i „kosmetyki”. Efekt, który można pokazać.",
+    },
+    pillars: [
+      {
+        id: "cycle",
+        title: "Pełen cykl prac",
+        body:
+          "Demontaż, renowacja, lakierowanie, suszenie i montaż — w jednym studio, bez podwykonawców.",
+      },
+      {
+        id: "premium",
+        title: "Premium efekt",
+        body:
+          "Dobór koloru i faktury do fabryki lub Twojej referencji — równa powłoka bez smug.",
+      },
+      {
+        id: "timing",
+        title: "1–4 dni na komplet",
+        body:
+          "Podajemy termin przed startem i go dotrzymujemy — bez niespodzianek w trakcie.",
+      },
+      {
+        id: "parking",
+        title: "Parking na terenie",
+        body:
+          "Brak zapasowego kompletu — zostaw auto u nas, gdy lakierujemy felgi.",
+      },
+    ],
+    journey: {
+      label: "Moja droga",
+      milestones: [
         {
-          period: "2022 — obecnie",
-          role: "rim/studio",
-          detail: "Lakierowanie, naprawa i montaż opon",
+          year: "2014",
+          title: "Początek kierunku",
+          body: "Przygotowanie i lokalna naprawa",
         },
         {
-          period: "2019 — 2022",
-          role: "Kabina lakiernicza",
-          detail: "Technologie proszkowe i suszenie",
+          year: "2016",
+          title: "Renowacja felg",
+          body: "Dealerzy i klienci indywidualni",
         },
         {
-          period: "2016 — 2019",
-          role: "Renowacja felg",
-          detail: "Dealerzy i klienci indywidualni",
+          year: "2019",
+          title: "Kabina lakiernicza",
+          body: "Technologie proszkowe i suszenie",
         },
         {
-          period: "2014 — 2016",
-          role: "Początek kierunku",
-          detail: "Przygotowanie i lokalna naprawa",
+          year: "2022",
+          title: "rim/studio",
+          body: "Lakierowanie, naprawa i montaż opon w jednym studio",
         },
       ],
-      warranty: {
-        label: "Gwarancja",
-        title: "Na nasze usługi dajemy 3 lata gwarancji",
-        body:
-          "Jeśli w tym czasie odpryśnie lakier lub pojawi się wada, której nie powinno być — naprawimy na nasz koszt",
-      },
-      stat: {
-        value: "8+",
-        caption: "lat na rynku renowacji",
-      },
-      equipment: {
-        label: "Sprzęt",
-      },
-      advantage: {
-        label: "Warunki",
-        title: "Pracujemy bez przedpłaty",
-        body:
-          "Płatność dopiero po odbiorze efektu. Przed rozpoczęciem prac podajemy dokładną cenę i termin — bez niespodzianek w trakcie.",
-      },
     },
   },
   process: {

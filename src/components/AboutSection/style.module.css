@@ -1,17 +1,11 @@
 /* ===========================================================
-   About — full-viewport company hub (video + 6-card grid)
+   About — founder column, approach + pillars, journey line
    =========================================================== */
 
 .section {
   position: relative;
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  min-height: 100vh;
-  min-height: 100dvh;
-  max-height: 100dvh;
-  padding: clamp(1.25rem, 2.5vh, 2.5rem) 0;
-  box-sizing: border-box;
+  padding: clamp(3rem, 8vh, 5.5rem) 0 clamp(3.25rem, 7vh, 4.75rem);
   background: var(--brand-ink-700);
   color: var(--brand-white);
   overflow: hidden;
@@ -20,10 +14,8 @@
 
 .inner {
   display: flex;
-  flex: 1 1 auto;
   flex-direction: column;
   width: min(100%, 88rem);
-  min-height: 0;
   margin: 0 auto;
   padding: 0 clamp(1rem, 4vw, 2.5rem);
 }
@@ -33,65 +25,49 @@
   grid-template-columns: minmax(0, 1fr) auto;
   gap: clamp(1rem, 2.5vw, 2rem);
   align-items: end;
-  margin-bottom: clamp(1rem, 2.2vh, 1.75rem);
+  margin-bottom: clamp(1.35rem, 3vh, 2.25rem);
+}
+
+.introReveal,
+.founderReveal,
+.approachReveal,
+.pillarReveal,
+.journeyReveal,
+.milestoneReveal {
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
 }
 
 .introCopy {
   max-width: 48rem;
 }
 
+.sectionEyebrow {
+  margin: 0 0 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.48);
+}
+
 .heading {
   margin: 0;
-  font-size: clamp(1.6rem, 2.8vw, 2.8rem);
-  font-weight: 400;
-  line-height: 1.1;
+  font-size: clamp(1.55rem, 2.6vw, 2.55rem);
+  font-weight: 500;
+  line-height: 1.12;
   letter-spacing: -0.025em;
   color: var(--brand-white);
   text-wrap: pretty;
 }
 
 .lead {
-  margin: clamp(0.85rem, 1.6vh, 1.1rem) 0 0;
-  max-width: 42rem;
-  font-size: 0.9rem;
+  margin: clamp(0.85rem, 1.6vh, 1.05rem) 0 0;
+  max-width: 40rem;
+  font-size: 0.92rem;
   font-weight: 400;
-  line-height: 1.4;
-  letter-spacing: 0.01em;
-  color: rgb(255 255 255 / 0.55);
-  text-wrap: pretty;
-}
-
-.eyebrow {
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: rgb(255 255 255 / 0.5);
-}
-
-.eyebrowStart {
-  align-self: flex-start;
-  text-align: left;
-}
-
-.cardTitle {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.3;
-  letter-spacing: -0.005em;
-  color: var(--brand-white);
-  text-wrap: pretty;
-}
-
-.cardBody {
-  margin: 0;
-  font-size: 0.9rem;
-  font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.45;
   letter-spacing: 0.01em;
   color: rgb(255 255 255 / 0.55);
   text-wrap: pretty;
@@ -102,73 +78,21 @@
   border-radius: 999px;
 }
 
-.grid {
+.mainGrid {
   display: grid;
-  flex: 1 1 auto;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  grid-template-rows: minmax(0, 1fr);
-  gap: clamp(0.75rem, 1.4vh, 1.15rem);
-  min-height: 0;
+  grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
+  gap: clamp(0.75rem, 1.4vh, 1.1rem);
+  align-items: stretch;
 }
 
-.stackCol {
+.rightCol {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.75rem, 1.4vh, 1.15rem);
-  min-height: 0;
-}
-
-.stackColMid .cardWarranty {
-  flex: 3 1 0;
-}
-
-.stackColMid .cardStat {
-  flex: 7 1 0;
-}
-
-.stackColEnd .cardEquipment {
-  flex: 7 1 0;
-}
-
-.stackColEnd .cardAdvantage {
-  flex: 3 1 0;
-}
-
-.heroCard {
-  min-height: 0;
-  justify-content: space-between;
-  gap: clamp(0.75rem, 1.4vh, 1rem);
-  padding: clamp(0.85rem, 1.5vh, 1.15rem);
-}
-
-.cardStat {
-  min-height: 0;
-}
-
-.cardEquipment {
-  min-height: 0;
-}
-
-.cardAdvantage {
-  justify-content: flex-start;
-  gap: clamp(0.55rem, 1vh, 0.75rem);
-  padding: clamp(0.95rem, 1.6vh, 1.25rem);
-  min-height: 0;
-}
-
-.cardAdvantage .cardTitle {
-  flex: 0 0 auto;
-}
-
-.cardAdvantage .cardBody {
-  margin-top: auto;
+  gap: clamp(0.75rem, 1.4vh, 1.1rem);
 }
 
 .card {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
   border: 1px solid rgb(255 255 255 / 0.08);
   border-radius: clamp(14px, 1.4vw, 18px);
   background: rgb(10 12 14 / 0.96);
@@ -176,9 +100,12 @@
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
 }
 
-.videoCard {
-  justify-content: space-between;
-  padding: clamp(0.85rem, 1.5vh, 1.15rem);
+.founderCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: clamp(22rem, 52vh, 32rem);
+  padding: clamp(1rem, 2vw, 1.35rem);
 }
 
 .bgVideo {
@@ -187,338 +114,400 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 22%;
   pointer-events: none;
 }
 
-.cardOverlay {
+.mediaOverlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgb(10 12 14 / 0.35) 0%,
-    rgb(10 12 14 / 0.55) 45%,
-    rgb(10 12 14 / 0.82) 100%
+    rgb(25 31 36 / 0.15) 0%,
+    rgb(25 31 36 / 0.35) 42%,
+    rgb(25 31 36 / 0.88) 100%
   );
   pointer-events: none;
 }
 
-.heroOverlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgb(10 12 14 / 0.28) 0%,
-    rgb(10 12 14 / 0.42) 38%,
-    rgb(10 12 14 / 0.72) 68%,
-    rgb(10 12 14 / 0.94) 100%
-  );
-  pointer-events: none;
-}
-
-.heroCard .timeline {
+.founderCaption {
   position: relative;
   z-index: 1;
-  flex: 0 0 auto;
-  justify-content: flex-end;
-  gap: clamp(0.45rem, 0.9vh, 0.65rem);
-  margin-top: auto;
-  padding-top: clamp(0.5rem, 1vh, 0.75rem);
 }
 
-.tintCard {
-  padding: clamp(0.95rem, 1.6vh, 1.25rem);
-  background: rgb(38 46 54 / 0.92);
-  gap: clamp(0.65rem, 1.2vh, 0.85rem);
-}
-
-.cardWarranty {
-  justify-content: flex-start;
-  gap: clamp(0.55rem, 1vh, 0.75rem);
-  padding: clamp(0.95rem, 1.6vh, 1.25rem);
-  min-height: 0;
-}
-
-.cardWarranty .cardTitle {
-  flex: 0 0 auto;
-}
-
-.cardWarranty .cardBody {
-  margin-top: auto;
-}
-
-.statCard {
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.statValue {
-  position: relative;
-  z-index: 1;
+.founderRole {
   margin: 0;
-  font-size: clamp(2.8rem, 6.5vw, 5.5rem);
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
   font-weight: 500;
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
   color: var(--brand-white);
-  text-shadow: 0 8px 28px rgb(0 0 0 / 0.45);
 }
 
-.statCaption {
+.founderName {
+  display: block;
+  margin-top: 0.12em;
+  font-size: 1.12em;
+  font-weight: 600;
+}
+
+.founderRule {
+  display: block;
+  width: min(100%, 7.5rem);
+  height: 2px;
+  margin-top: 0.85rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--brand-accent-500) 0%,
+    rgb(255 153 0 / 0.15) 100%
+  );
+}
+
+.approachCard {
+  flex: 0 0 auto;
+  min-height: clamp(10rem, 22vh, 14rem);
+  padding: clamp(1rem, 2vw, 1.45rem);
+}
+
+.approachOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgb(25 31 36 / 0.92) 0%,
+    rgb(25 31 36 / 0.72) 42%,
+    rgb(25 31 36 / 0.28) 100%
+  );
+  pointer-events: none;
+}
+
+.approachCopy {
   position: relative;
   z-index: 1;
+  max-width: 26rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.5);
+}
+
+.approachTitle {
   margin: 0.55rem 0 0;
-  font-size: 0.9rem;
-  font-weight: 400;
-  line-height: 1.4;
+  font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+  font-weight: 500;
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  color: var(--brand-white);
+  text-wrap: pretty;
+}
+
+.approachAccent {
+  color: var(--brand-accent-400);
+  font-weight: 600;
+}
+
+.cardBody {
+  margin: 0.65rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
   letter-spacing: 0.01em;
   color: rgb(255 255 255 / 0.55);
+  text-wrap: pretty;
 }
 
-.equipmentCard {
-  justify-content: space-between;
-  gap: clamp(0.75rem, 1.4vh, 1rem);
+.pillarsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: clamp(0.65rem, 1.2vh, 0.85rem);
+  align-items: stretch;
 }
 
-.marqueeStack {
-  position: relative;
-  z-index: 1;
+.pillarCard {
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
-  margin-top: auto;
+  gap: 0.45rem;
+  height: 100%;
+  min-height: 0;
+  padding: clamp(0.85rem, 1.4vw, 1.05rem);
+  transition:
+    transform 0.32s cubic-bezier(0, 0, 0.5, 1),
+    border-color 0.32s ease,
+    box-shadow 0.32s ease;
 }
 
-.marqueeMask {
-  overflow: hidden;
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    black 8%,
-    black 92%,
-    transparent 100%
+.pillarCard:hover {
+  transform: translateY(-3px);
+  border-color: rgb(255 255 255 / 0.14);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.06),
+    0 14px 36px rgb(0 0 0 / 0.28);
+}
+
+.pillarBg {
+  object-fit: cover;
+  opacity: 0.22;
+  filter: saturate(0.85);
+  pointer-events: none;
+  user-select: none;
+}
+
+.pillarScrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgb(25 31 36 / 0.55) 0%,
+    rgb(25 31 36 / 0.92) 100%
   );
+  pointer-events: none;
 }
 
-.marqueeTrack {
-  display: flex;
-  width: max-content;
-  gap: 0.55rem;
-}
-
-.marqueeLeft {
-  animation: marquee-left 22s linear infinite;
-}
-
-.marqueeRight {
-  animation: marquee-right 26s linear infinite;
-}
-
-.marqueeStatic {
-  animation: none;
-}
-
-.iconTile {
+.pillarIconWrap {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  width: clamp(3rem, 5vw, 3.65rem);
-  height: clamp(3rem, 5vw, 3.65rem);
-  border-radius: 0.85rem;
-  color: rgb(255 255 255 / 0.82);
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 0.65rem;
+  color: var(--brand-accent-400);
+  background: rgb(255 153 0 / 0.1);
+  border: 1px solid rgb(255 153 0 / 0.22);
 }
 
-.iconTile svg {
-  width: 42%;
-  height: 42%;
+.pillarIconWrap svg {
+  width: 52%;
+  height: 52%;
 }
 
-.timeline {
-  display: flex;
-  flex-direction: column;
+.pillarTitle {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--brand-white);
+}
+
+.pillarBody {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: rgb(255 255 255 / 0.52);
+  text-wrap: pretty;
+}
+
+.journey {
+  position: relative;
+  margin-top: clamp(1.75rem, 3.5vh, 2.5rem);
+  padding-top: clamp(1.25rem, 2.5vh, 1.75rem);
+}
+
+.journeyLabel {
+  margin: 0 0 clamp(1.25rem, 2.2vh, 1.65rem);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.48);
+}
+
+.journeyTimeline {
+  position: relative;
+  --journey-marker-h: 0.875rem;
+  --journey-line-y: calc(var(--journey-marker-h) / 2);
+}
+
+.journeyRail {
+  position: absolute;
+  top: var(--journey-line-y);
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.journeyRailBase {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.14);
+}
+
+.journeyRailFill {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    var(--brand-accent-600) 0%,
+    var(--brand-accent-400) 100%
+  );
+  box-shadow: 0 0 12px rgb(255 153 0 / 0.35);
+  transform: scaleX(0);
+  transform-origin: 0% 50%;
+  will-change: transform;
+}
+
+.milestoneList {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.25rem);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.timelineRow {
-  display: grid;
-  grid-template-columns: auto auto minmax(0, 1fr) minmax(0, 1.2fr);
-  gap: 0.45rem 0.55rem;
+.milestone {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  min-width: 0;
+  text-align: start;
+}
+
+.milestoneMarker {
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
-  font-size: 0.9rem;
-  line-height: 1.3;
-  letter-spacing: -0.005em;
+  width: 100%;
+  height: var(--journey-marker-h);
+  margin-bottom: 0.45rem;
 }
 
-.timelinePeriod {
-  color: var(--brand-white);
-  font-weight: 400;
-  white-space: nowrap;
-}
-
-.timelineSep {
-  width: 0.72rem;
-  height: 0.72rem;
-  color: rgb(255 255 255 / 0.45);
-}
-
-.timelineRole {
-  color: var(--brand-white);
-  font-weight: 400;
-}
-
-.timelineDetail {
-  color: rgb(255 255 255 / 0.55);
-  text-align: right;
-  letter-spacing: 0.01em;
-}
-
-.liquidGlass {
-  background: rgb(255 255 255 / 0.04);
-  background-blend-mode: luminosity;
-  -webkit-backdrop-filter: blur(6px) saturate(1.15);
-  backdrop-filter: blur(6px) saturate(1.15);
-  box-shadow: inset 0 1px 1px rgb(255 255 255 / 0.1);
-}
-
-.liquidGlass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.4px;
-  background: linear-gradient(
-    180deg,
-    rgb(255 255 255 / 0.38) 0%,
-    rgb(255 255 255 / 0.12) 22%,
-    transparent 42%,
-    transparent 58%,
-    rgb(255 255 255 / 0.12) 78%,
-    rgb(255 255 255 / 0.38) 100%
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-.iconTile.liquidGlass {
+.milestoneDot {
   position: relative;
-  overflow: hidden;
+  z-index: 2;
+  flex-shrink: 0;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+  background: var(--brand-white);
+  box-shadow:
+    0 0 0 3px var(--brand-ink-700),
+    0 0 0 4px rgb(255 255 255 / 0.12);
+  transition: box-shadow 0.35s ease;
 }
 
-.noiseOverlay::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.42;
-  mix-blend-mode: soft-light;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
-  background-size: 240px 240px;
+.milestone[data-reached="true"] .milestoneDot {
+  box-shadow:
+    0 0 0 3px var(--brand-ink-700),
+    0 0 0 4px rgb(255 153 0 / 0.45),
+    0 0 10px rgb(255 153 0 / 0.35);
 }
 
-@keyframes marquee-left {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
+.milestoneYear {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgb(255 255 255 / 0.42);
+  transition: color 0.35s ease;
 }
 
-@keyframes marquee-right {
-  from {
-    transform: translateX(-50%);
-  }
+.milestone[data-reached="true"] .milestoneYear {
+  color: var(--brand-accent-400);
+}
 
-  to {
-    transform: translateX(0);
-  }
+.milestoneTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--brand-white);
+}
+
+.milestoneBody {
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: rgb(255 255 255 / 0.52);
+  text-wrap: pretty;
 }
 
 @media (max-width: 991px) {
-  .section {
-    min-height: auto;
-    max-height: none;
-    overflow: visible;
-  }
-
   .intro {
     grid-template-columns: 1fr;
     align-items: start;
   }
 
-  .grid {
+  .mainGrid {
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    flex: none;
+    min-height: auto;
   }
 
-  .stackCol {
-    gap: clamp(0.65rem, 2vw, 0.85rem);
+  .founderCard {
+    min-height: clamp(16rem, 55vw, 22rem);
   }
 
-  .stackColMid .cardWarranty,
-  .stackColMid .cardStat,
-  .stackColEnd .cardEquipment,
-  .stackColEnd .cardAdvantage {
-    flex: none;
+  .pillarsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .heroCard,
-  .card {
-    min-height: clamp(11rem, 34vw, 14rem);
+  .milestoneList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 1.75rem;
   }
 
-  .heroCard {
-    min-height: clamp(18rem, 52vw, 24rem);
+  .journeyRail {
+    display: none;
   }
 
-  .cardStat,
-  .cardEquipment {
-    min-height: clamp(13rem, 38vw, 17rem);
+  .milestoneMarker {
+    justify-content: flex-start;
+    height: auto;
+    margin-bottom: 0.4rem;
   }
 
-  .timelineRow {
-    grid-template-columns: auto auto 1fr;
-  }
-
-  .timelineDetail {
-    grid-column: 1 / -1;
-    text-align: left;
-    padding-left: calc(0.72rem + 0.55rem);
+  .milestone[data-reached="true"] .milestoneYear {
+    color: var(--brand-accent-400);
   }
 }
 
 @media (max-width: 639px) {
-  .grid {
+  .pillarsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .milestoneList {
     grid-template-columns: 1fr;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marqueeLeft,
-  .marqueeRight {
-    animation: none;
-  }
-}
-
-@media (max-height: 760px) and (min-width: 992px) {
-  .heading {
-    font-size: clamp(1.35rem, 2.4vw, 2rem);
-  }
-
-  .lead {
-    font-size: 0.84rem;
+  .introReveal,
+  .founderReveal,
+  .approachReveal,
+  .pillarReveal,
+  .journeyReveal {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    will-change: auto;
   }
 
-  .statValue {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
+  .pillarCard {
+    transition: none;
+  }
+
+  .pillarCard:hover {
+    transform: none;
   }
 }
