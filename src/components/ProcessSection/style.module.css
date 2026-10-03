@@ -1,5 +1,5 @@
 /* ===========================================================
-   Process — expandable step cards (desktop row / mobile carousel)
+   Process — desktop expanding row / mobile in-container slider
    =========================================================== */
 
 .section {
@@ -7,13 +7,12 @@
   width: 100%;
   --process-gutter: clamp(1.25rem, 4vw, 2.5rem);
   --process-max: 88rem;
-  --process-card-rest: clamp(12.5rem, 22vw, 20rem);
-  --process-card-active: clamp(16.875rem, 36vw, 31.25rem);
-  --process-card-height: clamp(17.5rem, 32vw, 24rem);
+  --process-card-height: clamp(19rem, 34vw, 25.5rem);
   padding: clamp(3.5rem, 9vh, 6rem) 0 clamp(3rem, 8vh, 5rem);
   background: var(--brand-ink-700);
   color: var(--brand-white);
   overflow-x: clip;
+  overflow-y: visible;
   isolation: isolate;
 }
 
@@ -24,30 +23,68 @@
 }
 
 .header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: start;
   margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
 }
 
-.title {
+.headerMain {
   display: flex;
   flex-direction: column;
-  gap: 0.12em;
+  gap: 0.35rem;
+  max-width: 28rem;
+}
+
+.eyebrow {
   margin: 0;
-  max-width: 42rem;
-  font-size: clamp(1.65rem, 3.8vw, 2.65rem);
+  font-size: clamp(0.68rem, 0.9vw, 0.78rem);
   font-weight: 500;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.48);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2rem, 4.8vw, 3.35rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: var(--brand-white);
   text-wrap: balance;
 }
 
-.titleMuted {
-  color: rgb(255 255 255 / 0.52);
+.lead {
+  margin: 0.35rem 0 0;
+  font-size: clamp(0.88rem, 1.15vw, 1.05rem);
   font-weight: 400;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.62);
+  text-wrap: pretty;
 }
 
-.titleStrong {
-  color: var(--brand-white);
-  font-weight: 600;
+.headerAside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(0.85rem, 1.6vh, 1.15rem);
+  padding-top: clamp(0.25rem, 0.8vh, 0.65rem);
+}
+
+.intro {
+  margin: 0;
+  max-width: 26rem;
+  font-size: clamp(0.82rem, 1.05vw, 0.95rem);
+  font-weight: 400;
+  line-height: 1.55;
+  color: rgb(255 255 255 / 0.72);
+  text-wrap: pretty;
+}
+
+.headerCta {
+  align-self: flex-start;
 }
 
 .titleReveal {
@@ -59,9 +96,12 @@
 .stage {
   position: relative;
   width: 100%;
+  overflow: visible;
 }
 
-.desktopRow {
+/* ----- Desktop: 4 cards, active expands ----- */
+
+.desktopTrack {
   display: flex;
   align-items: stretch;
   gap: clamp(0.65rem, 1.1vw, 1rem);
@@ -77,37 +117,53 @@
 }
 
 .desktopItem[data-active="true"] {
-  flex: 1.62 1 0;
+  flex: 1.85 1 0;
 }
 
-.mobileStage {
+.desktopItem .card[data-active="true"] {
+  border-color: rgb(255 153 0 / 0.38);
+  box-shadow:
+    var(--card-glow-emphasis),
+    0 0 0 1px rgb(255 153 0 / 0.28);
+  transform: translateY(-3px);
+}
+
+/* ----- Mobile: one slide = content width (inside .inner padding) ----- */
+
+.sliderStage {
   position: relative;
-  width: 100vw;
-  max-width: 100%;
-  margin-inline: calc(-1 * var(--process-gutter));
+  width: 100%;
+  margin-inline: 0;
+  padding-block: 0.5rem;
 }
 
 .slider {
-  --slide-inset: max(
-    var(--process-gutter),
-    calc((100vw - var(--process-max)) / 2 + var(--process-gutter))
-  );
-  --slide-gap: clamp(0.65rem, 1.2vw, 1.125rem);
-  --slide-size: var(--process-card-rest);
+  --slide-inset: 0px;
+  --slide-gap: 0px;
+  --slide-size: 100%;
+  --slide-overflow-pad: 0.85rem;
   width: 100%;
 }
 
-.slide {
+.processSlide {
   flex: 0 0 var(--slide-size);
   width: var(--slide-size);
+  min-width: 0;
   height: var(--process-card-height);
-  transition:
-    flex-basis 0.45s cubic-bezier(0, 0, 0.5, 1),
-    width 0.45s cubic-bezier(0, 0, 0.5, 1);
+  box-sizing: border-box;
 }
 
-.slideActive {
-  --slide-size: var(--process-card-active);
+.sliderNav {
+  --nav-btn-size: clamp(3rem, 11.5vw, 3.4rem);
+  padding-inline: 0.15rem;
+}
+
+.sliderStage .card[data-active="true"] {
+  border-color: rgb(255 153 0 / 0.38);
+  box-shadow:
+    var(--card-glow-emphasis),
+    0 0 0 1px rgb(255 153 0 / 0.28);
+  transform: none;
 }
 
 .cardReveal {
@@ -116,42 +172,82 @@
   transform: translateY(1.5rem);
 }
 
+/* ----- Step card ----- */
+
 .card {
   position: relative;
-  display: flex;
-  align-items: flex-end;
+  display: block;
   width: 100%;
   height: 100%;
+  min-height: 0;
   padding: 0;
-  border: none;
+  border: 1px solid rgb(255 255 255 / 0.1);
   border-radius: 18px;
-  overflow: hidden;
   cursor: pointer;
   text-align: start;
   color: inherit;
-  background: var(--brand-ink-600);
-  box-shadow:
-    0 4px 22px rgb(255 255 255 / 0.08),
-    0 14px 40px rgb(0 0 0 / 0.22);
+  overflow: hidden;
+  box-shadow: var(--card-glow-rest);
   transition:
+    border-color 0.45s cubic-bezier(0, 0, 0.5, 1),
     box-shadow 0.45s cubic-bezier(0, 0, 0.5, 1),
     transform 0.45s cubic-bezier(0, 0, 0.5, 1);
 }
 
-.card[data-active="false"] .cardMedia {
-  filter: saturate(0.82) brightness(0.9);
-  transition: filter 0.45s cubic-bezier(0, 0, 0.5, 1);
+.cardMedia {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
 }
 
-.card[data-active="true"] {
-  box-shadow:
-    0 12px 40px rgb(0 0 0 / 0.35),
-    0 0 0 1px rgb(255 153 0 / 0.28);
-  transform: translateY(-4px);
+.cardBg {
+  object-fit: cover;
+  object-position: center;
+  user-select: none;
 }
 
-.card[data-active="true"] .cardMedia {
-  filter: none;
+.cardMediaWash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: var(--frost-ink-overlay);
+  -webkit-backdrop-filter: var(--frost-blur);
+  backdrop-filter: var(--frost-blur);
+  transition:
+    background 0.48s cubic-bezier(0, 0, 0.5, 1),
+    -webkit-backdrop-filter 0.48s cubic-bezier(0, 0, 0.5, 1),
+    backdrop-filter 0.48s cubic-bezier(0, 0, 0.5, 1);
+}
+
+.card[data-active="true"] .cardMediaWash {
+  background: var(--frost-ink-overlay-light);
+  -webkit-backdrop-filter: var(--frost-blur-light);
+  backdrop-filter: var(--frost-blur-light);
+}
+
+.cardContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(0.5rem, 1vh, 0.75rem);
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  padding: clamp(0.75rem, 1.3vw, 1.05rem);
+}
+
+.cardTop {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.35rem, 0.7vh, 0.5rem);
+  flex-shrink: 0;
 }
 
 .card:focus-visible {
@@ -159,90 +255,116 @@
   outline-offset: 3px;
 }
 
-.cardMedia {
-  z-index: 0;
-  object-fit: cover;
-  user-select: none;
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.45rem, 0.85vw, 0.6rem);
+  flex-shrink: 0;
+  min-width: 0;
 }
 
-.cardScrim {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
+.cardTitle {
+  margin: 0;
+  font-size: clamp(0.82rem, 1.1vw, 1.05rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--brand-white);
+  text-wrap: pretty;
+  text-shadow: 0 1px 14px rgb(0 0 0 / 0.55);
+}
+
+.card[data-active="false"] .cardTitle {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardTagline {
+  margin: 0;
+  flex-shrink: 0;
+  font-size: clamp(0.65rem, 0.88vw, 0.78rem);
+  font-weight: 500;
+  line-height: 1.32;
+  color: rgb(255 255 255 / 0.88);
+  text-wrap: pretty;
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.5);
+}
+
+.card[data-active="false"] .cardTagline {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardBodyOverlay {
+  flex-shrink: 0;
+  margin: auto calc(-1 * clamp(0.75rem, 1.3vw, 1.05rem))
+    calc(-1 * clamp(0.75rem, 1.3vw, 1.05rem));
+  padding: clamp(0.65rem, 1.1vw, 0.9rem) clamp(0.75rem, 1.3vw, 1.05rem);
   background: linear-gradient(
     180deg,
-    rgb(10 12 14 / 0.12) 0%,
-    rgb(10 12 14 / 0.08) 38%,
-    rgb(10 12 14 / 0.94) 100%
+    rgb(25 31 36 / 0) 0%,
+    rgb(25 31 36 / 0.78) 38%,
+    rgb(25 31 36 / 0.96) 100%
   );
-  transition: opacity 0.45s ease;
+  opacity: 0;
+  transform: translateY(0.35rem);
+  transition:
+    opacity 0.42s cubic-bezier(0, 0, 0.5, 1) 0.05s,
+    transform 0.42s cubic-bezier(0, 0, 0.5, 1) 0.05s;
+  pointer-events: none;
 }
 
-.card[data-active="false"] .cardScrim {
-  opacity: 0.92;
-}
-
-.card[data-active="true"] .cardScrim {
+.card[data-active="true"] .cardBodyOverlay {
   opacity: 1;
-}
-
-.cardDesc {
-  position: relative;
-  z-index: 2;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0 clamp(0.85rem, 1.6vw, 1.25rem) clamp(0.85rem, 1.5vw, 1.05rem);
-  color: var(--brand-white);
-  overflow: hidden;
-  transform: translateY(calc(100% - 3.1rem));
-  transition: transform 0.45s cubic-bezier(0, 0, 0.5, 1);
-}
-
-.card[data-active="true"] .cardDesc {
   transform: translateY(0);
 }
 
+.cardBody {
+  margin: 0;
+  font-size: clamp(0.62rem, 0.78vw, 0.74rem);
+  font-weight: 400;
+  line-height: 1.48;
+  color: rgb(255 255 255 / 0.9);
+  text-wrap: pretty;
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.45);
+}
+
 .stepBadgeWrap {
-  position: absolute;
-  top: clamp(0.75rem, 1.4vw, 1.1rem);
-  left: clamp(0.75rem, 1.4vw, 1.1rem);
-  z-index: 3;
+  position: relative;
+  flex-shrink: 0;
   display: grid;
   place-items: center;
-  width: clamp(2.5rem, 3.4vw, 2.85rem);
-  height: clamp(2.5rem, 3.4vw, 2.85rem);
+  width: clamp(2.35rem, 3vw, 2.65rem);
+  height: clamp(2.35rem, 3vw, 2.65rem);
   border-radius: 999px;
   pointer-events: none;
 }
 
 .stepBadgeWrap[data-active="false"] {
-  border: 1px solid rgb(255 255 255 / 0.28);
-  background: rgb(0 0 0 / 0.35);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
+  border: 1px solid rgb(255 255 255 / 0.22);
+  background: rgb(255 255 255 / 0.06);
 }
 
 .stepBadgeWrap[data-active="true"] {
-  border: 1px solid rgb(255 255 255 / 0.35);
-  background: rgb(0 0 0 / 0.42);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 18px rgb(0 0 0 / 0.28);
+  border: 1px solid rgb(255 153 0 / 0.55);
+  background: rgb(255 153 0 / 0.14);
 }
 
 .stepTimerSvg {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
   transform: rotate(-90deg);
 }
 
 .stepTimerTrack {
   fill: none;
-  stroke: rgb(255 255 255 / 0.22);
+  stroke: rgb(255 255 255 / 0.18);
   stroke-width: 2.5;
 }
 
@@ -251,7 +373,7 @@
   stroke: var(--brand-accent-400);
   stroke-width: 2.75;
   stroke-linecap: round;
-  animation: processStepTimerRing var(--process-auto-ms, 4s) linear forwards;
+  animation: processStepTimerRing var(--process-auto-ms, 5.5s) linear forwards;
 }
 
 .stage[data-hovered="true"] .stepTimerProgress,
@@ -268,10 +390,10 @@
 .stepBadgeDigit {
   position: relative;
   z-index: 1;
-  font-size: clamp(0.9rem, 1.15vw, 1rem);
+  font-size: clamp(0.72rem, 0.95vw, 0.82rem);
   font-weight: 700;
   line-height: 1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   color: var(--brand-white);
 }
 
@@ -279,64 +401,93 @@
   color: var(--brand-accent-400);
 }
 
-.cardTitle {
-  margin: 0 0 0.35rem;
-  font-size: clamp(1rem, 1.35vw, 1.35rem);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+@media (max-width: 899px) {
+  .header {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .headerAside {
+    padding-top: 0;
+  }
+
+  .headerCta {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
-.cardBody {
-  margin: 0;
-  font-size: clamp(0.8125rem, 1vw, 0.9375rem);
-  font-weight: 400;
-  line-height: 1.52;
-  letter-spacing: -0.005em;
-  color: rgb(255 255 255 / 0.82);
-  text-wrap: pretty;
-  opacity: 0;
-  transform: translateY(1.1rem);
-  transition:
-    opacity 0.4s cubic-bezier(0, 0, 0.5, 1) 0.08s,
-    transform 0.4s cubic-bezier(0, 0, 0.5, 1) 0.08s;
-}
+@media (max-width: 991px) {
+  .section {
+    --process-card-height: clamp(20rem, 62vw, 24rem);
+  }
 
-.card[data-active="true"] .cardBody {
-  opacity: 1;
-  transform: translateY(0);
+  .cardContent {
+    padding: clamp(1rem, 4.2vw, 1.2rem);
+    gap: 0.65rem;
+  }
+
+  .cardTitle {
+    font-size: clamp(1.02rem, 4.5vw, 1.2rem);
+    line-height: 1.2;
+  }
+
+  .cardTagline {
+    font-size: clamp(0.84rem, 3.6vw, 0.95rem);
+    line-height: 1.38;
+  }
+
+  .cardBody {
+    font-size: clamp(0.8rem, 3.4vw, 0.88rem);
+    line-height: 1.5;
+  }
+
+  .stepBadgeWrap {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .stepBadgeDigit {
+    font-size: 0.82rem;
+  }
+
+  .card[data-active="false"] .cardTitle,
+  .card[data-active="false"] .cardTagline {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+  }
+
+  .sliderStage .slider {
+    --slide-size: 100%;
+    --slide-overflow-pad: 0.9rem;
+  }
+
+  .sliderStage .sliderNav {
+    display: block;
+  }
+
+  .cardMediaWash {
+    background: var(--media-ink-wash);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .card[data-active="true"] .cardMediaWash {
+    background:
+      linear-gradient(
+        180deg,
+        rgb(51 62 72 / 0.38) 0%,
+        rgb(51 62 72 / 0.08) 42%,
+        rgb(51 62 72 / 0.22) 100%
+      ),
+      rgb(51 62 72 / 0.04);
+  }
 }
 
 @media (max-width: 767px) {
-  .section {
-    --process-card-rest: 12.5rem;
-    --process-card-active: 16.875rem;
-    --process-card-height: 17.5rem;
-  }
-
-  .cardDesc {
-    transform: translateY(calc(100% - 2.75rem));
-  }
-}
-
-@media (min-width: 768px) {
-  .cardTitle {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .card[data-active="false"] .cardTitle {
-    white-space: normal;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .card[data-active="true"] .cardTitle {
-    white-space: normal;
-    overflow: visible;
+  .sliderStage .sliderNav {
+    display: block;
   }
 }
 
@@ -349,15 +500,11 @@
   }
 
   .desktopItem,
-  .slide {
-    transition: none;
-  }
-
+  .processSlide,
   .card,
-  .cardDesc,
-  .cardBody,
-  .cardMedia,
-  .stepBadgeDigit,
+  .cardBodyOverlay,
+  .cardBg,
+  .cardMediaWash,
   .stepTimerProgress {
     transition: none;
   }
@@ -371,12 +518,12 @@
     transform: none;
   }
 
-  .cardBody {
-    opacity: 1;
-    transform: none;
+  .card[data-active="false"] .cardBodyOverlay {
+    opacity: 0;
   }
 
-  .card:not([data-active="true"]) .cardBody {
-    opacity: 0;
+  .card[data-active="true"] .cardBodyOverlay {
+    opacity: 1;
+    transform: none;
   }
 }

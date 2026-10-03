@@ -113,9 +113,7 @@
   text-align: inherit;
   color: inherit;
   border-radius: 18px;
-  box-shadow:
-    0 4px 22px rgb(255 255 255 / 0.1),
-    0 14px 40px rgb(255 255 255 / 0.06);
+  box-shadow: var(--card-glow-rest);
   transition:
     box-shadow 0.32s cubic-bezier(0, 0, 0.5, 1),
     transform 0.32s cubic-bezier(0, 0, 0.5, 1);
@@ -131,9 +129,7 @@
 }
 
 .cardButton:hover {
-  box-shadow:
-    0 6px 28px rgb(255 255 255 / 0.14),
-    0 18px 48px rgb(255 255 255 / 0.09);
+  box-shadow: var(--card-glow-emphasis);
   transform: scale3d(1.012, 1.012, 1.012);
 }
 
@@ -161,14 +157,7 @@
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  background:
-    linear-gradient(
-      180deg,
-      rgb(51 62 72 / 0.52) 0%,
-      rgb(51 62 72 / 0.16) 38%,
-      rgb(51 62 72 / 0.34) 100%
-    ),
-    rgb(51 62 72 / 0.08);
+  background: var(--media-ink-wash);
 }
 
 .cardPoster {

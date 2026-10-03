@@ -10,6 +10,7 @@ export function setBenefitsRevealReducedMotion(
   gsap.set(`.${classes.revealTitle}`, { y: 0, x: 0, scale: 1, autoAlpha: 1 });
   gsap.set(`.${classes.revealCardLeft}`, { x: 0, y: 0, autoAlpha: 1 });
   gsap.set(`.${classes.revealCardRight}`, { x: 0, y: 0, autoAlpha: 1 });
+  gsap.set(`.${classes.revealCardMobile}`, { x: 0, y: 0, autoAlpha: 1 });
   gsap.set(`.${classes.revealCenter}`, { y: 0, scale: 1, autoAlpha: 1 });
 }
 
@@ -31,6 +32,9 @@ export function runBenefitsScrollReveal(
   const rightCards = triggerEl.querySelectorAll<HTMLElement>(
     `.${classes.revealCardRight}`,
   );
+  const mobileCards = triggerEl.querySelectorAll<HTMLElement>(
+    `.${classes.revealCardMobile}`,
+  );
   const center = triggerEl.querySelector<HTMLElement>(`.${classes.revealCenter}`);
 
   gsap.set(`.${classes.revealTitle}`, {
@@ -50,6 +54,14 @@ export function runBenefitsScrollReveal(
     gsap.set(rightCards, {
       x: bs.cardsRight.xFrom,
       y: bs.cardsRight.yFrom,
+      autoAlpha: 0,
+    });
+  }
+
+  if (mobileCards.length) {
+    gsap.set(mobileCards, {
+      x: bs.cardsLeft.xFrom,
+      y: bs.cardsLeft.yFrom,
       autoAlpha: 0,
     });
   }
@@ -111,6 +123,20 @@ export function runBenefitsScrollReveal(
         stagger: bs.cardsRight.stagger,
       },
       `-=${bs.cardsRight.overlapCenter}`,
+    );
+  }
+
+  if (mobileCards.length) {
+    tl.to(
+      mobileCards,
+      {
+        x: 0,
+        y: 0,
+        autoAlpha: 1,
+        duration: bs.cardsLeft.duration,
+        stagger: bs.cardsLeft.stagger,
+      },
+      `-=${bs.cardsLeft.overlapCenter}`,
     );
   }
 

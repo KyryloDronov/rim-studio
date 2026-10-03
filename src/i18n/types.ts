@@ -287,10 +287,11 @@ export type Dictionary = Readonly<{
       cta: Readonly<{ label: string; href: string }>;
     }>;
   }>;
-  /** Dark benefits hub — side cards + center video. */
+  /** Dark benefits hub — image cards + center showcase. */
   benefits: Readonly<{
     titleStrong: string;
-    titleMuted: string;
+    titleAccent: string;
+    lead: string;
     cards: Readonly<
       Record<
         | "warranty"
@@ -298,25 +299,33 @@ export type Dictionary = Readonly<{
         | "parking"
         | "colors"
         | "storage"
-        | "equipment"
-        | "dimet",
+        | "experience",
         Readonly<{
           title: string;
-          note?: string;
+          body: string;
           imageAlt: string;
         }>
       >
     >;
+    hub: Readonly<{
+      brand: string;
+      tagline: string;
+      heroImageAlt: string;
+      steps: Readonly<
+        Record<
+          "diagnostics" | "agreement" | "work" | "result",
+          Readonly<{ label: string }>
+        >
+      >;
+    }>;
     cta: Readonly<{
-      titleStart: string;
-      titleHighlight: string;
-      titleEnd: string;
-      phoneLabel: string;
-      phonePlaceholder: string;
-      submitLabel: string;
-      privacyBefore: string;
-      privacyLinkLabel: string;
-      privacyHref: string;
+      label: string;
+      href: string;
+    }>;
+    cardsSlider: Readonly<{
+      ariaLabel: string;
+      prevLabel: string;
+      nextLabel: string;
     }>;
   }>;
   /** About-the-studio hub — founder, approach, pillars, journey. */
@@ -352,19 +361,29 @@ export type Dictionary = Readonly<{
         }>
       >;
     }>;
+    pillarsSlider: Readonly<{
+      ariaLabel: string;
+      prevLabel: string;
+      nextLabel: string;
+    }>;
   }>;
   /** How rim/studio works — expandable step carousel. */
   process: Readonly<{
-    titleMuted: string;
+    eyebrow: string;
     titleStrong: string;
+    lead: string;
+    intro: string;
     carouselAriaLabel: string;
     prevLabel: string;
     nextLabel: string;
+    cta: Readonly<{ label: string; href: string }>;
     steps: ReadonlyArray<
       Readonly<{
         id: string;
         label: string;
+        tagline: string;
         description: string;
+        imageAlt: string;
       }>
     >;
   }>;

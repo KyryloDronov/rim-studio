@@ -118,6 +118,12 @@ type CardSliderNavProps = Readonly<{
   onPrev: () => void;
   onNext: () => void;
   className?: string;
+  /** Overlay on slides (default) or a row of buttons below the track. */
+  layout?: "overlay" | "bar";
+  /** GSAP / scroll-reveal hook class on the control root. */
+  animateReveal?: boolean;
+  /** Keep both arrows visible; disable when at an end. */
+  persistArrows?: boolean;
 }>;
 
 function NavIcon({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -137,18 +143,39 @@ export function CardSliderNav({
   onPrev,
   onNext,
   className,
+  layout = "overlay",
+  animateReveal = true,
+  persistArrows = false,
 }: CardSliderNavProps) {
-  const navClass = [styles.controls, styles.controlsReveal, className]
+  const navClass = [
+    layout === "bar" ? styles.controlsBar : styles.controls,
+    animateReveal ? styles.controlsReveal : null,
+    className,
+  ]
     .filter(Boolean)
     .join(" ");
 
+  const showPrev = persistArrows || canScrollPrev;
+  const showNext = persistArrows || canScrollNext;
+
+  const prevBtnClass = [
+    styles.navBtn,
+    layout === "bar" ? styles.navBtnBar : styles.navBtnPrev,
+  ].join(" ");
+
+  const nextBtnClass = [
+    styles.navBtn,
+    layout === "bar" ? styles.navBtnBar : styles.navBtnNext,
+  ].join(" ");
+
   return (
     <div className={navClass}>
-      {canScrollPrev ? (
+      {showPrev ? (
         <button
           type="button"
-          className={`${styles.navBtn} ${styles.navBtnPrev}`}
+          className={prevBtnClass}
           onClick={onPrev}
+          disabled={persistArrows ? !canScrollPrev : false}
           aria-label={prevLabel}
         >
           <NavIcon>
@@ -156,11 +183,12 @@ export function CardSliderNav({
           </NavIcon>
         </button>
       ) : null}
-      {canScrollNext ? (
+      {showNext ? (
         <button
           type="button"
-          className={`${styles.navBtn} ${styles.navBtnNext}`}
+          className={nextBtnClass}
           onClick={onNext}
+          disabled={persistArrows ? !canScrollNext : false}
           aria-label={nextLabel}
         >
           <NavIcon>

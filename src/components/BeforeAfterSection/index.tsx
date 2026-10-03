@@ -12,7 +12,8 @@ import { BEFORE_AFTER_BOOKING_VIDEO } from "@/content/before-after-pairs";
 import { getBeforeAfterTabCatalog } from "@/content/before-after-catalog";
 import {
   PRICING_TAB_ICONS,
-  resolvePricingTabOrder,
+  resolveBeforeAfterActiveTab,
+  resolveBeforeAfterTabOrder,
   type PricingTabId,
 } from "@/content/pricing-tabs";
 import { useLocale } from "@/i18n/LocaleProvider";
@@ -32,7 +33,7 @@ export type BeforeAfterSectionProps = Readonly<{
 }>;
 
 export function BeforeAfterSection({
-  featuredTab = "paint",
+  featuredTab = "caliper",
 }: BeforeAfterSectionProps) {
   const { locale, t } = useLocale();
   const { beforeAfter, pricing } = t;
@@ -42,10 +43,12 @@ export function BeforeAfterSection({
   const bookingVideoRef = useRef<HTMLVideoElement>(null);
   const [mounted, setMounted] = useState(false);
   const tabOrder = useMemo(
-    () => resolvePricingTabOrder(featuredTab),
+    () => resolveBeforeAfterTabOrder(featuredTab),
     [featuredTab],
   );
-  const [activeTab, setActiveTab] = useState<PricingTabId>(featuredTab);
+  const [activeTab, setActiveTab] = useState<PricingTabId>(() =>
+    resolveBeforeAfterActiveTab(featuredTab),
+  );
 
   const tabItems = useMemo<ReadonlyArray<TabItem>>(
     () =>
@@ -67,7 +70,7 @@ export function BeforeAfterSection({
   }, []);
 
   useEffect(() => {
-    setActiveTab(featuredTab);
+    setActiveTab(resolveBeforeAfterActiveTab(featuredTab));
   }, [featuredTab]);
 
   useEffect(() => {

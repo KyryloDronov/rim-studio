@@ -33,6 +33,7 @@ export type BenefitsRevealClassNames = Readonly<{
   revealCardLeft: string;
   revealCardRight: string;
   revealCenter: string;
+  revealCardMobile: string;
 }>;
 
 /** Footer scroll-reveal class names (CSS modules) passed from `<Footer>`. */

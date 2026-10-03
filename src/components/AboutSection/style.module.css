@@ -5,10 +5,11 @@
 .section {
   position: relative;
   width: 100%;
+  --about-gutter: clamp(1rem, 4vw, 2.5rem);
   padding: clamp(3rem, 8vh, 5.5rem) 0 clamp(3.25rem, 7vh, 4.75rem);
   background: var(--brand-ink-700);
   color: var(--brand-white);
-  overflow: hidden;
+  overflow-x: clip;
   isolation: isolate;
 }
 
@@ -17,7 +18,13 @@
   flex-direction: column;
   width: min(100%, 88rem);
   margin: 0 auto;
-  padding: 0 clamp(1rem, 4vw, 2.5rem);
+  padding: 0 var(--about-gutter);
+}
+
+.contentFlow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .intro {
@@ -78,17 +85,26 @@
   border-radius: 999px;
 }
 
-.mainGrid {
+.topGrid {
   display: grid;
   grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
   gap: clamp(0.75rem, 1.4vh, 1.1rem);
   align-items: stretch;
 }
 
-.rightCol {
+.asideCol {
   display: flex;
   flex-direction: column;
   gap: clamp(0.75rem, 1.4vh, 1.1rem);
+}
+
+.pillarsDesktop {
+  display: block;
+  min-width: 0;
+}
+
+.pillarsMobile {
+  display: none;
 }
 
 .card {
@@ -316,6 +332,16 @@
   padding-top: clamp(1.25rem, 2.5vh, 1.75rem);
 }
 
+.journeyScroll {
+  position: relative;
+  width: 100%;
+}
+
+.journeyTimelineInner {
+  position: relative;
+  width: 100%;
+}
+
 .journeyLabel {
   margin: 0 0 clamp(1.25rem, 2.2vh, 1.65rem);
   font-size: 0.7rem;
@@ -442,52 +468,152 @@
   text-wrap: pretty;
 }
 
+/* ----- Pillars carousel (mobile) ----- */
+
+.pillarsSlider {
+  --slide-inset: var(--about-gutter);
+  --slide-gap: clamp(0.65rem, 2vw, 0.85rem);
+  --slide-size: min(18.5rem, 82vw);
+  width: 100%;
+}
+
+.pillarsSlide {
+  flex: 0 0 var(--slide-size);
+  width: var(--slide-size);
+  height: auto;
+}
+
+.pillarsSlide .pillarCard {
+  min-height: clamp(7.25rem, 28vw, 8.75rem);
+  height: 100%;
+}
+
+.pillarsMobileStage {
+  position: relative;
+  width: 100%;
+}
+
+.pillarsSliderNav {
+  padding-inline: calc(var(--about-gutter) + 0.25rem);
+}
+
 @media (max-width: 991px) {
   .intro {
     grid-template-columns: 1fr;
     align-items: start;
+    gap: 1.1rem;
   }
 
-  .mainGrid {
-    grid-template-columns: 1fr;
-    min-height: auto;
+  .ctaBtn {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .contentFlow {
+    gap: clamp(0.85rem, 2.5vw, 1.1rem);
+  }
+
+  .topGrid {
+    display: contents;
+  }
+
+  .asideCol {
+    display: contents;
   }
 
   .founderCard {
-    min-height: clamp(16rem, 55vw, 22rem);
+    order: 1;
+    width: 100%;
+    min-height: clamp(14.5rem, 52vw, 18.5rem);
   }
 
-  .pillarsGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .journey {
+    order: 2;
+    margin-top: 0;
+    padding-top: 0;
+    width: 100vw;
+    max-width: 100vw;
+    margin-inline: calc(-1 * var(--about-gutter));
+    padding-inline: var(--about-gutter);
+    box-sizing: border-box;
   }
 
-  .milestoneList {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    row-gap: 1.75rem;
+  .journeyScroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-inline: calc(-1 * var(--about-gutter));
+    padding-inline: var(--about-gutter);
+    scroll-padding-inline: var(--about-gutter);
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
 
-  .journeyRail {
+  .journeyScroll::-webkit-scrollbar {
     display: none;
   }
 
-  .milestoneMarker {
-    justify-content: flex-start;
-    height: auto;
-    margin-bottom: 0.4rem;
+  .journeyTimelineInner {
+    width: max-content;
+    min-width: 100%;
+    padding-inline-end: var(--about-gutter);
   }
 
-  .milestone[data-reached="true"] .milestoneYear {
-    color: var(--brand-accent-400);
-  }
-}
-
-@media (max-width: 639px) {
-  .pillarsGrid {
-    grid-template-columns: 1fr;
+  .journeyTimeline {
+    width: max-content;
+    min-width: 100%;
   }
 
   .milestoneList {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: clamp(1rem, 4vw, 1.35rem);
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .milestone {
+    flex: 0 0 min(16.5rem, 72vw);
+    width: min(16.5rem, 72vw);
+    scroll-snap-align: start;
+  }
+
+  .journeyRail {
+    display: block;
+    width: 100%;
+  }
+
+  .approachCard {
+    order: 3;
+    width: 100%;
+    min-height: auto;
+    padding: clamp(1rem, 3.5vw, 1.25rem);
+  }
+
+  .approachCopy {
+    max-width: none;
+  }
+
+  .pillarsDesktop {
+    display: none;
+  }
+
+  .pillarsMobile {
+    display: block;
+    order: 4;
+    width: 100vw;
+    max-width: 100vw;
+    margin-inline: calc(-1 * var(--about-gutter));
+  }
+
+  .pillarsSlider {
+    --slide-inset: var(--about-gutter);
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .pillarsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

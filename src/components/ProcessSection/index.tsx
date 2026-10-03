@@ -1,8 +1,15 @@
 "use client";
 
 import gsap from "gsap";
+import { CalendarCheck } from "lucide-react";
 import { useInView, useReducedMotion } from "motion/react";
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
 import { runProcessScrollReveal } from "@/animations";
 import {
   CardSlider,
@@ -11,28 +18,32 @@ import {
   useCardSlider,
 } from "@/components/CardSlider";
 import cardSliderStyles from "@/components/CardSlider/style.module.css";
+import { Button } from "@/components/Button";
 import { useMatchMedia } from "@/hooks/useMatchMedia";
 import { useLocale } from "@/i18n/LocaleProvider";
-import { ProcessExpandableCard } from "./ProcessExpandableCard";
+import { localizedPath } from "@/i18n/paths";
+import { ProcessStepCard } from "./ProcessStepCard";
 
 import styles from "./style.module.css";
 
 export const PROCESS_SECTION_ID = "process";
 
-const MOBILE_CAROUSEL_QUERY = "(max-width: 767px)";
-const AUTO_ADVANCE_MS = 4000;
+const DESKTOP_ROW_QUERY = "(min-width: 992px)";
+const MOBILE_CAROUSEL_QUERY = "(max-width: 991px)";
+const AUTO_ADVANCE_MS = 5500;
 
 const SLIDER_OPTIONS = {
   align: "start",
   containScroll: "trimSnaps",
-  dragFree: true,
+  dragFree: false,
   duration: 32,
 } as const;
 
 export function ProcessSection() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
   const { process } = t;
   const steps = process.steps;
+  const isDesktopRow = useMatchMedia(DESKTOP_ROW_QUERY);
   const isMobileCarousel = useMatchMedia(MOBILE_CAROUSEL_QUERY);
   const slider = useCardSlider(SLIDER_OPTIONS);
   const prefersReducedMotion = useReducedMotion();
@@ -41,8 +52,8 @@ export function ProcessSection() {
   const stageWasInViewRef = useRef(false);
 
   const stageInView = useInView(stageRef, {
-    amount: 0.28,
-    margin: "0px 0px -8% 0px",
+    amount: 0.22,
+    margin: "0px 0px -6% 0px",
   });
 
   const defaultStepId = steps[0]?.id ?? "";
@@ -56,27 +67,39 @@ export function ProcessSection() {
     !stageHovered &&
     stageInView;
 
-  const activeIndex = useMemo(
-    () => Math.max(0, steps.findIndex((step) => step.id === activeStepId)),
-    [activeStepId, steps],
+  const activeIndex = Math.max(
+    0,
+    steps.findIndex((step) => step.id === activeStepId),
+  );
+
+  const selectStep = useCallback(
+    (index: number) => {
+      const step = steps[index];
+      if (!step) return;
+      setActiveStepId(step.id);
+      setTimerCycleKey((key) => key + 1);
+      if (isMobileCarousel) {
+        slider.emblaApi?.scrollTo(index);
+      }
+    },
+    [isMobileCarousel, slider.emblaApi, steps],
   );
 
   const advanceStep = useCallback(() => {
+    if (isMobileCarousel) {
+      slider.emblaApi?.scrollNext();
+      return;
+    }
     setActiveStepId((prev) => {
       const currentIndex = Math.max(
         0,
         steps.findIndex((step) => step.id === prev),
       );
-      const next = steps[(currentIndex + 1) % steps.length];
-      return next?.id ?? prev;
+      const nextIndex = (currentIndex + 1) % steps.length;
+      return steps[nextIndex]?.id ?? prev;
     });
     setTimerCycleKey((key) => key + 1);
-  }, [steps]);
-
-  const handleToggle = useCallback((stepId: string) => {
-    setActiveStepId(stepId);
-    setTimerCycleKey((key) => key + 1);
-  }, []);
+  }, [isMobileCarousel, slider.emblaApi, steps]);
 
   useEffect(() => {
     if (stageInView && !stageWasInViewRef.current) {
@@ -92,19 +115,38 @@ export function ProcessSection() {
   }, [advanceStep, autoPlayEnabled]);
 
   useEffect(() => {
-    if (isMobileCarousel) return;
-    slider.emblaApi?.reInit();
-  }, [isMobileCarousel, slider.emblaApi]);
-
-  useEffect(() => {
     if (!isMobileCarousel) return;
     const api = slider.emblaApi;
     if (!api) return;
+
+    const onSelect = () => {
+      const index = api.selectedScrollSnap();
+      const step = steps[index];
+      if (step) {
+        setActiveStepId((prev) => {
+          if (prev !== step.id) {
+            setTimerCycleKey((key) => key + 1);
+          }
+          return step.id;
+        });
+      }
+    };
+
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
     api.reInit();
-    if (activeStepId) {
-      api.scrollTo(activeIndex, true);
-    }
-  }, [activeIndex, activeStepId, isMobileCarousel, slider.emblaApi]);
+    api.scrollTo(activeIndex, true);
+
+    return () => {
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
+    };
+  }, [activeIndex, isMobileCarousel, slider.emblaApi, steps]);
+
+  useEffect(() => {
+    if (isMobileCarousel) return;
+    slider.emblaApi?.reInit();
+  }, [isMobileCarousel, slider.emblaApi]);
 
   useEffect(() => {
     if (globalThis.window === undefined) return;
@@ -125,7 +167,7 @@ export function ProcessSection() {
     }, root);
 
     return () => ctx.revert();
-  }, [isMobileCarousel, prefersReducedMotion, steps.length, t]);
+  }, [isDesktopRow, isMobileCarousel, prefersReducedMotion, steps.length, t]);
 
   const cardProps = (step: (typeof steps)[number], index: number) => {
     const active = step.id === activeStepId;
@@ -136,26 +178,8 @@ export function ProcessSection() {
       active,
       showTimerRing,
       timerCycleKey: `${activeStepId}-${timerCycleKey}`,
-      onToggle: () => handleToggle(step.id),
+      onSelect: () => selectStep(index),
     };
-  };
-
-  const renderCard = (
-    step: (typeof steps)[number],
-    index: number,
-    revealClassName: string,
-    itemClassName?: string,
-  ) => {
-    const active = step.id === activeStepId;
-    return (
-      <div
-        key={step.id}
-        className={[itemClassName, revealClassName].filter(Boolean).join(" ")}
-        data-active={active ? "true" : "false"}
-      >
-        <ProcessExpandableCard {...cardProps(step, index)} />
-      </div>
-    );
   };
 
   return (
@@ -168,13 +192,30 @@ export function ProcessSection() {
     >
       <div className={styles.inner}>
         <header className={styles.header}>
-          <h2
-            id={`${PROCESS_SECTION_ID}-title`}
-            className={`${styles.title} ${styles.titleReveal}`}
-          >
-            <span className={styles.titleMuted}>{process.titleMuted}</span>
-            <span className={styles.titleStrong}>{process.titleStrong}</span>
-          </h2>
+          <div className={styles.headerMain}>
+            <p className={styles.eyebrow}>{process.eyebrow}</p>
+            <h2
+              id={`${PROCESS_SECTION_ID}-title`}
+              className={`${styles.title} ${styles.titleReveal}`}
+            >
+              {process.titleStrong}
+            </h2>
+            <p className={styles.lead}>{process.lead}</p>
+          </div>
+
+          <div className={styles.headerAside}>
+            <p className={styles.intro}>{process.intro}</p>
+            <Button
+              href={localizedPath(locale, process.cta.href)}
+              variant="accent"
+              size="md"
+              expandFromIcon
+              icon={<CalendarCheck strokeWidth={1.75} aria-hidden />}
+              className={styles.headerCta}
+            >
+              {process.cta.label}
+            </Button>
+          </div>
         </header>
 
         <div
@@ -188,20 +229,32 @@ export function ProcessSection() {
           onPointerEnter={() => setStageHovered(true)}
           onPointerLeave={() => setStageHovered(false)}
         >
-          {isMobileCarousel ? (
-            <div className={styles.mobileStage} data-lenis-prevent-horizontal>
+          {isDesktopRow ? (
+            <div className={styles.desktopTrack}>
+              {steps.map((step, index) => {
+                const active = step.id === activeStepId;
+                return (
+                  <div
+                    key={step.id}
+                    className={`${styles.desktopItem} ${styles.cardReveal}`}
+                    data-active={active ? "true" : "false"}
+                  >
+                    <ProcessStepCard {...cardProps(step, index)} />
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className={styles.sliderStage} data-lenis-prevent-horizontal>
               <CardSlider emblaRef={slider.emblaRef} className={styles.slider}>
-                {steps.map((step, index) => {
-                  const active = step.id === activeStepId;
-                  return (
-                    <CardSliderSlide
-                      key={step.id}
-                      className={`${styles.slide} ${active ? styles.slideActive : ""} ${styles.cardReveal}`}
-                    >
-                      <ProcessExpandableCard {...cardProps(step, index)} />
-                    </CardSliderSlide>
-                  );
-                })}
+                {steps.map((step, index) => (
+                  <CardSliderSlide
+                    key={step.id}
+                    className={`${styles.processSlide} ${styles.cardReveal}`}
+                  >
+                    <ProcessStepCard {...cardProps(step, index)} />
+                  </CardSliderSlide>
+                ))}
               </CardSlider>
 
               <CardSliderNav
@@ -211,18 +264,8 @@ export function ProcessSection() {
                 canScrollNext={slider.canScrollNext}
                 onPrev={slider.scrollPrev}
                 onNext={slider.scrollNext}
+                className={styles.sliderNav}
               />
-            </div>
-          ) : (
-            <div className={styles.desktopRow}>
-              {steps.map((step, index) =>
-                renderCard(
-                  step,
-                  index,
-                  styles.cardReveal,
-                  styles.desktopItem,
-                ),
-              )}
             </div>
           )}
         </div>

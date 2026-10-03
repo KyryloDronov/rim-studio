@@ -14,6 +14,8 @@ type ProcessStepTimerBadgeProps = Readonly<{
   showTimerRing: boolean;
   /** Remount ring animation when the active step changes. */
   timerCycleKey: string;
+  /** Display string (e.g. `01`). Defaults to step number. */
+  digit?: string;
 }>;
 
 export function ProcessStepTimerBadge({
@@ -21,7 +23,9 @@ export function ProcessStepTimerBadge({
   active,
   showTimerRing,
   timerCycleKey,
+  digit,
 }: ProcessStepTimerBadgeProps) {
+  const displayDigit = digit ?? String(stepNumber);
   return (
     <span
       className={styles.stepBadgeWrap}
@@ -57,7 +61,7 @@ export function ProcessStepTimerBadge({
         </svg>
       ) : null}
 
-      <span className={styles.stepBadgeDigit}>{stepNumber}</span>
+      <span className={styles.stepBadgeDigit}>{displayDigit}</span>
     </span>
   );
 }

@@ -79,6 +79,51 @@
   --accent-pressed: var(--brand-accent-600);
   --accent-subtle: var(--brand-accent-300);
   --accent-deep: var(--brand-accent-700);
+
+  /* Service / process / benefits media cards */
+  --card-glow-rest:
+    0 4px 22px rgb(255 255 255 / 0.1),
+    0 14px 40px rgb(255 255 255 / 0.06);
+  --card-glow-emphasis:
+    0 6px 28px rgb(255 255 255 / 0.14),
+    0 18px 48px rgb(255 255 255 / 0.09);
+  --media-ink-wash:
+    linear-gradient(
+      180deg,
+      rgb(51 62 72 / 0.52) 0%,
+      rgb(51 62 72 / 0.16) 38%,
+      rgb(51 62 72 / 0.34) 100%
+    ),
+    rgb(51 62 72 / 0.08);
+
+  /* Hero / process — frosted brand-ink glass over media */
+  --frost-ink-overlay:
+    linear-gradient(
+      180deg,
+      rgb(51 62 72 / 0.7) 0%,
+      rgb(51 62 72 / 0.28) 35%,
+      rgb(51 62 72 / 0.5) 100%
+    ),
+    rgb(51 62 72 / 0.18);
+  --frost-ink-overlay-strong:
+    linear-gradient(
+      180deg,
+      rgb(51 62 72 / 0.86) 0%,
+      rgb(51 62 72 / 0.5) 38%,
+      rgb(51 62 72 / 0.68) 100%
+    ),
+    rgb(51 62 72 / 0.34);
+  --frost-blur: blur(2.5px) saturate(1.04);
+  --frost-blur-strong: blur(6px) saturate(1.05);
+  --frost-ink-overlay-light:
+    linear-gradient(
+      180deg,
+      rgb(51 62 72 / 0.42) 0%,
+      rgb(51 62 72 / 0.12) 35%,
+      rgb(51 62 72 / 0.28) 100%
+    ),
+    rgb(51 62 72 / 0.06);
+  --frost-blur-light: blur(1px) saturate(1.03);
 }
 
 html {
