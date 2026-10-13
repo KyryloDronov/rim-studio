@@ -12,6 +12,7 @@ export function setAboutRevealReducedMotion(
   gsap.set(`.${classes.approachReveal}`, { y: 0, autoAlpha: 1 });
   gsap.set(`.${classes.pillarReveal}`, { y: 0, autoAlpha: 1 });
   gsap.set(`.${classes.journeyReveal}`, { y: 0, autoAlpha: 1 });
+  gsap.set(`.${classes.summaryReveal}`, { y: 0, autoAlpha: 1 });
 }
 
 /** Run inside `gsap.context(fn, root)` from `<AboutSection>`. */
@@ -39,12 +40,16 @@ export function runAboutScrollReveal(
   const journey = triggerEl.querySelector<HTMLElement>(
     `.${classes.journeyReveal}`,
   );
+  const summary = triggerEl.querySelector<HTMLElement>(
+    `.${classes.summaryReveal}`,
+  );
 
   if (intro) gsap.set(intro, { y: ab.intro.yFrom, autoAlpha: 0 });
   if (founder) gsap.set(founder, { y: ab.founder.yFrom, autoAlpha: 0 });
+  if (journey) gsap.set(journey, { y: ab.journey.yFrom, autoAlpha: 0 });
   if (approach) gsap.set(approach, { y: ab.approach.yFrom, autoAlpha: 0 });
   if (pillars.length) gsap.set(pillars, { y: ab.pillars.yFrom, autoAlpha: 0 });
-  if (journey) gsap.set(journey, { y: ab.journey.yFrom, autoAlpha: 0 });
+  if (summary) gsap.set(summary, { y: ab.journey.yFrom, autoAlpha: 0 });
 
   const tl = gsap.timeline({
     paused: true,
@@ -63,11 +68,19 @@ export function runAboutScrollReveal(
     );
   }
 
+  if (journey) {
+    tl.to(
+      journey,
+      { y: 0, autoAlpha: 1, duration: ab.journey.duration },
+      founder ? `-=${ab.journey.overlapPillars}` : 0,
+    );
+  }
+
   if (approach) {
     tl.to(
       approach,
       { y: 0, autoAlpha: 1, duration: ab.approach.duration },
-      founder ? `-=${ab.approach.overlapFounder}` : 0,
+      journey ? `-=${ab.approach.overlapFounder}` : 0,
     );
   }
 
@@ -84,9 +97,9 @@ export function runAboutScrollReveal(
     );
   }
 
-  if (journey) {
+  if (summary) {
     tl.to(
-      journey,
+      summary,
       { y: 0, autoAlpha: 1, duration: ab.journey.duration },
       pillars.length ? `-=${ab.journey.overlapPillars}` : 0,
     );

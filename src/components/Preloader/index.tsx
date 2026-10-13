@@ -7,7 +7,7 @@ import styles from "./style.module.css";
 
 /* Wordmark shown inside the cutout. Centralised so JSX (split into
    chars) and the cutout sizing in CSS stay in sync if it ever changes. */
-const LOGO_TEXT = "rim.studio";
+const LOGO_TEXT = "Rim Studio";
 
 /* Timeline knobs — exposed at module scope so JSX/CSS/tests can read
    the same numbers we animate against. */

@@ -291,6 +291,10 @@
   }
 }
 
+.bottomClaimOnly {
+  grid-template-columns: 1fr;
+}
+
 .claim {
   margin: 0;
   font-size: clamp(1.6rem, 2.8vw, 2.8rem);

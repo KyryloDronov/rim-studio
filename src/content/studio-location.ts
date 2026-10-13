@@ -4,13 +4,14 @@ export const STUDIO_COORDINATES = {
   lat: 52.229676,
 } as const;
 
-export const STUDIO_PHONE_E164 = "+48000000000";
-export const STUDIO_PHONE_DISPLAY = "+48 000 000 000";
+export const STUDIO_PHONE_E164 = "+48786444468";
+export const STUDIO_PHONE_DISPLAY = "+48 786 444 468";
+export const STUDIO_PHONE_HREF = `tel:${STUDIO_PHONE_E164}`;
 export const STUDIO_EMAIL = "hello@rim.studio";
 
 export const STUDIO_SOCIAL = {
-  instagram: "https://instagram.com/rim.studio",
-  x: "https://x.com/rimstudio",
+  instagram: "https://www.instagram.com/rimstudio.pl/",
+  facebook: "https://www.facebook.com/profile.php?id=61594582464185",
 } as const;
 
 export function buildGoogleDirectionsUrl(

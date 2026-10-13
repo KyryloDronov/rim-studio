@@ -12,6 +12,7 @@ export type ShowcaseServiceCard = Readonly<{
   videoReverse: string;
   category: string;
   title: string;
+  summary?: string;
   linkLabel: string;
 }>;
 

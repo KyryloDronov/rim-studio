@@ -2,18 +2,17 @@
 
 import gsap from "gsap";
 import {
-  ChevronRight,
   ClipboardCheck,
   CalendarCheck,
   CircleDot,
   Search,
   Wrench,
 } from "lucide-react";
-import Image from "next/image";
 import { useReducedMotion } from "motion/react";
 import { useEffect, useRef, type ReactNode } from "react";
 import { runBenefitsScrollReveal } from "@/animations";
 import { Button } from "@/components/Button";
+import { useConsultation } from "@/components/Consultation/ConsultationContext";
 import {
   CardSlider,
   CardSliderNav,
@@ -21,19 +20,14 @@ import {
   useCardSlider,
 } from "@/components/CardSlider";
 import {
-  BENEFITS_CARD_IMAGES,
   BENEFITS_CARD_ORDER,
-  BENEFITS_CENTER_HERO_IMAGE,
   BENEFITS_HUB_STEP_IDS,
-  BENEFITS_SIDE_LEFT,
-  BENEFITS_SIDE_RIGHT,
   type BenefitCardId,
   type BenefitsHubStepId,
 } from "@/content/benefits-cards";
 import { useMatchMedia } from "@/hooks/useMatchMedia";
 import { useLocale } from "@/i18n/LocaleProvider";
-import { localizedPath } from "@/i18n/paths";
-import type { Dictionary, Locale } from "@/i18n/types";
+import type { Dictionary } from "@/i18n/types";
 
 import styles from "./style.module.css";
 
@@ -62,6 +56,7 @@ function formatBenefitNumber(index: number): string {
 export function BenefitsSection() {
   const { locale, t } = useLocale();
   const { benefits } = t;
+  const { openConsultation } = useConsultation();
   const isMobileLayout = useMatchMedia(MOBILE_LAYOUT_QUERY);
   const prefersReducedMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
@@ -90,6 +85,8 @@ export function BenefitsSection() {
     return () => ctx.revert();
   }, [isMobileLayout, prefersReducedMotion, locale]);
 
+  const sectionTitle = `${benefits.titleStrong} ${benefits.titleAccent}`;
+
   return (
     <section
       ref={sectionRef}
@@ -98,23 +95,30 @@ export function BenefitsSection() {
       aria-labelledby={`${BENEFITS_SECTION_ID}-title`}
     >
       <div className={styles.inner}>
-        <header className={styles.header}>
-          <h2
-            id={`${BENEFITS_SECTION_ID}-title`}
-            className={`${styles.title} ${styles.revealTitle}`}
-          >
-            <span className={styles.titleStrong}>{benefits.titleStrong}</span>
-            <span className={styles.titleAccent}>{benefits.titleAccent}</span>
+        {isMobileLayout ? (
+          <header className={styles.header}>
+            <h2
+              id={`${BENEFITS_SECTION_ID}-title`}
+              className={`${styles.title} ${styles.revealTitle}`}
+            >
+              <span className={styles.titleStrong}>{benefits.titleStrong}</span>
+              <span className={styles.titleAccent}>{benefits.titleAccent}</span>
+            </h2>
+            <p className={styles.lead}>{benefits.lead}</p>
+          </header>
+        ) : (
+          <h2 id={`${BENEFITS_SECTION_ID}-title`} className={styles.visuallyHidden}>
+            {sectionTitle}
           </h2>
-          <p className={styles.lead}>{benefits.lead}</p>
-        </header>
+        )}
 
         {isMobileLayout ? (
           <div ref={stageRef} className={styles.mobileStage}>
             <BenefitsHub
               benefits={benefits}
-              locale={locale}
+              onConsultationClick={() => openConsultation("benefits")}
               hubClassName={`${styles.hub} ${styles.hubFeatured} ${styles.revealCenter}`}
+              showEyebrow
             />
             <BenefitsCardsSlider
               benefits={benefits}
@@ -123,38 +127,26 @@ export function BenefitsSection() {
           </div>
         ) : (
           <div ref={stageRef} className={styles.stage}>
-            <div className={styles.sideCol}>
-              {BENEFITS_SIDE_LEFT.map((cardId, index) => (
-                <BenefitImageCard
+            <BenefitsHub
+              benefits={benefits}
+              onConsultationClick={() => openConsultation("benefits")}
+              hubClassName={`${styles.hub} ${styles.revealCenter}`}
+              showEyebrow
+            />
+
+            <div className={styles.benefitsGrid}>
+              {BENEFITS_CARD_ORDER.map((cardId, index) => (
+                <BenefitTextItem
                   key={cardId}
                   cardId={cardId}
                   number={formatBenefitNumber(index)}
                   title={benefits.cards[cardId].title}
                   body={benefits.cards[cardId].body}
-                  imageAlt={benefits.cards[cardId].imageAlt}
-                  imageSrc={BENEFITS_CARD_IMAGES[cardId]}
-                  revealClassName={styles.revealCardLeft}
-                />
-              ))}
-            </div>
-
-            <BenefitsHub
-              benefits={benefits}
-              locale={locale}
-              hubClassName={`${styles.hub} ${styles.revealCenter}`}
-            />
-
-            <div className={styles.sideCol}>
-              {BENEFITS_SIDE_RIGHT.map((cardId, index) => (
-                <BenefitImageCard
-                  key={cardId}
-                  cardId={cardId}
-                  number={formatBenefitNumber(index + 3)}
-                  title={benefits.cards[cardId].title}
-                  body={benefits.cards[cardId].body}
-                  imageAlt={benefits.cards[cardId].imageAlt}
-                  imageSrc={BENEFITS_CARD_IMAGES[cardId]}
-                  revealClassName={styles.revealCardRight}
+                  revealClassName={
+                    index % 2 === 0
+                      ? styles.revealCardLeft
+                      : styles.revealCardRight
+                  }
                 />
               ))}
             </div>
@@ -169,14 +161,23 @@ type BenefitsCopy = Dictionary["benefits"];
 
 type BenefitsHubProps = Readonly<{
   benefits: BenefitsCopy;
-  locale: Locale;
+  onConsultationClick: () => void;
   hubClassName: string;
+  showEyebrow?: boolean;
 }>;
 
-function BenefitsHub({ benefits, locale, hubClassName }: BenefitsHubProps) {
+function BenefitsHub({
+  benefits,
+  onConsultationClick,
+  hubClassName,
+  showEyebrow = false,
+}: BenefitsHubProps) {
   return (
     <article className={hubClassName}>
-      <p className={styles.hubTagline}>{benefits.hub.tagline}</p>
+      {showEyebrow ? (
+        <p className={styles.hubEyebrow}>{benefits.eyebrow}</p>
+      ) : null}
+      <p className={styles.hubHeadline}>{benefits.hub.tagline}</p>
 
       <ol className={styles.hubSteps} aria-label={benefits.hub.tagline}>
         {BENEFITS_HUB_STEP_IDS.map((stepId, index) => {
@@ -196,36 +197,22 @@ function BenefitsHub({ benefits, locale, hubClassName }: BenefitsHubProps) {
                 </span>
               </div>
               {!isLast ? (
-                <ChevronRight
-                  className={styles.hubStepArrow}
-                  strokeWidth={1.75}
-                  aria-hidden
-                />
+                <span className={styles.hubStepLine} aria-hidden />
               ) : null}
             </li>
           );
         })}
       </ol>
 
-      <div className={styles.hubHero}>
-        <Image
-          src={BENEFITS_CENTER_HERO_IMAGE}
-          alt={benefits.hub.heroImageAlt}
-          fill
-          sizes="(max-width: 991px) 100vw, 36vw"
-          className={styles.hubHeroImage}
-        />
-        <div className={styles.hubHeroScrim} aria-hidden />
-      </div>
-
       <div className={styles.hubCtaWrap}>
         <Button
-          href={localizedPath(locale, benefits.cta.href)}
+          type="button"
           variant="accent"
           size="md"
-          expandFromIcon
+          block
           icon={<CalendarCheck strokeWidth={1.75} aria-hidden />}
           className={styles.hubCta}
+          onClick={onConsultationClick}
         >
           {benefits.cta.label}
         </Button>
@@ -258,13 +245,12 @@ function BenefitsCardsSlider({
               key={cardId}
               className={`${styles.cardsSlide} ${revealClassName}`}
             >
-              <BenefitImageCard
+              <BenefitTextItem
                 cardId={cardId}
                 number={formatBenefitNumber(index)}
                 title={benefits.cards[cardId].title}
                 body={benefits.cards[cardId].body}
-                imageAlt={benefits.cards[cardId].imageAlt}
-                imageSrc={BENEFITS_CARD_IMAGES[cardId]}
+                variant="card"
               />
             </CardSliderSlide>
           ))}
@@ -284,46 +270,37 @@ function BenefitsCardsSlider({
   );
 }
 
-type BenefitImageCardProps = Readonly<{
+type BenefitTextItemProps = Readonly<{
   cardId: BenefitCardId;
   number: string;
   title: string;
   body: string;
-  imageAlt: string;
-  imageSrc: string;
   revealClassName?: string;
+  variant?: "grid" | "card";
 }>;
 
-function BenefitImageCard({
+function BenefitTextItem({
   cardId,
   number,
   title,
   body,
-  imageAlt,
-  imageSrc,
   revealClassName,
-}: BenefitImageCardProps) {
-  const cardClass = [styles.imageCard, revealClassName]
+  variant = "grid",
+}: BenefitTextItemProps) {
+  const itemClass = [
+    variant === "card" ? styles.textCard : styles.benefitItem,
+    revealClassName,
+  ]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <article className={cardClass} data-benefit={cardId}>
-      <div className={styles.imageCardMedia}>
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          fill
-          sizes="(max-width: 991px) 85vw, 22vw"
-          className={styles.imageCardPhoto}
-        />
-        <div className={styles.imageCardScrim} aria-hidden />
+    <article className={itemClass} data-benefit={cardId}>
+      <div className={styles.benefitHeading}>
+        <span className={styles.benefitNumber} aria-hidden>{number}</span>
+        <h3 className={styles.benefitTitle}>{title}</h3>
       </div>
-      <div className={styles.imageCardContent}>
-        <span className={styles.imageCardNumber} aria-hidden>{number}</span>
-        <h3 className={styles.imageCardTitle}>{title}</h3>
-        <p className={styles.imageCardBody}>{body}</p>
-      </div>
+      <p className={styles.benefitBody}>{body}</p>
     </article>
   );
 }

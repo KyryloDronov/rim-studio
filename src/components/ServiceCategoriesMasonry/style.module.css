@@ -111,6 +111,7 @@
   background: none;
   cursor: pointer;
   text-align: inherit;
+  text-decoration: none;
   color: inherit;
   border-radius: 18px;
   box-shadow: var(--card-glow-rest);
@@ -217,11 +218,63 @@
   text-wrap: balance;
 }
 
+.cardSummary {
+  margin: 0.55rem 0 0;
+  max-width: 34ch;
+  font-size: clamp(0.8125rem, 0.92vw, 0.9rem);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.008em;
+  color: rgb(255 255 255 / 0.72);
+  text-wrap: pretty;
+}
+
+/* Hero tile (покраска) — чуть шире колонка, описание в ~3 строки. */
+.cardSummaryWide {
+  max-width: min(48ch, 92%);
+}
+
+.cardSummaryOnHover {
+  overflow: hidden;
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.4rem);
+  transition:
+    opacity 0.34s cubic-bezier(0, 0, 0.5, 1),
+    transform 0.34s cubic-bezier(0, 0, 0.5, 1),
+    max-height 0.4s cubic-bezier(0, 0, 0.5, 1),
+    margin 0.34s cubic-bezier(0, 0, 0.5, 1),
+    visibility 0s linear 0.34s;
+}
+
+.cardButton:hover .cardSummaryWide.cardSummaryOnHover,
+.cardButton:focus-visible .cardSummaryWide.cardSummaryOnHover {
+  max-height: 9rem;
+}
+
+.cardButton:hover .cardSummaryOnHover,
+.cardButton:focus-visible .cardSummaryOnHover {
+  max-height: 6.5rem;
+  margin-top: 0.55rem;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity 0.34s cubic-bezier(0, 0, 0.5, 1),
+    transform 0.34s cubic-bezier(0, 0, 0.5, 1),
+    max-height 0.45s cubic-bezier(0, 0, 0.5, 1),
+    margin 0.34s cubic-bezier(0, 0, 0.5, 1),
+    visibility 0s;
+}
+
 .openFab {
   position: absolute;
   z-index: 3;
   bottom: clamp(1rem, 2.2vw, 1.5rem);
   left: clamp(1rem, 2.2vw, 1.5rem);
+  right: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -239,6 +292,11 @@
     transform 0.34s cubic-bezier(0, 0, 0.5, 1),
     background-color 0.25s ease;
   pointer-events: none;
+}
+
+.openFabEnd {
+  left: auto;
+  right: clamp(1rem, 2.2vw, 1.5rem);
 }
 
 .openFabIcon {
@@ -263,6 +321,14 @@
     transform: scale(1) translateY(0);
   }
 
+  .cardSummaryOnHover {
+    max-height: none;
+    margin-top: 0.55rem;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
   .cardInfo {
     padding: 1.75rem;
   }
@@ -281,6 +347,15 @@
     visibility: visible;
     transform: none;
     will-change: auto;
+  }
+
+  .cardSummaryOnHover {
+    max-height: none;
+    margin-top: 0.55rem;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
   }
 
   .cardButton {

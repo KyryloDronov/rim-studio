@@ -140,7 +140,7 @@ function LoyaltyCardSlot({
           <div className={styles.cardGlow} aria-hidden="true" />
           <div className={styles.cardFrontInner}>
             <div className={styles.cardTopRow}>
-              <span className={styles.cardBrand}>rim/studio</span>
+              <span className={styles.cardBrand}>Rim Studio</span>
               <span className={styles.cardLevel}>{copy.level}</span>
             </div>
 

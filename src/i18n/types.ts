@@ -3,6 +3,7 @@
  * `ru` is the default — it sits at the prefix-less root (`/`), `pl` lives
  * under `/pl`. English was deprecated in favour of these two markets.
  */
+import type { ConsultationSourceId } from "@/content/consultation-sources";
 import type { ServiceHeroBannerIconId } from "@/content/service-hero-banner-icons";
 
 export const LOCALES = ["ru", "pl"] as const;
@@ -21,16 +22,44 @@ export const LOCALE_NAME: Record<Locale, string> = {
   pl: "Polski",
 };
 
+/** Rich hero lede — plain run or inline accent spans in one flow. */
+export type HeroBannerLedePart = Readonly<
+  | { text: string; accent?: boolean }
+  | {
+      parts: ReadonlyArray<Readonly<{ text: string; accent?: boolean }>>;
+    }
+>;
+
+export type LegalDocumentSection = Readonly<{
+  id: string;
+  title: string;
+  paragraphs: ReadonlyArray<string>;
+  bullets?: ReadonlyArray<string>;
+}>;
+
+export type LegalDocumentCopy = Readonly<{
+  eyebrow: string;
+  title: string;
+  lead: string;
+  updated: string;
+  backToHome: string;
+  sections: ReadonlyArray<LegalDocumentSection>;
+}>;
+
+/** One visual line of a rich hero H1 — whole-line accent or inline accent spans. */
+export type HeroBannerTitleLine = Readonly<
+  | { text: string; accent?: boolean }
+  | {
+      parts: ReadonlyArray<Readonly<{ text: string; accent?: boolean }>>;
+    }
+>;
+
 /** Optional rich hero for select service landings (tire, repair, …). */
 export type ServicePageBanner = Readonly<{
   /** `grid` — 2×2; `tiles` — 4 cards; `pair` — 2 wide; `rail` — 4 compact icon-top columns. */
   layout: "grid" | "tiles" | "pair" | "rail";
-  titleLines: ReadonlyArray<
-    Readonly<{ text: string; accent?: boolean }>
-  >;
-  ledeParts: ReadonlyArray<
-    Readonly<{ text: string; accent?: boolean }>
-  >;
+  titleLines: ReadonlyArray<HeroBannerTitleLine>;
+  ledeParts: ReadonlyArray<HeroBannerLedePart>;
   highlights: ReadonlyArray<
     Readonly<{
       id: string;
@@ -39,10 +68,13 @@ export type ServicePageBanner = Readonly<{
       subtitle: string;
     }>
   >;
+  /**
+   * `inline` — highlight rail under the lede (service landings).
+   * `trust` — home-style strip at the bottom of the hero; CTA stays under lede.
+   */
+  highlightsPlacement?: "inline" | "trust";
   ctaPrimary: Readonly<{
     label: string;
-    /** Default: opens contact sheet. */
-    action?: "contact" | "photo";
   }>;
   ctaAside?: Readonly<{
     icon: ServiceHeroBannerIconId;
@@ -78,6 +110,11 @@ export type Dictionary = Readonly<{
       about: string;
       contact: string;
     }>;
+    legalHeading: string;
+    legal: Readonly<{
+      privacy: string;
+      terms: string;
+    }>;
   }>;
   pages: Readonly<{
     services: Readonly<
@@ -98,6 +135,8 @@ export type Dictionary = Readonly<{
     >;
     about: Readonly<{ title: string; lead: string }>;
     contact: Readonly<{ title: string; lead: string }>;
+    privacy: Readonly<LegalDocumentCopy>;
+    terms: Readonly<LegalDocumentCopy>;
   }>;
   /**
    * Home / hero banner.
@@ -125,48 +164,39 @@ export type Dictionary = Readonly<{
     features: ReadonlyArray<
       Readonly<{
         id: string;
-        icon: "shield" | "clock" | "wallet";
+        icon: "shield" | "clock" | "wallet" | "camera";
         /** First line — the category, e.g. "Гарантия". */
         label: string;
         /** Second line — the short value, e.g. "12 мес.". */
         value: string;
       }>
     >;
-    /** High-contrast accent CTA (e.g. "Send photo of rims"). */
-    ctaPrimary: Readonly<{ label: string; href: string }>;
-    /** Hero-only modal — opened from the primary CTA (photo submission flow). */
-    photoModal: Readonly<{
+    /** High-contrast accent CTA — opens consultation modal. */
+    ctaPrimary: Readonly<{ label: string }>;
+    /** Hero primary CTA — consultation request (name + phone → Telegram). */
+    consultationModal: Readonly<{
       title: string;
-      body: string;
       submitLabel: string;
       successTitle: string;
       successBody: string;
-      photosCount: string;
       privacyBefore: string;
       privacyLinkLabel: string;
+      privacyAfter: string;
       privacyHref: string;
       fields: Readonly<{
         nameLabel: string;
         namePlaceholder: string;
         phoneLabel: string;
         phonePlaceholder: string;
-        emailLabel: string;
-        emailPlaceholder: string;
-        optionalLabel: string;
-        photosLabel: string;
-        photosDropTitle: string;
-        photosDropHint: string;
-        removePhotoLabel: string;
-        commentLabel: string;
-        commentPlaceholder: string;
-        commentHint: string;
       }>;
       errors: Readonly<{
         nameRequired: string;
         phoneRequired: string;
-        emailInvalid: string;
-        photosRequired: string;
+        submitFailed: string;
       }>;
+      contexts: Readonly<
+        Record<ConsultationSourceId, Readonly<{ body: string }>>
+      >;
     }>;
     /** Companion dark CTA (e.g. "Call us"). `tel:` / `mailto:` is fine. */
     ctaSecondary: Readonly<{ label: string; href: string }>;
@@ -176,6 +206,8 @@ export type Dictionary = Readonly<{
     sectionNavLabel: string;
     /** Label under the bottom-center scroll hint ("mouse" affordance). */
     scrollHint: string;
+    /** Home: rich banner (title, lede accents, highlight rail) — same shell as service landings. */
+    banner?: ServicePageBanner;
   }>;
   /** Short labels for banner section-nav fan-out (anchor targets on the page). */
   sectionNav: Readonly<{
@@ -239,6 +271,8 @@ export type Dictionary = Readonly<{
         Readonly<{
           category: string;
           title: string;
+          /** Optional one-line detail on the service card (e.g. coating types). */
+          summary?: string;
           linkLabel: string;
         }>
       >
@@ -289,6 +323,7 @@ export type Dictionary = Readonly<{
   }>;
   /** Dark benefits hub — image cards + center showcase. */
   benefits: Readonly<{
+    eyebrow: string;
     titleStrong: string;
     titleAccent: string;
     lead: string;
@@ -331,7 +366,9 @@ export type Dictionary = Readonly<{
   /** About-the-studio hub — founder, approach, pillars, journey. */
   aboutSection: Readonly<{
     eyebrow: string;
-    heading: string;
+    headingBrand: string;
+    headingAccent: string;
+    headingRest: string;
     lead: string;
     cta: Readonly<{ label: string; href: string }>;
     founder: Readonly<{
@@ -361,13 +398,19 @@ export type Dictionary = Readonly<{
         }>
       >;
     }>;
+    summary: Readonly<{
+      label: string;
+      titleStart: string;
+      titleAccent: string;
+      body: string;
+    }>;
     pillarsSlider: Readonly<{
       ariaLabel: string;
       prevLabel: string;
       nextLabel: string;
     }>;
   }>;
-  /** How rim/studio works — expandable step carousel. */
+  /** How Rim Studio works — expandable step carousel. */
   process: Readonly<{
     eyebrow: string;
     titleStrong: string;
@@ -415,6 +458,42 @@ export type Dictionary = Readonly<{
       >
     >;
   }>;
+  /** First-visit discount promo (replaces loyalty band while hidden). */
+  firstVisitPromo: Readonly<{
+    eyebrow: string;
+    title: string;
+    body: string;
+    carouselAriaLabel: string;
+    card: Readonly<{
+      brand: string;
+      badge: string;
+      discount: string;
+      discountLabel: string;
+      audienceLabel: string;
+      audience: string;
+      perks: ReadonlyArray<string>;
+      securedLabel: string;
+      phoneCaption: string;
+    }>;
+    form: Readonly<{
+      phoneLabel: string;
+      phonePlaceholder: string;
+      consentRequiredBefore: string;
+      consentRequiredLinkLabel: string;
+      consentRequiredAfter: string;
+      privacyHref: string;
+      consentMarketing: string;
+      submitLabel: string;
+      termsLabel: string;
+      termsHref: string;
+      successTitle: string;
+      successBody: string;
+      errors: Readonly<{
+        phoneRequired: string;
+        consentRequired: string;
+      }>;
+    }>;
+  }>;
   /** Quote carousel above the footer. */
   testimonials: Readonly<{
     eyebrow: string;
@@ -432,6 +511,15 @@ export type Dictionary = Readonly<{
         initials: string;
       }>
     >;
+  }>;
+  /** Service landing FAQ accordion (content in `content/service-faq.*.json`). */
+  faq: Readonly<{
+    eyebrow: string;
+    title: string;
+    /** `{service}` — current service title. */
+    lead: string;
+    /** `{service}` — current service title. */
+    listAriaLabel: string;
   }>;
   /** Full-viewport map block above the footer. */
   visitMap: Readonly<{

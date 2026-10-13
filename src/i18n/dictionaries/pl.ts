@@ -2,10 +2,10 @@ import type { Dictionary } from "../types";
 
 export const pl: Dictionary = {
   meta: {
-    title: "rim/studio — Kreatywne studio cyfrowe",
+    title: "Rim Studio — Kreatywne studio cyfrowe",
     description:
-      "rim/studio to kreatywne studio cyfrowe tworzące strony, marki i interaktywne produkty.",
-    siteName: "rim/studio",
+      "Rim Studio to kreatywne studio cyfrowe tworzące strony, marki i interaktywne produkty.",
+    siteName: "Rim Studio",
   },
   header: {
     menu: "Menu",
@@ -27,6 +27,11 @@ export const pl: Dictionary = {
     studio: {
       about: "O nas",
       contact: "Kontakt",
+    },
+    legalHeading: "Dokumenty",
+    legal: {
+      privacy: "Polityka prywatności",
+      terms: "Warunki korzystania",
     },
   },
   pages: {
@@ -329,8 +334,7 @@ export const pl: Dictionary = {
             },
           ],
           ctaPrimary: {
-            label: "Wyślij zdjęcie detalu",
-            action: "photo",
+            label: "Umów diagnostykę",
           },
         },
       },
@@ -338,75 +342,338 @@ export const pl: Dictionary = {
     about: {
       title: "O nas",
       lead:
-        "rim/studio — pracownia renowacji i lakierowania felg w Warszawie. Pracujemy starannie, z gwarancją i bez zbędnego pośpiechu.",
+        "Rim Studio — pracownia renowacji i lakierowania felg w Warszawie. Pracujemy starannie, z gwarancją i bez zbędnego pośpiechu.",
     },
     contact: {
       title: "Kontakt",
       lead:
         "Napisz lub zadzwoń — doradzimy w sprawie terminów, kolorów i wyceny. Możesz też przesłać zdjęcia felg do wstępnej oceny.",
     },
+    privacy: {
+      eyebrow: "Dokumenty",
+      title: "Polityka prywatności",
+      lead:
+        "{{companyName}} (marka {{brandName}}) — studio wulkanizacji, lakierowania i renowacji felg w {{city}}, {{country}}. Poniżej opisujemy, jak przetwarzamy dane osobowe na stronie i w kontakcie ze studiem.",
+      updated: "Ostatnia aktualizacja: 11 października 2026 r.",
+      backToHome: "Strona główna",
+      sections: [
+        {
+          id: "admin",
+          title: "1. Administrator danych",
+          paragraphs: [
+            "Administratorem danych osobowych (RODO) jest {{companyName}}, adres: {{registeredAddress}}, e-mail: {{email}}, telefon: {{phone}}.",
+            "W sprawach ochrony danych pisz na {{email}}. Dane rejestrowe (NIP {{nip}}, KRS {{krs}}, REGON {{regon}}) są dostępne na żądanie.",
+          ],
+        },
+        {
+          id: "scope",
+          title: "2. Jakie dane przetwarzamy",
+          paragraphs: ["W zależności od formy kontaktu możemy przetwarzać:"],
+          bullets: [
+            "imię i numer telefonu — przy zapisie na konsultację, oddzwonieniu, zniżce na pierwszą wizytę;",
+            "numer telefonu i zgodę na SMS — jeśli zaznaczysz opcjonalne przypomnienia o wymianie opon i promocjach;",
+            "dane techniczne strony — adres IP, przeglądarka, język, pliki cookies;",
+            "treść wiadomości i zdjęcia felg przesłane dobrowolnie do wyceny.",
+          ],
+        },
+        {
+          id: "purposes",
+          title: "3. Cele i podstawy przetwarzania",
+          paragraphs: ["Dane wykorzystujemy w celu:"],
+          bullets: [
+            "obsługi zgłoszeń na konsultację i kontaktu w sprawie usług wulkanizacji, lakierowania i naprawy felg;",
+            "potwierdzenia zniżki na pierwszą wizytę — za Twoją zgodą;",
+            "wysyłki SMS marketingowych — tylko po osobnej zgodzie;",
+            "działania i bezpieczeństwa strony;",
+            "realizacji umowy o świadczenie usług w warszawskim studio oraz obowiązków prawnych w Polsce.",
+          ],
+        },
+        {
+          id: "telegram",
+          title: "4. Zgłoszenia z formularza",
+          paragraphs: [
+            "Zgłoszenia z formularza konsultacji trafiają do zabezpieczonego kanału roboczego administratora (Telegram) wyłącznie w celu obsługi zapytania przez upoważnionych pracowników {{brandName}}.",
+          ],
+        },
+        {
+          id: "recipients",
+          title: "5. Odbiorcy danych",
+          paragraphs: [
+            "Dane mogą być przetwarzane przez hosting, dostawców SMS/e-mail (po podłączeniu), księgowość i wsparcie IT — w niezbędnym zakresie i na podstawie umów powierzenia, gdy wymaga tego prawo.",
+            "Nie sprzedajemy danych osobowych.",
+          ],
+        },
+        {
+          id: "retention",
+          title: "6. Okres przechowywania",
+          paragraphs: [
+            "Zgłoszenia ze strony — do 24 miesięcy od ostatniego kontaktu, jeśli umowa nie została zawarta; dane klientów usług — przez okres wymagany przepisami podatkowymi i rachunkowymi.",
+            "Dane marketingowe SMS — do cofnięcia zgody.",
+          ],
+        },
+        {
+          id: "rights",
+          title: "7. Twoje prawa",
+          paragraphs: [
+            "Przysługują Ci prawa RODO: dostęp, sprostowanie, usunięcie, ograniczenie, przenoszenie (gdy ma zastosowanie), sprzeciw oraz cofnięcie zgody.",
+            "Skargę możesz złożyć do Prezesa UODO, ul. Stawki 2, 00-193 Warszawa, www.uodo.gov.pl.",
+          ],
+        },
+        {
+          id: "cookies",
+          title: "8. Cookies",
+          paragraphs: [
+            "Strona może używać niezbędnych cookies (język, sesja). Po podłączeniu analityki zaktualizujemy ten rozdział i — jeśli trzeba — poprosimy o zgodę.",
+          ],
+        },
+        {
+          id: "security",
+          title: "9. Bezpieczeństwo",
+          paragraphs: [
+            "Stosujemy środki organizacyjne i techniczne adekwatne do skali studia: HTTPS, ograniczenie dostępu, przechowywanie tokenów wyłącznie na serwerze.",
+          ],
+        },
+        {
+          id: "changes",
+          title: "10. Zmiany polityki",
+          paragraphs: [
+            "Aktualna wersja jest zawsze na tej stronie. O istotnych zmianach możemy poinformować na stronie lub e-mailem.",
+          ],
+        },
+      ],
+    },
+    terms: {
+      eyebrow: "Dokumenty",
+      title: "Warunki korzystania ze strony",
+      lead:
+        "Zasady korzystania ze strony {{brandName}} i ogólne informacje o usługach studia w {{city}}. Przetwarzanie danych osobowych opisuje osobna polityka prywatności.",
+      updated: "Ostatnia aktualizacja: 11 października 2026 r.",
+      backToHome: "Strona główna",
+      sections: [
+        {
+          id: "general",
+          title: "1. Postanowienia ogólne",
+          paragraphs: [
+            "Stroną zarządza {{companyName}} (marka {{brandName}}). Informujemy o usługach w Warszawie: wulkanizacja, lakierowanie proszkowe i renowacja felg, naprawa i prostowanie, toczenie diamentowe, lakierowanie zacisków, felgi motocyklowe oraz spawanie TIG.",
+            "Korzystając ze strony, wysyłając formularze lub kontaktując się telefonicznie, akceptujesz niniejsze warunki.",
+          ],
+        },
+        {
+          id: "services",
+          title: "2. Usługi i rezerwacja",
+          paragraphs: [
+            "Zgłoszenie przez formularz, telefon {{phone}} lub e-mail {{email}} to prośba o kontakt, a nie zawarta umowa.",
+            "Cenę, termin i zakres prac ustalamy po oględzinach felg w studiu (lub po uzgodnionej wstępnej wycenie). Cennik na stronie ma charakter informacyjny.",
+          ],
+        },
+        {
+          id: "user",
+          title: "3. Obowiązki użytkownika",
+          paragraphs: [
+            "Podawaj prawdziwe dane kontaktowe w formularzach. Nie wykorzystuj strony do spamu, dystrybucji złośliwego oprogramowania ani prób nieautoryzowanego dostępu.",
+          ],
+        },
+        {
+          id: "content",
+          title: "4. Treści i prawa autorskie",
+          paragraphs: [
+            "Teksty, zdjęcia realizacji, wideo i layout strony należą do {{companyName}} lub są używane na podstawie licencji. Kopiowanie bez pisemnej zgody jest zabronione, z wyjątkami przewidzianymi prawem.",
+            "{{brandName}} może aktualizować materiały i cennik bez osobnego ogłoszenia na stronie.",
+          ],
+        },
+        {
+          id: "liability",
+          title: "5. Odpowiedzialność",
+          paragraphs: [
+            "Strona jest udostępniana „w stanie, w jakim jest”. Dążymy do ciągłości działania, ale nie gwarantujemy braku krótkich przerw. Odpowiedzialność za decyzje podjęte wyłącznie na podstawie treści strony, bez konsultacji w studiu, jest ograniczona w granicach dopuszczalnych przez prawo polskie.",
+          ],
+        },
+        {
+          id: "privacy",
+          title: "6. Dane osobowe",
+          paragraphs: [
+            "Formularze są przetwarzane zgodnie z polityką prywatności {{brandName}} — link w stopce i menu strony („Polityka prywatności”).",
+          ],
+        },
+        {
+          id: "law",
+          title: "7. Prawo właściwe",
+          paragraphs: [
+            "Do korzystania ze strony i sporów wynikających z warunków stosuje się prawo polskie. Spory rozstrzygają sądy właściwe dla siedziby {{companyName}}, o ile bezwzględnie obowiązujące przepisy nie stanowią inaczej.",
+          ],
+        },
+        {
+          id: "contact",
+          title: "8. Kontakt",
+          paragraphs: [
+            "Pytania o usługi i warunki: {{email}}, {{phone}}, {{registeredAddress}}.",
+          ],
+        },
+      ],
+    },
   },
   hero: {
-    titleStart: "Renowacja i lakierowanie",
-    titleEnd: "felg",
+    titleStart: "Studio lakierowania",
+    titleEnd: "i renowacji felg",
     titleHighlight: "w Warszawie",
-    lede: "Przywrócimy felgi do stanu nowych — bez kupowania nowych. Czysto, równo i na czas.",
+    lede:
+      "Przywrócimy felgom nienaganny wygląd bez przepłacania za nowe felgi. Szybko, starannie i z gwarancją.",
+    banner: {
+      layout: "rail",
+      highlightsPlacement: "trust",
+      titleLines: [
+        { text: "Studio lakierowania" },
+        {
+          parts: [
+            { text: "i" },
+            { text: "renowacji", accent: true },
+            { text: "felg" },
+          ],
+        },
+        { text: "w Warszawie" },
+      ],
+      ledeParts: [
+        { text: "Przywrócimy felgom " },
+        {
+          parts: [
+            { text: "nienaganny", accent: true },
+            { text: "wygląd" },
+          ],
+        },
+        { text: "bez przepłacania", accent: true },
+        { text: "za nowe felgi. Szybko, starannie i" },
+        { text: "z gwarancją", accent: true },
+        { text: "." },
+      ],
+      highlights: [
+        {
+          id: "warranty",
+          icon: "shieldCheck",
+          title: "Gwarancja",
+          subtitle: "do 12 miesięcy",
+        },
+        {
+          id: "time",
+          icon: "clock",
+          title: "Termin realizacji",
+          subtitle: "1–3 dni",
+        },
+        {
+          id: "photo",
+          icon: "camera",
+          title: "Wycena na zdjęciu",
+          subtitle: "na podstawie zdjęć",
+        },
+      ],
+      ctaPrimary: { label: "Umów konsultację" },
+    },
     features: [
       {
         id: "warranty",
         icon: "shield",
         label: "Gwarancja",
-        value: "do 12 mies.",
+        value: "do 12 miesięcy",
       },
       {
         id: "time",
         icon: "clock",
-        label: "Termin",
+        label: "Termin realizacji",
         value: "1–3 dni",
       },
       {
-        id: "payment",
-        icon: "wallet",
-        label: "Płatność",
-        value: "Bez przedpłaty",
+        id: "photo",
+        icon: "camera",
+        label: "Wycena na zdjęciu",
+        value: "na podstawie zdjęć",
       },
     ],
-    ctaPrimary: { label: "Wyślij zdjęcie felg", href: "/contact" },
-    photoModal: {
-      title: "Zdjęcia Twoich felg",
-      body: "Zrób kilka zdjęć kół w świetle dziennym — na ich podstawie ocenimy stan i zaproponujemy opcje renowacji i lakierowania.",
+    ctaPrimary: { label: "Umów konsultację" },
+    consultationModal: {
+      title: "Umów konsultację",
       submitLabel: "Wyślij",
-      successTitle: "Zgłoszenie gotowe",
+      successTitle: "Zgłoszenie wysłane",
       successBody:
-        "Wysyłka działa na razie w trybie demo. Zapisz dane — podłączymy backend w kolejnym kroku.",
-      photosCount: "Dodano {current} z {max} zdjęć",
+        "Skontaktujemy się w najbliższym czasie roboczym i doprecyzujemy szczegóły.",
       privacyBefore: "Klikając „Wyślij”, akceptujesz ",
       privacyLinkLabel: "politykę prywatności",
-      privacyHref: "/contact",
+      privacyAfter: "",
+      privacyHref: "/legal/privacy",
       fields: {
         nameLabel: "Imię",
         namePlaceholder: "Jak się do Ciebie zwracać",
         phoneLabel: "Telefon",
         phonePlaceholder: "+48 ___ ___ ___",
-        emailLabel: "Email",
-        emailPlaceholder: "name@example.com",
-        optionalLabel: "(opcjonalnie)",
-        photosLabel: "Zdjęcia felg",
-        photosDropTitle: "Dodaj zdjęcia",
-        photosDropHint: "Przeciągnij tutaj lub kliknij — do 10 zdjęć, JPG lub PNG",
-        removePhotoLabel: "Usuń zdjęcie",
-        commentLabel: "Komentarz",
-        commentPlaceholder: "Rozmiar felg, uszkodzenia, preferowany kolor…",
-        commentHint: "Każdy szczegół pomoże szybciej wycenić pracę.",
       },
       errors: {
         nameRequired: "Podaj imię",
         phoneRequired: "Podaj numer telefonu",
-        emailInvalid: "Sprawdź format email",
-        photosRequired: "Dodaj co najmniej jedno zdjęcie felg",
+        submitFailed:
+          "Nie udało się wysłać zgłoszenia. Zadzwoń do nas lub spróbuj później.",
+      },
+      contexts: {
+        home: {
+          body:
+            "Ocenimy stan felg, dobierzemy kolor i podamy termin — przed rezerwacją lakierowania.",
+        },
+        wheelPainting: {
+          body:
+            "Opowiemy o lakierowaniu felg, terminach i orientacyjnej wycenie Twojego kompletu.",
+        },
+        wheelRepair: {
+          body:
+            "Ocenimy uszkodzenia i zaproponujemy naprawę z jasnym terminem i ceną.",
+        },
+        diamondCutting: {
+          body:
+            "Pomożemy dobrać toczenie diamentowe, lakier i harmonogram prac.",
+        },
+        tireMounting: {
+          body:
+            "Umówimy wymianę opon i podpowiemy dogodny termin wizyty w studiu.",
+        },
+        caliperPainting: {
+          body:
+            "Dobierzemy kolor zacisków i ustalimy termin przed rozpoczęciem prac.",
+        },
+        motorcycleWheelPainting: {
+          body:
+            "Omówimy lakierowanie moto-felg, kolor i czas realizacji.",
+        },
+        tigWelding: {
+          body:
+            "Ocenimy zadanie spawalnicze TIG i zaproponujemy najlepszą metodę naprawy.",
+        },
+        benefits: {
+          body:
+            "Opowiemy, czym Rim Studio wyróżnia się na tle typowego serwisu, i dobierzemy zakres prac do Twoich felg.",
+        },
+        process: {
+          body:
+            "Wyjaśnimy etapy prac — od diagnostyki do odbioru — i umówimy dogodny termin wizyty.",
+        },
+        about: {
+          body:
+            "Odpowiemy na pytania o studio, podejście do prac i umówimy konsultację w serwisie.",
+        },
+        beforeAfter: {
+          body:
+            "Pokażemy przykłady realizacji i pomóżemy umówić lakierowanie lub naprawę felg.",
+        },
+        firstVisitPromo: {
+          body:
+            "Zapiszemy zniżkę na pierwszą wizytę i oddzwonimy, aby doprecyzować szczegóły.",
+        },
+        visitMap: {
+          body:
+            "Oddzwonimy na podany numer i pomóżemy z rezerwacją lub dojazdem do studia.",
+        },
+        contactSheet: {
+          body:
+            "Oddzwonimy w najbliższym czasie roboczym — doprecyzujemy zadanie i termin wizyty.",
+        },
       },
     },
-    ctaSecondary: { label: "Zadzwoń", href: "tel:+48000000000" },
+    ctaSecondary: { label: "Zadzwoń", href: "tel:+48786444468" },
     sectionNavLabel: "Nawigacja po sekcjach",
     scrollHint: "Przewiń",
   },
@@ -421,10 +688,10 @@ export const pl: Dictionary = {
     testimonials: "Opinie",
   },
   contactSheet: {
-    eyebrow: "rim/studio",
+    eyebrow: "Rim Studio",
     title: "Skontaktuj się z nami",
     closeLabel: "Zamknij panel kontaktowy",
-    mapAriaLabel: "Mapa — lokalizacja studia rim/studio w Warszawie",
+    mapAriaLabel: "Mapa — lokalizacja studia Rim Studio w Warszawie",
     routeLabel: "Wyznacz trasę",
     addressTitle: "Adres",
     addressLine1: "ul. Przykładowa 12",
@@ -434,7 +701,7 @@ export const pl: Dictionary = {
     callbackBody:
       "Zostaw numer — oddzwonimy w godzinach pracy i pomożemy dobrać usługę.",
     callbackPhoneLabel: "Telefon",
-    callbackPhonePlaceholder: "+48 000 000 000",
+    callbackPhonePlaceholder: "+48 ___ ___ ___",
     callbackPhoneRequired: "Podaj numer telefonu",
     callbackCta: "Zamów telefon",
     callbackSuccessTitle: "Zgłoszenie przyjęte",
@@ -716,37 +983,51 @@ export const pl: Dictionary = {
     cards: {
       wheelPainting: {
         category: "Lakierowanie",
-        title: "Proszkowe lakierowanie felg dowolnej złożoności",
+        title: "Lakierowanie felg",
+        summary:
+          "Lakier proszkowy i emalia termoutwardzalna — przygotujemy powierzchnię, dobierzemy kolor i nałożymy równą, trwałą warstwę.",
         linkLabel: "Więcej",
       },
       wheelRepair: {
         category: "Naprawa",
-        title: "Naprawa i renowacja uszkodzonych felg",
+        title: "Naprawa i renowacja felg",
+        summary:
+          "Prawienie geometrii, usuwanie odprysków i pęknięć — najpierw diagnostyka, potem staranna renowacja pod lakier.",
         linkLabel: "Więcej",
       },
       diamondCutting: {
         category: "Szlifowanie",
-        title: "Diamentowe toczenie i lustrzany połysk",
+        title: "Diamentowe toczenie felg",
+        summary:
+          "Diamond Cut: lustrzana polerka i wyraźna faktura — toczenie bez przegrzania i zbędnego zdejmowania metalu.",
         linkLabel: "Więcej",
       },
       tireMounting: {
         category: "Opony",
-        title: "Montaż opon i sezonowe przechowywanie",
+        title: "Montaż opon",
+        summary:
+          "Montaż, wyważanie i wymiana sezonowa — delikatnie do felg, bez zbędnych zarysowań.",
         linkLabel: "Więcej",
       },
       caliperPainting: {
         category: "Zaciski",
-        title: "Lakierowanie zacisków w kolorze nadwozia",
+        title: "Lakierowanie zacisków",
+        summary:
+          "Powłoka proszkowa w kolorze nadwozia lub mocny akcent — tłoczki i strefy montażowe zostawiamy nietknięte.",
         linkLabel: "Więcej",
       },
       motorcycleWheelPainting: {
         category: "Moto",
-        title: "Lakierowanie felg motocyklowych i dodatków",
+        title: "Lakierowanie felg moto",
+        summary:
+          "Felgi, obręcze i detale — proszkowe lakierowanie trudnych form z dokładnym przygotowaniem każdej powierzchni.",
         linkLabel: "Więcej",
       },
       tigWelding: {
         category: "Spawanie",
-        title: "Spawanie TIG pęknięć i stref montażowych",
+        title: "Spawanie TIG",
+        summary:
+          "Lokalna naprawa pęknięć i stref aluminiowych — ocenimy stan i zespawamy precyzyjnie, bez nadmiernego nagrzewania.",
         linkLabel: "Więcej",
       },
     },
@@ -774,7 +1055,7 @@ export const pl: Dictionary = {
       tire: {
         thumbsAriaLabel: "Galeria wulkanizacji",
         galleryFallback: {
-          alt: "Prace wulkanizacyjne w rim/studio",
+          alt: "Prace wulkanizacyjne w Rim Studio",
           thumbAlt: "Miniatura wulkanizacji",
         },
       },
@@ -789,14 +1070,14 @@ export const pl: Dictionary = {
       caliper: {
         thumbsAriaLabel: "Galeria lakierowania zacisków",
         galleryFallback: {
-          alt: "Lakierowanie zacisków hamulcowych w rim/studio",
+          alt: "Lakierowanie zacisków hamulcowych w Rim Studio",
           thumbAlt: "Przykład lakierowania zacisku",
         },
       },
       diamond: {
         thumbsAriaLabel: "Galeria szlifowania diamentowego",
         galleryFallback: {
-          alt: "Szlifowanie diamentowe felgi w rim/studio",
+          alt: "Szlifowanie diamentowe felgi w Rim Studio",
           thumbAlt: "Przykład szlifowania diamentowego",
         },
       },
@@ -829,6 +1110,7 @@ export const pl: Dictionary = {
     },
   },
   benefits: {
+    eyebrow: "Dlaczego my",
     titleStrong: "Nasze",
     titleAccent: "atuty",
     lead: "Dlaczego powierzają nam swoje felgi",
@@ -871,7 +1153,7 @@ export const pl: Dictionary = {
       },
     },
     hub: {
-      brand: "rim/studio",
+      brand: "Rim Studio",
       tagline: "Renowacja bez niespodzianek",
       heroImageAlt: "Odrestaurowane i polakierowane felgi",
       steps: {
@@ -893,9 +1175,11 @@ export const pl: Dictionary = {
   },
   aboutSection: {
     eyebrow: "O studiu",
-    heading: "Renowacja felg",
+    headingBrand: "RIM STUDIO —",
+    headingAccent: "renowacja i lakierowanie",
+    headingRest: "felg",
     lead:
-      "Ponad 10 lat w renowacji felg: od lokalnych napraw po pełny cykl lakierowania w Warszawie. Znamy proces w detalach i doprowadzamy każdy komplet do fabrycznego wyglądu.",
+      "Ponad 10 lat praktyki w renowacji felg: od diagnostyki i geometrii po przygotowanie powierzchni, lakierowanie i wykończenie.",
     cta: {
       label: "Umów diagnostykę felg",
       href: "/contact",
@@ -906,35 +1190,39 @@ export const pl: Dictionary = {
     },
     approach: {
       label: "Nasze podejście",
-      titleStart: "Bez kompromisów",
-      titleAccent: "w jakości.",
+      titleStart: "Detale, które",
+      titleAccent: "mają znaczenie",
       body:
-        "Precyzyjne przygotowanie, kontrola geometrii i lakierowanie technologiczne — bez pośpiechu i „kosmetyki”. Efekt, który można pokazać.",
+        "Dbamy o każdy etap — od przygotowania powierzchni po wykończenie, aby efekt był bezbłędny.",
     },
     pillars: [
       {
-        id: "cycle",
-        title: "Pełen cykl prac",
+        id: "equipment",
+        title: "Nowoczesny sprzęt",
         body:
-          "Demontaż, renowacja, lakierowanie, suszenie i montaż — w jednym studio, bez podwykonawców.",
+          "Profesjonalne maszyny i technologie do precyzyjnej renowacji i lakierowania.",
       },
       {
-        id: "premium",
-        title: "Premium efekt",
+        id: "materials",
+        title: "Sprawdzone materiały",
+        body: "Certyfikowane powłoki i chemia z przewidywalnym efektem.",
+      },
+      {
+        id: "control",
+        title: "Kontrola na każdym etapie",
         body:
-          "Dobór koloru i faktury do fabryki lub Twojej referencji — równa powłoka bez smug.",
+          "Osobisty nadzór od diagnostyki do odbioru — bez „martwych stref” w procesie.",
       },
       {
         id: "timing",
-        title: "1–4 dni na komplet",
-        body:
-          "Podajemy termin przed startem i go dotrzymujemy — bez niespodzianek w trakcie.",
+        title: "Terminowość",
+        body: "Ustalamy termin przed startem i go dotrzymujemy — szanujemy Twój czas.",
       },
       {
-        id: "parking",
-        title: "Parking na terenie",
+        id: "team",
+        title: "Zespół profesjonalistów",
         body:
-          "Brak zapasowego kompletu — zostaw auto u nas, gdy lakierujemy felgi.",
+          "Doświadczeni specjaliści, którzy znają fach i odpowiadają za wynik.",
       },
     ],
     pillarsSlider: {
@@ -947,25 +1235,32 @@ export const pl: Dictionary = {
       milestones: [
         {
           year: "2014",
-          title: "Początek kierunku",
-          body: "Przygotowanie i lokalna naprawa",
+          title: "Lakierowanie proszkowe",
+          body: "Start w branży, zarządzanie zakładem produkcyjnym",
         },
         {
           year: "2016",
-          title: "Renowacja felg",
-          body: "Dealerzy i klienci indywidualni",
+          title: "Star Wheels · Odessa",
+          body: "Własny warsztat renowacji i naprawy felg",
         },
         {
-          year: "2019",
-          title: "Kabina lakiernicza",
-          body: "Technologie proszkowe i suszenie",
+          year: "2024",
+          title: "Factory Felgen · Düsseldorf",
+          body: "Studio renowacji w Niemczech",
         },
         {
-          year: "2022",
-          title: "rim/studio",
-          body: "Lakierowanie, naprawa i montaż opon w jednym studio",
+          year: "2026",
+          title: "RIM STUDIO · Warszawa",
+          body: "Wulkanizacja i pełny cykl renowacji w Polsce",
         },
       ],
+    },
+    summary: {
+      label: "Podsumowanie",
+      titleStart: "Doświadczenie, które pracuje",
+      titleAccent: "na Twój rezultat",
+      body:
+        "Dziś wykorzystujemy to doświadczenie w RIM STUDIO w Warszawie — pełen cykl usług felg w jednym miejscu.",
     },
   },
   process: {
@@ -974,7 +1269,7 @@ export const pl: Dictionary = {
     lead: "Przejrzysto i jasno na każdym etapie",
     intro:
       "Wiesz, co robimy, ile to kosztuje i kiedy będzie gotowe — jeszcze przed rozpoczęciem prac",
-    carouselAriaLabel: "Etapy pracy rim/studio",
+    carouselAriaLabel: "Etapy pracy Rim Studio",
     prevLabel: "Poprzedni etap",
     nextLabel: "Następny etap",
     cta: {
@@ -987,7 +1282,7 @@ export const pl: Dictionary = {
         label: "Diagnostyka",
         tagline: "Oceniamy stan felg i wykrywamy uszkodzenia",
         description:
-          "Przesyłasz zdjęcia lub przywozisz felgi do rim/studio. Sprawdzamy stan i ustalamy zakres prac.",
+          "Przesyłasz zdjęcia lub przywozisz felgi do Rim Studio. Sprawdzamy stan i ustalamy zakres prac.",
         imageAlt: "Diagnostyka felg na stanowisku",
       },
       {
@@ -1028,8 +1323,8 @@ export const pl: Dictionary = {
       { group: "strong", text: "do 15% zniżki" },
     ],
     body:
-      "Każde zlecenie przybliża Cię do kolejnego poziomu. Rabat naliczamy automatycznie — im więcej prac wykonasz w rim/studio, tym korzystniejsze warunki na lakierowanie, naprawę i montaż opon.",
-    carouselAriaLabel: "Poziomy programu lojalnościowego rim/studio",
+      "Każde zlecenie przybliża Cię do kolejnego poziomu. Rabat naliczamy automatycznie — im więcej prac wykonasz w Rim Studio, tym korzystniejsze warunki na lakierowanie, naprawę i montaż opon.",
+    carouselAriaLabel: "Poziomy programu lojalnościowego Rim Studio",
     cta: {
       label: "Sprawdź swój poziom",
       href: "/contact",
@@ -1065,9 +1360,51 @@ export const pl: Dictionary = {
       },
     },
   },
+  firstVisitPromo: {
+    eyebrow: "Zniżka na pierwszą wizytę",
+    carouselAriaLabel: "Zniżka na pierwszą wizytę Rim Studio",
+    title: "Poznaj Rim Studio — 20% mniej na dowolną usługę",
+    body:
+      "Pierwszy raz zawsze trudno oddać felgi nowemu fachowcu. Dlatego na start — zniżka: oceń jakość i zdecyduj, czy zostajesz z nami.",
+    card: {
+      brand: "Rim Studio",
+      badge: "Pierwsza wizyta",
+      discount: "20%",
+      discountLabel: "zniżki na dowolną usługę",
+      audienceLabel: "Dla kogo",
+      audience: "nowi klienci studia",
+      perks: [
+        "Stała cena po diagnostyce",
+        "Zdjęcia przed i po każdej usługi",
+      ],
+      securedLabel: "Zarezerwowane",
+      phoneCaption: "Podaj numer podczas wizyty",
+    },
+    form: {
+      phoneLabel: "Numer telefonu",
+      phonePlaceholder: "+48 600 000 000",
+      consentRequiredBefore:
+        "Wyrażam zgodę na przetwarzanie numeru telefonu przez Rim Studio Sp. z o.o. w celu naliczenia i weryfikacji zniżki. ",
+      consentRequiredLinkLabel: "Polityka prywatności",
+      consentRequiredAfter: "",
+      privacyHref: "/legal/privacy",
+      consentMarketing:
+        "Chcę SMS o sezonowej wymianie opon i promocjach (opcjonalnie)",
+      submitLabel: "Odbierz zniżkę",
+      termsLabel: "Warunki promocji",
+      termsHref: "/legal/terms",
+      successTitle: "Zgłoszenie przyjęte",
+      successBody:
+        "Skontaktujemy się pod podanym numerem i potwierdzimy zniżkę na pierwszą wizytę.",
+      errors: {
+        phoneRequired: "Podaj numer telefonu",
+        consentRequired: "Wymagana zgoda na przetwarzanie numeru",
+      },
+    },
+  },
   testimonials: {
     eyebrow: "Opinie klientów",
-    sliderAriaLabel: "Opinie klientów rim/studio",
+    sliderAriaLabel: "Opinie klientów Rim Studio",
     prevLabel: "Poprzednia opinia",
     nextLabel: "Następna opinia",
     counterAriaLabel: "Opinia {current} z {total}",
@@ -1105,6 +1442,13 @@ export const pl: Dictionary = {
         initials: "TL",
       },
     ],
+  },
+  faq: {
+    eyebrow: "Najczęstsze pytania",
+    title: "Pytania i odpowiedzi",
+    lead:
+      "Krótko o usłudze «{service}» — terminy, proces i to, o co pytają najczęściej.",
+    listAriaLabel: "Pytania i odpowiedzi — {service}",
   },
   visitMap: {
     title: "Zapis i kontakt",
@@ -1169,7 +1513,7 @@ export const pl: Dictionary = {
     ],
     legalLinks: {
       privacy: "Polityka prywatności",
-      terms: "Warunki świadczenia usług",
+      terms: "Warunki korzystania",
     },
     claimRuns: [
       {
@@ -1181,6 +1525,6 @@ export const pl: Dictionary = {
       { group: "strong", text: "lakierowania felg" },
     ],
     shopNow: "Wybrane projekty",
-    copyright: "© rim/studio",
+    copyright: "© Rim Studio",
   },
 };

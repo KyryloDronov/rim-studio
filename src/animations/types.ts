@@ -21,6 +21,8 @@ export type CharSegment = Readonly<{
  */
 export type HeroIntroClassNames = Readonly<{
   word: string;
+  /** Rich banner lede — one block instead of per-word `.word` nodes. */
+  ledeReveal: string;
   ctaItem: string;
   trustItem: string;
   serviceRevealItem: string;
@@ -90,6 +92,13 @@ export type AboutRevealClassNames = Readonly<{
   approachReveal: string;
   pillarReveal: string;
   journeyReveal: string;
+  summaryReveal: string;
+}>;
+
+/** FAQ section scroll-reveal class names. */
+export type FaqRevealClassNames = Readonly<{
+  headerReveal?: string;
+  itemReveal: string;
 }>;
 
 /** Before/after section scroll-reveal class names. */
@@ -104,6 +113,7 @@ export type BeforeAfterRevealClassNames = Readonly<{
 export type HeroIntroElements = Readonly<{
   titleWords: NodeListOf<HTMLElement>;
   ledeWords: NodeListOf<HTMLElement>;
+  ledeReveal: HTMLElement | null;
   serviceHighlightItems: NodeListOf<HTMLElement>;
   ctaItems: NodeListOf<HTMLElement>;
   ctaAsideItem: HTMLElement | null;

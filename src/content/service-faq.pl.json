@@ -1,0 +1,281 @@
+{
+  "wheelPainting": [
+    {
+      "id": "wheelPainting-1",
+      "question": "Czym jest malowanie (renowacja) felg i do czego służy?",
+      "answer": "Malowanie felg to przywrócenie wyglądu i powłoki ochronnej obręczy koła: usunięcie starej farby, wyeliminowanie rys i odprysków oraz nałożenie nowej powłoki. Z tej usługi korzystają klienci, których felgi straciły wygląd na skutek eksploatacji, soli drogowej lub uderzeń, a zakup nowej felgi kosztowałby znacznie więcej."
+    },
+    {
+      "id": "wheelPainting-2",
+      "question": "Czym malowanie proszkowe różni się od malowania ciekłego (emalią termoutwardzalną)?",
+      "answer": "Farba proszkowa jest nakładana w postaci suchego proszku i wypiekana w piecu w wysokiej temperaturze — powstaje gruba i bardzo odporna powłoka. Emalia ciekła schnie w temperaturze pokojowej, jest cieńsza, ale pozwala uzyskać bardziej złożone efekty: perłę, gradient, chameleon. W codziennej eksploatacji proszek jest zwykle trwalszy, a emalia daje większą swobodę w projektowaniu wyglądu."
+    },
+    {
+      "id": "wheelPainting-3",
+      "question": "Jak przebiega proces malowania felgi?",
+      "answer": "Felga przechodzi pełne przygotowanie — usunięcie starej powłoki, piaskowanie, w razie potrzeby naprawę i odtłuszczenie — a następnie nakładana jest farba proszkowa i wypiekana w piecu. Taka kolejność prac daje równomierną i trwałą powłokę, w przeciwieństwie do malowania na starej warstwie."
+    },
+    {
+      "id": "wheelPainting-4",
+      "question": "Jak długo wytrzymują malowane felgi?",
+      "answer": "Przy wysokiej jakości powłoce i zachowaniu technologii — [2–5] lat, a przy ostrożnej eksploatacji nawet dłużej. Trwałość zależy od rodzaju farby, jakości przygotowania powierzchni oraz tego, jak intensywnie felga jest użytkowana zimą."
+    },
+    {
+      "id": "wheelPainting-5",
+      "question": "Jakie kolory są dostępne?",
+      "answer": "Dostępne są setki kolorów z międzynarodowej palety RAL — powłoki matowe, błyszczące, satynowe i metaliczne. W razie potrzeby możemy możliwie najdokładniej odtworzyć oryginalny fabryczny kolor felg BMW, Mercedes-Benz, Audi, Porsche i innych marek."
+    },
+    {
+      "id": "wheelPainting-6",
+      "question": "Jak dobieracie dokładny fabryczny kolor felgi?",
+      "answer": "Kolor ustalamy na podstawie kodu lakieru producenta, jeśli jest znany, albo dobieramy go wizualnie do wzorca — w każdym przypadku uzgadniamy odcień z Państwem przed rozpoczęciem malowania, aby uniknąć sytuacji, w której kolor „nie trafił”."
+    },
+    {
+      "id": "wheelPainting-7",
+      "question": "Czy można pomalować tylko jedną felgę?",
+      "answer": "Tak, można pomalować jedną felgę oddzielnie od kompletu. Aby jednak zachować jednakowy odcień i stopień połysku, zalecamy malowanie od razu wszystkich czterech — odcień farby proszkowej może się nieznacznie różnić między partiami."
+    },
+    {
+      "id": "wheelPainting-8",
+      "question": "Czy malujecie również wewnętrzną stronę felgi, a nie tylko widoczną część?",
+      "answer": "Tak, malujemy felgę w całości, łącznie ze stroną niewidoczną — ma to kluczowe znaczenie dla ochrony przed korozją. Malowanie wyłącznie widocznej części z zewnątrz to częsta przyczyna tego, że po sezonie farba zaczyna odpadać od wewnątrz; z zasady tak nie robimy."
+    },
+    {
+      "id": "wheelPainting-9",
+      "question": "Dlaczego nie wolno malować płaszczyzn przylegania felgi?",
+      "answer": "Płaszczyzna przylegania (montażowa) musi pozostać bez farby — jeśli zostanie pomalowana, felga usiądzie na piaście z luzem, a podczas jazdy pojawią się bicie kierownicy lub drgania nadwozia. Przed malowaniem maskujemy te strefy, a po malowaniu sprawdzamy ich czystość — na rynku ta technologia bywa niestety łamana."
+    },
+    {
+      "id": "wheelPainting-10",
+      "question": "Czy powłoka wytrzyma zimę — sól drogową, środki chemiczne, wahania temperatur?",
+      "answer": "Tak, stosowane materiały są przeznaczone do eksploatacji zimowej z użyciem soli i środków drogowych. Gwarancja [X miesięcy] obejmuje odporność powłoki właśnie na takie warunki, przy zachowaniu należytej pielęgnacji — bez agresywnej chemii podczas mycia."
+    },
+    {
+      "id": "wheelPainting-11",
+      "question": "Ile kosztuje malowanie/naprawa felg i od czego zależy cena?",
+      "answer": "Ostateczna cena zależy od rozmiaru felgi, rodzaju uszkodzenia, materiału (odlewana/stalowa/kuta) oraz zakresu prac — prostowanie, spawanie, malowanie. Dokładny koszt podajemy dopiero po obejrzeniu felgi: na podstawie zdjęcia możemy podać widełki, ale ostateczna kwota jest ustalana podczas diagnostyki i już się nie zmienia."
+    },
+    {
+      "id": "wheelPainting-12",
+      "question": "Ile czasu zajmie naprawa/malowanie?",
+      "answer": "Podstawowo — [2–5] dni roboczych, w zależności od zakresu prac. Jeśli dodatkowo wykonywane jest diamentowe toczenie krawędzi, termin wydłuża się o [1–2] dni. Dokładny termin podajemy podczas diagnostyki i zapisujemy w zleceniu."
+    }
+  ],
+  "wheelRepair": [
+    {
+      "id": "wheelRepair-1",
+      "question": "Czym jest naprawa (prostowanie) felgi i czym różni się od malowania?",
+      "answer": "Naprawa felgi to przywrócenie jej kształtu i integralności: usunięcie skrzywień, pęknięć, odprysków i wgnieceń w metalu, a nie zmiana koloru. Naprawa zwykle poprzedza malowanie, jeśli felga nie tylko źle wygląda, ale jest też fizycznie uszkodzona."
+    },
+    {
+      "id": "wheelRepair-2",
+      "question": "Jakie uszkodzenia felg naprawiacie?",
+      "answer": "Zajmujemy się skrzywieniami (zaburzeniem geometrii), pęknięciami, odpryskami, wgnieceniami oraz uszkodzeniami korozyjnymi. Dokładną listę tego, co można naprawić w Państwa przypadku, ustalamy podczas diagnostyki."
+    },
+    {
+      "id": "wheelRepair-3",
+      "question": "Jak ocenić, czy felgę jeszcze można naprawić, a kiedy jest to niemożliwe lub nieopłacalne?",
+      "answer": "Jeśli uszkodzenie zagraża integralności metalu w stopniu uniemożliwiającym bezpieczną eksploatację — na przykład pęknięcie na wylot w strefie dużego obciążenia lub krytyczna deformacja — nie podejmujemy się naprawy i mówimy o tym wprost. Jeśli naprawa jest technicznie możliwa, ale kosztowałaby więcej niż nowa felga, również poinformujemy o tym podczas diagnostyki i nie będziemy na niej nalegać."
+    },
+    {
+      "id": "wheelRepair-4",
+      "question": "Czy jazda na feldze po naprawie jest bezpieczna — czy nie pojawi się bicie kierownicy?",
+      "answer": "Tak, po naprawie każda felga przechodzi obowiązkową kontrolę geometrii i wyważenia — wraca do bezpiecznych tolerancji. Odnawiamy tylko te felgi, które po naprawie spełniają wymogi bezpieczeństwa; jeśli geometrii nie da się w pełni przywrócić, powiemy o tym uczciwie, zamiast wydać felgę „na oko”."
+    },
+    {
+      "id": "wheelRepair-5",
+      "question": "Czy można usunąć bicie felgi lub kierownicy?",
+      "answer": "Tak, w większości przypadków bicie wynika z zaburzenia geometrii felgi, a prostowanie na profesjonalnym sprzęcie je eliminuje. Po przywróceniu geometrii dodatkowo sprawdzane jest wyważenie koła."
+    },
+    {
+      "id": "wheelRepair-6",
+      "question": "Czy można odnowić felgę po uderzeniu w dziurę?",
+      "answer": "W większości przypadków — tak. Po oględzinach mechanik określi stopień deformacji i zaproponuje optymalny sposób naprawy; wiele felg po naprawie w pełni wraca do parametrów fabrycznych."
+    },
+    {
+      "id": "wheelRepair-7",
+      "question": "Jak spawacie pęknięcia — czy spoina nie stanie się w przyszłości słabym punktem?",
+      "answer": "Stosujemy spawanie łukiem argonowym (TIG) — daje trwałą, jednorodną spoinę bez późniejszej kruchości metalu w strefie nagrzewania, charakterystycznej dla grubszych metod spawania. Po spawaniu felga jest sprawdzana pod kątem geometrii przed malowaniem."
+    },
+    {
+      "id": "wheelRepair-8",
+      "question": "Jak długo trwa diagnostyka i kiedy poznam ostateczną cenę naprawy?",
+      "answer": "Diagnostyka trwa [15–30 minut], a ostateczną cenę podajemy od razu po oględzinach — przed rozpoczęciem jakichkolwiek prac."
+    }
+  ],
+  "tireMounting": [
+    {
+      "id": "tireMounting-1",
+      "question": "Czy podczas montażu opony nie uszkodzicie świeżo pomalowanej felgi?",
+      "answer": "Nie — w przypadku malowanych felg używamy bezdotykowej montażownicy oraz ochronnych nakładek na łyżkę montażową, aby nie zarysować powłoki. Jeśli felga nie była malowana u nas, również stosujemy delikatny montaż."
+    },
+    {
+      "id": "tireMounting-2",
+      "question": "Ile czasu zajmuje wymiana opon na kompletnym zestawie (4 koła)?",
+      "answer": "Zwykle [30–60 minut] na komplet. Bez wcześniejszej rezerwacji możliwa jest kolejka — zalecamy rezerwowanie terminu z wyprzedzeniem."
+    },
+    {
+      "id": "tireMounting-3",
+      "question": "Czy można przyjechać bez umówienia, czy trzeba rezerwować termin z wyprzedzeniem?",
+      "answer": "Można przyjechać bez umówienia, ale w sezonie (wiosna/jesień) zalecamy rezerwację z wyprzedzeniem, aby nie czekać w kolejce."
+    },
+    {
+      "id": "tireMounting-4",
+      "question": "Czy pracujecie z oponami niskoprofilowymi i dużymi felgami (R20+)?",
+      "answer": "Tak, dysponujemy sprzętem do opon niskoprofilowych i felg o dużej średnicy."
+    },
+    {
+      "id": "tireMounting-5",
+      "question": "Co zrobić, jeśli po zdjęciu starej opony zostanie wykryte ukryte uszkodzenie felgi?",
+      "answer": "Pokażemy uszkodzenie od razu i przedstawimy opcje — od naprawy kosmetycznej po pełną renowację, z osobną wyceną przed rozpoczęciem jakichkolwiek dodatkowych prac."
+    }
+  ],
+  "caliperPainting": [
+    {
+      "id": "caliperPainting-1",
+      "question": "Czym jest zacisk hamulcowy i po co się go maluje?",
+      "answer": "Zacisk hamulcowy to część układu hamulcowego, która dociska klocki do tarczy. Maluje się go z dwóch powodów: ze względów estetycznych (jaskrawy zacisk widoczny przez felgi podkreśla styl samochodu) oraz w celu ochrony metalu przed korozją wynikającą z ciągłego nagrzewania i kontaktu z pyłem hamulcowym."
+    },
+    {
+      "id": "caliperPainting-2",
+      "question": "Jakie warianty malowania zacisków oferujecie?",
+      "answer": "Dwa warianty. Pierwszy — profesjonalne malowanie proszkowe ze zdjęciem i pełnym rozebraniem zacisków. Drugi — malowanie na samochodzie bez demontażu. Wybór zależy od wymagań dotyczących jakości, terminu i budżetu."
+    },
+    {
+      "id": "caliperPainting-3",
+      "question": "Co obejmuje malowanie proszkowe ze zdjęciem zacisków?",
+      "answer": "Zdejmujemy zaciski z samochodu, całkowicie je rozbieramy, czyścimy, piaskujemy, malujemy farbą proszkową i wypiekamy w piecu. Następnie zaciski są składane z nowymi uszczelnieniami i montowane z powrotem."
+    },
+    {
+      "id": "caliperPainting-4",
+      "question": "Co obejmuje malowanie bez zdejmowania zacisków?",
+      "answer": "Zaciski pozostają na samochodzie — czyścimy powierzchnię, maskujemy otaczające elementy i nakładamy farbę termoodporną. Ten wariant pozwala szybko odświeżyć wygląd układu hamulcowego bez demontażu."
+    },
+    {
+      "id": "caliperPainting-5",
+      "question": "Czy farba wytrzymuje wysoką temperaturę podczas hamowania?",
+      "answer": "Tak, stosujemy farbę termoodporną, przeznaczoną na temperatury pracy układu hamulcowego — przy normalnej eksploatacji nie ma ryzyka odspajania się powłoki pod wpływem nagrzewania."
+    },
+    {
+      "id": "caliperPainting-6",
+      "question": "Czy mogę wybrać dowolny kolor i nanieść logo marki (Brembo, AMG itp.)?",
+      "answer": "Tak, malujemy zaciski praktycznie w dowolnym kolorze z palety RAL, w tym w firmowych kolorach samochodów sportowych, i możemy nanieść logo lub własny napis — prosimy o przekazanie swoich oczekiwań podczas diagnostyki."
+    },
+    {
+      "id": "caliperPainting-7",
+      "question": "Czy do pomalowania zacisku trzeba rozbierać układ hamulcowy?",
+      "answer": "Mechanizm hamulcowy — tłoczki, klocki, przewody — pozostaje nietknięty, malowana jest wyłącznie obudowa zacisku. Integralność układu hamulcowego nie zostaje naruszona."
+    },
+    {
+      "id": "caliperPainting-8",
+      "question": "Jak długo utrzymuje się powłoka zacisków i co z pyłem hamulcowym oraz solą drogową?",
+      "answer": "Przy użyciu termoodpornej farby proszkowej powłoka utrzymuje się [2–3+ lat] przy regularnym, ostrożnym myciu. Zalecamy unikanie agresywnej chemii kwasowej podczas czyszczenia felg i zacisków."
+    },
+    {
+      "id": "caliperPainting-9",
+      "question": "Ile czasu zajmie malowanie kompletu zacisków?",
+      "answer": "Zwykle [1–2] dni robocze, wliczając demontaż i montaż."
+    },
+    {
+      "id": "caliperPainting-10",
+      "question": "Czy na malowanie zacisków jest gwarancja?",
+      "answer": "Na malowanie proszkowe ze zdjęciem zacisków i pełnym przygotowaniem — tak, udzielamy gwarancji. Na malowanie bez demontażu gwarancja nie obowiązuje: bez pełnego rozebrania nie da się równie dobrze przygotować wszystkich powierzchni, a trwałość powłoki w tym przypadku silniej zależy od stanu zacisków i warunków eksploatacji."
+    }
+  ],
+  "diamondCutting": [
+    {
+      "id": "diamondCutting-1",
+      "question": "Czym jest toczenie diamentowe i czym różni się od malowania lub polerowania?",
+      "answer": "To mechaniczne toczenie krawędzi felgi na specjalnej maszynie do gołego metalu — daje efekt lustrzanego „surowego” aluminium na obrysie, w przeciwieństwie do malowania, które nakłada kolor na powierzchnię. Po obróbce felga jest pokrywana przezroczystym lakierem ochronnym, który zachowuje charakterystyczny metaliczny połysk."
+    },
+    {
+      "id": "diamondCutting-2",
+      "question": "Na jakich felgach możliwe jest toczenie diamentowe?",
+      "answer": "Toczenie stosuje się na felgach odlewanych o wystarczającej grubości obrzeża, pozwalającej na bezpieczną obróbkę — nie wszystkie modele się nadają, dokładnie to ocenimy podczas diagnostyki."
+    },
+    {
+      "id": "diamondCutting-3",
+      "question": "Jak długo utrzymuje się efekt — czy krawędź nie zmatowieje od soli i środków drogowych zimą?",
+      "answer": "Przy wysokiej jakości lakierze ochronnym efekt utrzymuje się [1–2+ lat]. Eksploatacja zimowa z użyciem soli drogowej to główny czynnik zużycia właśnie tego rodzaju powłoki, dlatego stan lakieru warto sprawdzać raz na sezon."
+    },
+    {
+      "id": "diamondCutting-4",
+      "question": "Czy można ponownie przetoczyć felgę, jeśli krawędź z czasem straci blask?",
+      "answer": "Tak, ponowne toczenie jest możliwe, dopóki pozostaje wystarczająca grubość metalu obrzeża."
+    }
+  ],
+  "motorcycleWheelPainting": [
+    {
+      "id": "motorcycleWheelPainting-1",
+      "question": "Jakie części motocyklowe i felgi malujecie?",
+      "answer": "Wykonujemy malowanie proszkowe większości metalowych części motocykli — felg, ram, wahaczy, półek widelca, piast, wsporników, podnóżków, mocowań, osłon silnika, a także części quadów, skuterów i innego sprzętu motorowego."
+    },
+    {
+      "id": "motorcycleWheelPainting-2",
+      "question": "Dlaczego malowanie proszkowe jest lepsze od zwykłej farby w przypadku części motocyklowych?",
+      "answer": "Powłoka proszkowa jest wytrzymalsza, równiejsza i trwalsza od zwykłej farby — lepiej chroni części przed korozją, uszkodzeniami mechanicznymi i czynnikami zewnętrznymi, dlatego uważa się ją za optymalne rozwiązanie do renowacji części motocyklowych."
+    },
+    {
+      "id": "motorcycleWheelPainting-3",
+      "question": "Jakich części nie można malować farbą proszkową?",
+      "answer": "Malowanie proszkowe nadaje się wyłącznie do metalowych części, które wytrzymują temperaturę polimeryzacji w piecu. Elementy plastikowe i gumowe maluje się inną technologią."
+    },
+    {
+      "id": "motorcycleWheelPainting-4",
+      "question": "Czy stara farba jest usuwana przed malowaniem?",
+      "answer": "Tak, przed nałożeniem nowej powłoki całkowicie usuwamy starą farbę, ślady korozji i zanieczyszczenia — to obowiązkowy etap, który zapewnia trwałość rezultatu."
+    },
+    {
+      "id": "motorcycleWheelPainting-5",
+      "question": "Czy trzeba przywozić części w stanie zdemontowanym?",
+      "answer": "Tak, aby malowanie proszkowe było wykonane starannie, części muszą być zdemontowane z motocykla. W razie pytań dotyczących przygotowania części — chętnie doradzimy."
+    },
+    {
+      "id": "motorcycleWheelPainting-6",
+      "question": "Ile czasu zajmie malowanie felgi motocyklowej i części?",
+      "answer": "Zwykle [2–4] dni robocze, w zależności od zakresu części."
+    }
+  ],
+  "tigWelding": [
+    {
+      "id": "tigWelding-1",
+      "question": "Czym jest spawanie łukiem argonowym (TIG) i dlaczego stosuje się je właśnie do felg?",
+      "answer": "To technologia naprawy aluminiowych elementów z użyciem gazu osłonowego — argonu, który zapobiega utlenianiu się metalu w wysokiej temperaturze. Daje trwałą i estetyczną spoinę przy minimalnym oddziaływaniu termicznym na metal — w przypadku felg aluminiowych jest to w praktyce jedyny sposób na uzyskanie niezawodnego rezultatu bez kruchości i porowatości."
+    },
+    {
+      "id": "tigWelding-2",
+      "question": "Jakie felgi można spawać?",
+      "answer": "Wykonujemy spawanie argonowe odlewanych felg aluminiowych z uszkodzeniami kwalifikującymi się do naprawy. Przed naprawą przeprowadzana jest diagnostyka, aby upewnić się, że odnowienie będzie bezpieczne."
+    },
+    {
+      "id": "tigWelding-3",
+      "question": "Czy każde pęknięcie można zaspawać?",
+      "answer": "Nie. Jeśli uszkodzenie jest zbyt poważne lub wpływa na bezpieczeństwo eksploatacji, powiemy o tym uczciwie i zalecimy wymianę felgi zamiast niebezpiecznej naprawy."
+    },
+    {
+      "id": "tigWelding-4",
+      "question": "Jak wytrzymała jest spoina — czy wytrzyma ponowne obciążenia?",
+      "answer": "Przy zachowaniu właściwej technologii wytrzymałość spoiny zbliża się do wytrzymałości litego metalu i spoina znosi normalne obciążenia eksploatacyjne. Przed malowaniem sprawdzamy geometrię i wizualnie kontrolujemy spoinę."
+    },
+    {
+      "id": "tigWelding-5",
+      "question": "Co dzieje się po spawaniu i czy jazda na takiej feldze jest bezpieczna?",
+      "answer": "Po spawaniu spoina jest obrabiana, w razie potrzeby przywracana jest geometria felgi, a następnie wykonywane jest szlifowanie powierzchni — dopiero wtedy felga jest uznawana za gotową do eksploatacji. Na życzenie klienta felgę można od razu przygotować do malowania proszkowego lub obróbki diamentowej."
+    },
+    {
+      "id": "tigWelding-6",
+      "question": "Czy na spawanie jest gwarancja?",
+      "answer": "Tak, udzielamy gwarancji na prace spawalnicze, jeśli felga spełnia wymogi bezpieczeństwa i może zostać naprawiona zgodnie z technologią."
+    },
+    {
+      "id": "tigWelding-7",
+      "question": "Ile kosztuje spawanie argonowe jednego pęknięcia/odprysku?",
+      "answer": "Cena zależy od długości i stopnia skomplikowania pęknięcia oraz dostępności miejsca uszkodzenia — dokładny koszt podajemy po diagnostyce. [Podać cenę wyjściową]."
+    },
+    {
+      "id": "tigWelding-8",
+      "question": "Czy można wysłać felgę kurierem, jeśli mieszkam w innym mieście?",
+      "answer": "Tak, felgę można wysłać za pośrednictwem firmy transportowej. Po naprawie i kontroli jakości zapakujemy ją starannie i odeślemy z powrotem."
+    }
+  ]
+}

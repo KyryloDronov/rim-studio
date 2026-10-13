@@ -1,0 +1,431 @@
+/* First-visit promo — replaces loyalty band (same section id). */
+
+.section {
+  position: relative;
+  width: 100%;
+  min-height: min(100dvh, 920px);
+  padding: clamp(2.5rem, 6vh, 4rem) 0;
+  box-sizing: border-box;
+  background: var(--brand-ink-700);
+  color: var(--brand-white);
+  overflow-x: clip;
+  isolation: isolate;
+}
+
+.inner {
+  width: min(100%, 88rem);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 3.5rem);
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .layout {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+}
+
+/* ---------- Stacked promo cards (mockup + soft float) ---------- */
+
+.stackCol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.5rem, 2vw, 1rem) clamp(0.25rem, 2vw, 1rem);
+}
+
+.stackStage {
+  width: min(100%, 23.5rem);
+  margin-inline: auto;
+  perspective: 1600px;
+  perspective-origin: 42% 38%;
+}
+
+.stackScene {
+  position: relative;
+  min-height: clamp(21rem, 50vw, 25rem);
+  padding-top: clamp(1.75rem, 5vw, 2.75rem);
+  transform-style: preserve-3d;
+}
+
+.stackSceneStatic .promoCardBack,
+.stackSceneStatic .promoCardFront {
+  animation: none !important;
+}
+
+.promoCard {
+  position: relative;
+  box-sizing: border-box;
+  min-height: clamp(15.5rem, 40vw, 17.5rem);
+  padding: clamp(1.2rem, 2.8vw, 1.55rem);
+  border-radius: 1.25rem;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: linear-gradient(
+    155deg,
+    rgb(48 56 64 / 0.72) 0%,
+    rgb(28 34 40 / 0.88) 48%,
+    rgb(20 24 28 / 0.92) 100%
+  );
+  backdrop-filter: blur(14px);
+  box-shadow:
+    0 28px 56px rgb(0 0 0 / 0.38),
+    inset 0 1px 0 rgb(255 255 255 / 0.08);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.promoCardBack {
+  position: absolute;
+  top: clamp(-1.9rem, -4.9vw, -3rem);
+  left: 5%;
+  z-index: 1;
+  width: 90%;
+  opacity: 0.96;
+  transform-origin: 50% 42%;
+  transform: rotate(6deg) translate3d(3%, -4%, -42px);
+  animation: promoFloatBack 9s ease-in-out infinite;
+}
+
+.promoCardFront {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(2.75rem, 10vw, 4rem);
+  width: 100%;
+  transform: rotate(-2.5deg) translate3d(0, 0, 24px);
+  animation: promoFloatFront 7.5s ease-in-out infinite;
+}
+
+@keyframes promoFloatBack {
+  0%,
+  100% {
+    transform: rotate(6deg) translate3d(3%, -4%, -42px);
+  }
+
+  50% {
+    transform: rotate(7.5deg) translate3d(5%, -6%, -32px);
+  }
+}
+
+@keyframes promoFloatFront {
+  0%,
+  100% {
+    transform: rotate(-2.5deg) translate3d(0, 0, 24px);
+  }
+
+  50% {
+    transform: rotate(-1.2deg) translate3d(-1.5%, -1.25%, 32px);
+  }
+}
+
+.cardSheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 90% 70% at 18% 12%,
+    rgb(255 153 0 / 0.12) 0%,
+    transparent 58%
+  );
+  pointer-events: none;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: clamp(1rem, 2.5vh, 1.35rem);
+}
+
+.cardBrand {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--brand-white);
+}
+
+.cardBadge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: right;
+}
+
+.cardBackBadge {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.42);
+  text-align: right;
+}
+
+.cardPhone {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.35rem, 3.5vw, 1.65rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgb(255 255 255 / 0.88);
+}
+
+.cardPhoneCaption {
+  margin: 0;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.42);
+}
+
+.cardHero {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: clamp(1rem, 2.5vh, 1.25rem);
+}
+
+.cardDiscountValue {
+  font-size: clamp(3rem, 8vw, 4.25rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--brand-white);
+}
+
+.cardDiscountLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.72);
+  max-width: 14rem;
+}
+
+.cardAudience {
+  margin-bottom: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.cardAudienceLabel {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.45);
+}
+
+.cardAudienceText {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgb(255 255 255 / 0.88);
+}
+
+.cardPerks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.62);
+}
+
+.cardPerks li {
+  position: relative;
+  padding-left: 0.85rem;
+}
+
+.cardPerks li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promoCardBack,
+  .promoCardFront {
+    animation: none !important;
+  }
+}
+
+/* ---------- Copy + form ---------- */
+
+.copy {
+  max-width: 34rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.title {
+  margin: 0 0 1rem;
+  font-size: clamp(1.65rem, 3.2vw, 2.35rem);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.body {
+  margin: 0 0 1.5rem;
+  font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+  line-height: 1.55;
+  color: rgb(255 255 255 / 0.72);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.fieldLabel {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.5);
+}
+
+.input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: rgb(0 0 0 / 0.28);
+  color: var(--brand-white);
+  font: inherit;
+  font-size: 1rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.input::placeholder {
+  color: rgb(255 255 255 / 0.35);
+}
+
+.input:focus-visible {
+  outline: none;
+  border-color: var(--brand-accent-400);
+  box-shadow: 0 0 0 3px rgb(255 153 0 / 0.2);
+}
+
+.inputInvalid {
+  border-color: rgb(248 113 113 / 0.65);
+}
+
+.fieldError {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: rgb(252 165 165 / 0.95);
+}
+
+.checkRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  cursor: pointer;
+}
+
+.checkInput {
+  flex: none;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.15rem;
+  accent-color: var(--accent);
+}
+
+.checkCopy {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.62);
+}
+
+.inlineLink {
+  color: rgb(255 255 255 / 0.88);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.inlineLink:hover {
+  color: var(--accent);
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  margin-top: 0.35rem;
+}
+
+.submitBtn {
+  flex: 1 1 12rem;
+  max-width: 100%;
+}
+
+.termsLink {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: rgb(255 255 255 / 0.55);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.termsLink:hover {
+  color: var(--brand-white);
+}
+
+.success {
+  padding: 1.25rem 1.35rem;
+  border-radius: 1rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: rgb(255 255 255 / 0.04);
+}
+
+.successTitle {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.successBody {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.72);
+}

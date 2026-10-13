@@ -76,6 +76,20 @@
   padding-right: var(--btn-pad-l);
 }
 
+/* Full-width pill: label left, trailing icon circle pinned to the right
+   edge with the same inset as inline banner CTAs. */
+.block {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  justify-content: flex-start;
+}
+
+.block .iconSlot {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+}
+
 /* ---------- Sizes ---------- */
 .size-sm {
   --btn-pad: 0.25rem;

@@ -1,25 +1,26 @@
 "use client";
 
-import { MapPin, Navigation, Phone, PhoneCall } from "lucide-react";
+import { MapPin, Phone, PhoneCall } from "lucide-react";
 import { useInView } from "motion/react";
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/Button";
 import { TextInput } from "@/components/forms/TextInput";
 import { StudioMap } from "@/components/StudioMap";
 import {
-  buildGoogleDirectionsUrl,
-  STUDIO_COORDINATES,
   STUDIO_PHONE_DISPLAY,
-  STUDIO_PHONE_E164,
+  STUDIO_PHONE_HREF,
 } from "@/content/studio-location";
+import { useConsultationPage } from "@/hooks/useConsultationPage";
 import { useLocale } from "@/i18n/LocaleProvider";
+import { submitConsultationRequest } from "@/lib/consultation-request";
 
 import styles from "./style.module.css";
 
 export const VISIT_MAP_SECTION_ID = "visit";
 
 export function VisitMapSection() {
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
+  const consultationPage = useConsultationPage();
   const { visitMap, contactSheet } = t;
   const sectionRef = useRef<HTMLElement>(null);
   const sectionInView = useInView(sectionRef, {
@@ -33,6 +34,8 @@ export function VisitMapSection() {
   const [phone, setPhone] = useState("");
   const [phoneInvalid, setPhoneInvalid] = useState(false);
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!sectionInView || mapMountedRef.current) return;
@@ -40,23 +43,42 @@ export function VisitMapSection() {
     setMapMounted(true);
   }, [sectionInView]);
 
-  const directionsUrl = buildGoogleDirectionsUrl(
-    STUDIO_COORDINATES.lat,
-    STUDIO_COORDINATES.lng,
-  );
-
   const handleSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
+    async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const trimmed = phone.trim();
-      if (!trimmed) {
+      const digits = trimmed.replace(/\D/g, "");
+      if (!trimmed || digits.length < 11) {
         setPhoneInvalid(true);
         return;
       }
       setPhoneInvalid(false);
+      setSubmitting(true);
+      setSubmitError(null);
+
+      const result = await submitConsultationRequest({
+        name: "",
+        phone: trimmed,
+        source: "visitMap",
+        page: consultationPage,
+        locale,
+      });
+
+      setSubmitting(false);
+
+      if (!result.ok) {
+        setSubmitError(t.hero.consultationModal.errors.submitFailed);
+        return;
+      }
+
       setSent(true);
     },
-    [phone],
+    [
+      consultationPage,
+      locale,
+      phone,
+      t.hero.consultationModal.errors.submitFailed,
+    ],
   );
 
   return (
@@ -107,7 +129,7 @@ export function VisitMapSection() {
                 </span>
                 <div>
                   <p className={styles.infoLabel}>{contactSheet.phoneTitle}</p>
-                  <a className={styles.infoLink} href={`tel:${STUDIO_PHONE_E164}`}>
+                  <a className={styles.infoLink} href={STUDIO_PHONE_HREF}>
                     {STUDIO_PHONE_DISPLAY}
                   </a>
                 </div>
@@ -162,26 +184,22 @@ export function VisitMapSection() {
                       {contactSheet.callbackPhoneRequired}
                     </p>
                   ) : null}
+                  {submitError ? (
+                    <p className={styles.formError} role="alert">
+                      {submitError}
+                    </p>
+                  ) : null}
 
-                  <div className={styles.actionRow}>
+                  <div className={styles.actions}>
                     <Button
                       type="submit"
                       variant="accent"
-                      size="sm"
-                      className={styles.actionBtn}
+                      size="md"
+                      block
+                      disabled={submitting}
                       icon={<PhoneCall strokeWidth={1.75} />}
                     >
                       {contactSheet.callbackCta}
-                    </Button>
-                    <Button
-                      variant="dark"
-                      size="sm"
-                      className={styles.actionBtn}
-                      icon={<Navigation strokeWidth={1.75} />}
-                      href={directionsUrl}
-                      external
-                    >
-                      {contactSheet.routeLabel}
                     </Button>
                   </div>
                 </form>

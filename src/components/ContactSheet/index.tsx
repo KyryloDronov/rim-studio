@@ -1,14 +1,7 @@
 "use client";
 
 import { useLenis } from "lenis/react";
-import {
-  Mail,
-  MapPin,
-  Navigation,
-  Phone,
-  PhoneCall,
-  X,
-} from "lucide-react";
+import { MapPin, Navigation, Phone, PhoneCall, X } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import {
   useCallback,
@@ -29,12 +22,13 @@ import { useContactSheet } from "@/components/ContactSheet/ContactSheetContext";
 import {
   buildGoogleDirectionsUrl,
   STUDIO_COORDINATES,
-  STUDIO_EMAIL,
   STUDIO_PHONE_DISPLAY,
-  STUDIO_PHONE_E164,
+  STUDIO_PHONE_HREF,
   STUDIO_SOCIAL,
 } from "@/content/studio-location";
+import { useConsultationPage } from "@/hooks/useConsultationPage";
 import { useLocale } from "@/i18n/LocaleProvider";
+import { submitConsultationRequest } from "@/lib/consultation-request";
 import { lockScroll } from "@/lib/scrollLock";
 
 import styles from "./style.module.css";
@@ -67,11 +61,11 @@ function InstagramIcon() {
   );
 }
 
-function XSocialIcon() {
+function FacebookIcon() {
   return (
-    <svg viewBox="0 0 17 15" fill="none" aria-hidden className={styles.xIcon}>
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden className={styles.socialSvg}>
       <path
-        d="M.04 0 6.228 8.278 0 15.009h1.402l5.454-5.893 4.406 5.893h4.771l-6.538-8.744L15.293 0h-1.402L8.868 5.427 4.81 0H.04ZM2.1 1.033h2.191l9.679 12.943h-2.192L2.1 1.033Z"
+        d="M8 0C3.582 0 0 3.582 0 8c0 3.989 2.924 7.301 6.75 7.902V9.781H4.719V8h2.031V6.237c0-2.005 1.194-3.11 3.022-3.11.875 0 1.79.156 1.79.156v1.969h-1.008c-.993 0-1.304.616-1.304 1.248V8h2.22l-.355 2.781h-1.865V15.9C13.076 15.301 16 11.989 16 8c0-4.418-3.582-8-8-8Z"
         fill="currentColor"
       />
     </svg>
@@ -81,7 +75,8 @@ function XSocialIcon() {
 export function ContactSheet() {
   const mounted = useIsClient();
   const { open, closeSheet } = useContactSheet();
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
+  const consultationPage = useConsultationPage();
   const copy = t.contactSheet;
   const lenis = useLenis();
   const prefersReducedMotion = useReducedMotion();
@@ -95,6 +90,10 @@ export function ContactSheet() {
   const [callbackPhone, setCallbackPhone] = useState("");
   const [callbackPhoneInvalid, setCallbackPhoneInvalid] = useState(false);
   const [callbackSent, setCallbackSent] = useState(false);
+  const [callbackSubmitting, setCallbackSubmitting] = useState(false);
+  const [callbackSubmitError, setCallbackSubmitError] = useState<string | null>(
+    null,
+  );
 
   const reduced = prefersReducedMotion === true;
   const directionsUrl = buildGoogleDirectionsUrl(
@@ -107,6 +106,8 @@ export function ContactSheet() {
       setCallbackPhone("");
       setCallbackPhoneInvalid(false);
       setCallbackSent(false);
+      setCallbackSubmitting(false);
+      setCallbackSubmitError(null);
     }
   }, [open]);
 
@@ -172,17 +173,41 @@ export function ContactSheet() {
   }, [closeSheet]);
 
   const handleCallbackSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
+    async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const trimmed = callbackPhone.trim();
-      if (!trimmed) {
+      const digits = trimmed.replace(/\D/g, "");
+      if (!trimmed || digits.length < 11) {
         setCallbackPhoneInvalid(true);
         return;
       }
       setCallbackPhoneInvalid(false);
+      setCallbackSubmitting(true);
+      setCallbackSubmitError(null);
+
+      const result = await submitConsultationRequest({
+        name: "",
+        phone: trimmed,
+        source: "contactSheet",
+        page: consultationPage,
+        locale,
+      });
+
+      setCallbackSubmitting(false);
+
+      if (!result.ok) {
+        setCallbackSubmitError(t.hero.consultationModal.errors.submitFailed);
+        return;
+      }
+
       setCallbackSent(true);
     },
-    [callbackPhone],
+    [
+      callbackPhone,
+      consultationPage,
+      locale,
+      t.hero.consultationModal.errors.submitFailed,
+    ],
   );
 
   const handleCancel = useCallback(
@@ -314,10 +339,16 @@ export function ContactSheet() {
                         {copy.callbackPhoneRequired}
                       </p>
                     ) : null}
+                    {callbackSubmitError ? (
+                      <p className={styles.callbackError} role="alert">
+                        {callbackSubmitError}
+                      </p>
+                    ) : null}
                     <Button
                       type="submit"
                       variant="accent"
                       size="md"
+                      disabled={callbackSubmitting}
                       className={styles.callbackSubmit}
                       icon={<PhoneCall strokeWidth={1.75} />}
                     >
@@ -392,7 +423,7 @@ export function ContactSheet() {
                 <h3 id={`${reactId}-phone`} className={styles.blockTitle}>
                   {copy.phoneTitle}
                 </h3>
-                <a className={styles.blockLink} href={`tel:${STUDIO_PHONE_E164}`}>
+                <a className={styles.blockLink} href={STUDIO_PHONE_HREF}>
                   {STUDIO_PHONE_DISPLAY}
                 </a>
               </div>
@@ -420,20 +451,13 @@ export function ContactSheet() {
                   <InstagramIcon />
                 </a>
                 <a
-                  href={STUDIO_SOCIAL.x}
+                  href={STUDIO_SOCIAL.facebook}
                   target="_blank"
                   rel="noreferrer"
                   className={styles.socialLink}
-                  aria-label="X"
+                  aria-label="Facebook"
                 >
-                  <XSocialIcon />
-                </a>
-                <a
-                  href={`mailto:${STUDIO_EMAIL}`}
-                  className={styles.socialLink}
-                  aria-label={copy.emailLabel}
-                >
-                  <Mail strokeWidth={1.5} />
+                  <FacebookIcon />
                 </a>
               </div>
             </motion.section>

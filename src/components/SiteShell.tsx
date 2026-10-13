@@ -14,6 +14,7 @@ import Preloader from "@/components/Preloader";
 import { ReadyProvider } from "@/components/ReadyProvider";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { RouteTransition } from "@/components/RouteTransition";
+import { ConsultationProvider } from "@/components/Consultation/ConsultationContext";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
 import { detectLocaleFromPath } from "@/i18n/paths";
 import { LOCALE_BCP47 } from "@/i18n/types";
@@ -128,6 +129,7 @@ export function SiteShell({ children }: SiteShellProps) {
 
   return (
     <LocaleProvider locale={locale}>
+      <ConsultationProvider>
       <ContactSheetProvider>
         <SmoothScroll>
         <RouteTransition
@@ -168,6 +170,7 @@ export function SiteShell({ children }: SiteShellProps) {
         </RouteTransition>
       </SmoothScroll>
       </ContactSheetProvider>
+      </ConsultationProvider>
     </LocaleProvider>
   );
 }

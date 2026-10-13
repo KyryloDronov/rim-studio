@@ -2,9 +2,17 @@
 
 import gsap from "gsap";
 import { useLenis } from "lenis/react";
-import { Camera, CalendarClock, Clock, Phone, Shield, Wallet } from "lucide-react";
+import {
+  CalendarClock,
+  Camera,
+  Clock,
+  Phone,
+  Shield,
+  Wallet,
+} from "lucide-react";
 import { useReducedMotion } from "motion/react";
 import {
+  Fragment,
   type ComponentType,
   type SVGProps,
   useCallback,
@@ -21,23 +29,25 @@ import {
   splitWords,
 } from "@/animations";
 import { Button } from "@/components/Button";
-import { useContactSheet } from "@/components/ContactSheet/ContactSheetContext";
+import type { ConsultationSourceId } from "@/content/consultation-sources";
 import { PRICING_SECTION_ID } from "@/components/PricingSection";
 import { ProductCards } from "@/components/ProductCards";
 import { useReady } from "@/components/ReadyProvider";
 import { ScrollDown } from "@/components/ScrollDown";
 import { PAGE_BANNER_ATTR } from "@/content/page-banner";
+import { STUDIO_PHONE_HREF } from "@/content/studio-location";
 import {
+  BANNER_SECTION_NAV_VISIBLE,
   sectionNavItemsToProductCards,
   type PageSectionNavItem,
 } from "@/content/section-nav";
 import { useLocale } from "@/i18n/LocaleProvider";
-import type { ServicePageBanner } from "@/i18n/types";
+import type { HeroBannerLedePart, ServicePageBanner } from "@/i18n/types";
 import { SERVICE_HERO_BANNER_ICONS } from "@/content/service-hero-banner-icons";
 import {
   DEFAULT_HERO_BACKGROUND_VIDEO,
 } from "@/content/hero-background-videos";
-import { DiskPhotoModalForm } from "./DiskPhotoModalForm";
+import { useConsultation } from "@/components/Consultation/ConsultationContext";
 import styles from "./style.module.css";
 
 const VIDEO_END_EPSILON = 0.04;
@@ -52,11 +62,63 @@ const VIDEO_READY_TIMEOUT_MS = 4000;
    `wallet`) — the icon component is resolved here so translators never
    touch SVGs and adding a chip stays a one-line dictionary diff. */
 type LucideIcon = ComponentType<SVGProps<SVGSVGElement>>;
-const FEATURE_ICONS: Record<"shield" | "clock" | "wallet", LucideIcon> = {
+const FEATURE_ICONS: Record<
+  "shield" | "clock" | "wallet" | "camera",
+  LucideIcon
+> = {
   shield: Shield,
   clock: Clock,
   wallet: Wallet,
+  camera: Camera,
 };
+
+function richLedeNeedsLeadingSpace(
+  part: HeroBannerLedePart,
+  partIndex: number,
+): boolean {
+  if (partIndex === 0) return false;
+  const leadText = "parts" in part ? (part.parts[0]?.text ?? "") : part.text;
+  const first = leadText.trimStart()[0] ?? "";
+  return !/^[\.,!?;:)]/.test(first);
+}
+
+function renderRichLedeParts(
+  ledeParts: ReadonlyArray<HeroBannerLedePart>,
+  classes: Readonly<typeof styles>,
+) {
+  return ledeParts.map((part, pi) => {
+    const needsLeadingSpace = richLedeNeedsLeadingSpace(part, pi);
+
+    if ("parts" in part) {
+      return (
+        <Fragment key={`sld-${pi}`}>
+          {needsLeadingSpace ? " " : null}
+          <span className={classes.ledePart}>
+            {part.parts.map((sub, si) => (
+              <Fragment key={`sld-${pi}-s${si}`}>
+                {si > 0 ? " " : null}
+                <span className={sub.accent ? classes.ledeAccent : undefined}>
+                  {sub.text}
+                </span>
+              </Fragment>
+            ))}
+          </span>
+        </Fragment>
+      );
+    }
+
+    const partClassName = part.accent
+      ? `${classes.ledePart} ${classes.ledeAccent}`
+      : classes.ledePart;
+
+    return (
+      <Fragment key={`sld-${pi}`}>
+        {needsLeadingSpace ? " " : null}
+        <span className={partClassName}>{part.text}</span>
+      </Fragment>
+    );
+  });
+}
 
 /* The hero is the first thing the user sees. Layout is centred via the
    `inner` grid; intro motion (this file) animates title → lede in a
@@ -83,6 +145,10 @@ type HeroProps = Readonly<{
   serviceBanner?: ServicePageBanner;
   /** Full-cover background clip (service-specific or home default). */
   backgroundVideoSrc?: string;
+  /** «Листайте» scroll target — home: services masonry; landings: pricing. */
+  scrollTargetSectionId?: string;
+  /** Consultation modal copy context (home vs service landing). */
+  consultationSource?: ConsultationSourceId;
 }>;
 
 export function Hero({
@@ -90,10 +156,11 @@ export function Hero({
   headline,
   serviceBanner,
   backgroundVideoSrc = DEFAULT_HERO_BACKGROUND_VIDEO,
+  scrollTargetSectionId = PRICING_SECTION_ID,
+  consultationSource = "home",
 }: HeroProps) {
   const { t } = useLocale();
   const { hero } = t;
-  const { openSheet } = useContactSheet();
   const { contentVisible, introReady } = useReady();
   const prefersReducedMotion = useReducedMotion();
   const lenis = useLenis();
@@ -103,8 +170,16 @@ export function Hero({
     [sectionNavItems],
   );
 
-  const scrollToPricing = useCallback(() => {
-    const target = document.getElementById(PRICING_SECTION_ID);
+  const bannerHighlightsInTrust =
+    serviceBanner?.highlightsPlacement === "trust";
+  const serviceShellActive = Boolean(
+    serviceBanner && !bannerHighlightsInTrust,
+  );
+  const richBannerCopy = Boolean(serviceBanner);
+  const pageBanner = serviceBanner ?? null;
+
+  const scrollPastHero = useCallback(() => {
+    const target = document.getElementById(scrollTargetSectionId);
     if (!target) return;
     if (lenis) {
       lenis.scrollTo(target, {
@@ -117,9 +192,12 @@ export function Hero({
       behavior: prefersReducedMotion ? "auto" : "smooth",
       block: "start",
     });
-  }, [lenis, prefersReducedMotion]);
+  }, [lenis, prefersReducedMotion, scrollTargetSectionId]);
 
-  const [photoModalOpen, setPhotoModalOpen] = useState(false);
+  const { openConsultation, consultationOpen } = useConsultation();
+  const openConsultationModal = useCallback(() => {
+    openConsultation(consultationSource);
+  }, [consultationSource, openConsultation]);
 
   /* ---------- Background video --------------------------------------- */
 
@@ -173,20 +251,20 @@ export function Hero({
     } catch {
       /* metadata not ready */
     }
-    if (!photoModalOpen) {
+    if (!consultationOpen) {
       startVideo();
     }
-  }, [contentVisible, photoModalOpen, startVideo]);
+  }, [contentVisible, consultationOpen, startVideo]);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !contentVisible) return;
-    if (photoModalOpen) {
+    if (consultationOpen) {
       video.pause();
       return;
     }
     startVideo();
-  }, [photoModalOpen, contentVisible, startVideo]);
+  }, [consultationOpen, contentVisible, startVideo]);
 
   /* Safety net: if the asset is missing / blocked, don't keep the title
      hidden forever — release the gate after a hard cap. */
@@ -233,18 +311,20 @@ export function Hero({
 
   const serviceTitleLines = useMemo(() => {
     if (!serviceBanner) return [];
-    return serviceBanner.titleLines.map((line, li) => ({
-      accent: line.accent === true,
-      words: splitWords(line.text, `${reactId}-stl-${li}`),
-    }));
-  }, [serviceBanner, reactId]);
-
-  const serviceLedeParts = useMemo(() => {
-    if (!serviceBanner) return [];
-    return serviceBanner.ledeParts.map((part, pi) => ({
-      accent: part.accent === true,
-      words: splitWords(part.text, `${reactId}-sld-${pi}`),
-    }));
+    return serviceBanner.titleLines.map((line, li) => {
+      if ("parts" in line) {
+        return {
+          parts: line.parts.map((part, pi) => ({
+            accent: part.accent === true,
+            words: splitWords(part.text, `${reactId}-stl-${li}-p${pi}`),
+          })),
+        };
+      }
+      return {
+        accent: line.accent === true,
+        words: splitWords(line.text, `${reactId}-stl-${li}`),
+      };
+    });
   }, [serviceBanner, reactId]);
 
   const highlightsLayoutClass = useMemo(() => {
@@ -289,6 +369,7 @@ export function Hero({
     const ctx = gsap.context(() => {
       const intro = queryHeroIntroElements(root, {
         word: styles.word,
+        ledeReveal: styles.ledeReveal,
         ctaItem: styles.ctaItem,
         trustItem: styles.trustItem,
         serviceRevealItem: styles.serviceRevealItem,
@@ -336,37 +417,59 @@ export function Hero({
       {/* --- Content ------------------------------------------------- */}
       <div
         className={
-          serviceBanner
+          serviceShellActive
             ? `${styles.inner} ${styles.innerService}`
             : styles.inner
         }
       >
         <header
           className={
-            serviceBanner ? `${styles.head} ${styles.headService}` : styles.head
+            serviceShellActive
+              ? `${styles.head} ${styles.headService}`
+              : styles.head
           }
         >
           <h1 id="hero-title" className={styles.title} data-anim-group="title">
-            {serviceBanner ? (
+            {richBannerCopy ? (
               serviceTitleLines.map((line, li) => (
                 <span key={`stl-${li}`} className={styles.titleLine}>
-                  {line.accent ? (
-                    <span className={styles.titleHighlight}>
-                      {line.words.map((seg, i) => (
-                        <span key={seg.key} className={styles.wordWrap}>
-                          <span className={styles.word}>{seg.word}</span>
-                          {i < line.words.length - 1 ? " " : null}
+                  {"parts" in line && line.parts
+                    ? line.parts.map((part, pi) => {
+                        const nodes = part.words.map((seg, i) => (
+                          <span key={seg.key} className={styles.wordWrap}>
+                            <span className={styles.word}>{seg.word}</span>
+                            {i < part.words.length - 1 ? " " : null}
+                          </span>
+                        ));
+                        const chunk = part.accent ? (
+                          <span className={styles.titleHighlight}>{nodes}</span>
+                        ) : (
+                          nodes
+                        );
+                        return (
+                          <Fragment key={`stlp-${pi}`}>
+                            {pi > 0 ? " " : null}
+                            {chunk}
+                          </Fragment>
+                        );
+                      })
+                    : line.accent ? (
+                        <span className={styles.titleHighlight}>
+                          {line.words.map((seg, i) => (
+                            <span key={seg.key} className={styles.wordWrap}>
+                              <span className={styles.word}>{seg.word}</span>
+                              {i < line.words.length - 1 ? " " : null}
+                            </span>
+                          ))}
                         </span>
-                      ))}
-                    </span>
-                  ) : (
-                    line.words.map((seg, i) => (
-                      <span key={seg.key} className={styles.wordWrap}>
-                        <span className={styles.word}>{seg.word}</span>
-                        {i < line.words.length - 1 ? " " : null}
-                      </span>
-                    ))
-                  )}
+                      ) : (
+                        line.words.map((seg, i) => (
+                          <span key={seg.key} className={styles.wordWrap}>
+                            <span className={styles.word}>{seg.word}</span>
+                            {i < line.words.length - 1 ? " " : null}
+                          </span>
+                        ))
+                      )}
                 </span>
               ))
             ) : (
@@ -401,30 +504,11 @@ export function Hero({
           </h1>
 
           <p className={styles.lede} data-anim-group="lede">
-            {serviceBanner
-              ? serviceLedeParts.map((part, pi) => {
-                  const firstWord = part.words[0]?.word ?? "";
-                  const needsLeadingSpace =
-                    pi > 0 && !/^[\.,!?;:)]/.test(firstWord);
-                  const partClassName = part.accent
-                    ? `${styles.ledePart} ${styles.ledeAccent}`
-                    : styles.ledePart;
-                  return (
-                    <span
-                      key={`sld-${pi}`}
-                      className={partClassName}
-                      data-lede-join={needsLeadingSpace ? "true" : undefined}
-                    >
-                      {part.words.map((seg, i) => (
-                        <span key={seg.key} className={styles.wordWrap}>
-                          <span className={styles.word}>{seg.word}</span>
-                          {i < part.words.length - 1 ? " " : null}
-                        </span>
-                      ))}
-                    </span>
-                  );
-                })
-              : ledeWords.map((seg, i) => (
+            {pageBanner ? (
+              <span className={styles.ledeReveal}>
+                {renderRichLedeParts(pageBanner.ledeParts, styles)}
+              </span>
+            ) : ledeWords.map((seg, i) => (
                   <span key={seg.key} className={styles.wordWrap}>
                     <span className={styles.word}>{seg.word}</span>
                     {i < ledeWords.length - 1 ? " " : null}
@@ -432,13 +516,13 @@ export function Hero({
                 ))}
           </p>
 
-          {serviceBanner ? (
+          {serviceShellActive ? (
             <>
               <ul
                 className={`${styles.serviceHighlights} ${highlightsLayoutClass}`}
                 data-anim-group="service-highlights"
               >
-                {serviceBanner.highlights.map((item) => {
+                {pageBanner!.highlights.map((item) => {
                   const Icon = SERVICE_HERO_BANNER_ICONS[item.icon];
                   return (
                     <li
@@ -472,7 +556,7 @@ export function Hero({
           ) : null}
 
           <div className={styles.cta} data-anim-group="cta">
-            {serviceBanner ? (
+            {pageBanner ? (
               <>
                 <span className={styles.ctaItem}>
                   <Button
@@ -481,25 +565,15 @@ export function Hero({
                     size="md"
                     expandFromIcon
                     expandWhen={ctaPillExpand}
-                    icon={
-                      serviceBanner.ctaPrimary.action === "photo" ? (
-                        <Camera strokeWidth={1.75} />
-                      ) : (
-                        <CalendarClock strokeWidth={1.75} />
-                      )
-                    }
-                    onClick={
-                      serviceBanner.ctaPrimary.action === "photo"
-                        ? () => setPhotoModalOpen(true)
-                        : openSheet
-                    }
+                    icon={<CalendarClock strokeWidth={1.75} />}
+                    onClick={openConsultationModal}
                   >
-                    {serviceBanner.ctaPrimary.label}
+                    {pageBanner.ctaPrimary.label}
                   </Button>
                 </span>
                 <span className={styles.ctaItem}>
                   <Button
-                    href={hero.ctaSecondary.href}
+                    href={STUDIO_PHONE_HREF}
                     variant="dark"
                     size="md"
                     expandFromIcon
@@ -509,11 +583,11 @@ export function Hero({
                     {hero.ctaSecondary.label}
                   </Button>
                 </span>
-                {serviceBanner.ctaAside ? (
+                {pageBanner.ctaAside ? (
                   <span className={styles.ctaAsideItem}>
                     {(() => {
                       const AsideIcon =
-                        SERVICE_HERO_BANNER_ICONS[serviceBanner.ctaAside.icon];
+                        SERVICE_HERO_BANNER_ICONS[pageBanner.ctaAside!.icon];
                       return (
                         <>
                           <AsideIcon
@@ -524,7 +598,7 @@ export function Hero({
                             aria-hidden="true"
                           />
                           <span className={styles.ctaAsideText}>
-                            {serviceBanner.ctaAside.text}
+                            {pageBanner.ctaAside!.text}
                           </span>
                         </>
                       );
@@ -541,15 +615,15 @@ export function Hero({
                     size="md"
                     expandFromIcon
                     expandWhen={ctaPillExpand}
-                    icon={<Camera strokeWidth={1.75} />}
-                    onClick={() => setPhotoModalOpen(true)}
+                    icon={<CalendarClock strokeWidth={1.75} />}
+                    onClick={openConsultationModal}
                   >
                     {hero.ctaPrimary.label}
                   </Button>
                 </span>
                 <span className={styles.ctaItem}>
                   <Button
-                    href={hero.ctaSecondary.href}
+                    href={STUDIO_PHONE_HREF}
                     variant="dark"
                     size="md"
                     expandFromIcon
@@ -568,14 +642,35 @@ export function Hero({
         {/* --- Bottom row: trust strip (left) + recent works (right) -- */}
         <div
           className={
-            serviceBanner
+            serviceShellActive
               ? `${styles.bottom} ${styles.bottomNavRight}`
               : styles.bottom
           }
         >
-          {!serviceBanner ? (
+          {!pageBanner || bannerHighlightsInTrust ? (
           <ul className={styles.trust} data-anim-group="trust">
-            {hero.features.map((feature) => {
+            {bannerHighlightsInTrust && pageBanner
+              ? pageBanner.highlights.map((item) => {
+                  const Icon = SERVICE_HERO_BANNER_ICONS[item.icon];
+                  return (
+                    <li key={item.id} className={styles.trustItem}>
+                      <Icon
+                        width={20}
+                        height={20}
+                        strokeWidth={1.5}
+                        className={styles.trustIcon}
+                        aria-hidden="true"
+                      />
+                      <span className={styles.trustCopy}>
+                        <span className={styles.trustLabel}>{item.title}</span>
+                        <span className={styles.trustValue}>
+                          {item.subtitle}
+                        </span>
+                      </span>
+                    </li>
+                  );
+                })
+              : hero.features.map((feature) => {
               const Icon = FEATURE_ICONS[feature.icon];
               return (
                 <li key={feature.id} className={styles.trustItem}>
@@ -596,7 +691,7 @@ export function Hero({
           </ul>
           ) : null}
 
-          {sectionNavCards.length > 0 ? (
+          {BANNER_SECTION_NAV_VISIBLE && sectionNavCards.length > 0 ? (
             <aside
               className={styles.recent}
               data-anim-group="recent"
@@ -624,7 +719,7 @@ export function Hero({
           <button
             type="button"
             className={styles.scrollHintBtn}
-            onClick={scrollToPricing}
+            onClick={scrollPastHero}
             aria-label={hero.scrollHint}
           >
             <ScrollDown label={hero.scrollHint} size="md" interactive />
@@ -632,10 +727,6 @@ export function Hero({
         </div>
       </div>
 
-      <DiskPhotoModalForm
-        open={photoModalOpen}
-        onOpenChange={setPhotoModalOpen}
-      />
     </section>
   );
 }

@@ -9,8 +9,9 @@ export function splitWords(
   text: string,
   keyPrefix: string,
 ): ReadonlyArray<WordSegment> {
+  // Regular spaces only — `\u00a0` keeps accent phrases (e.g. «без переплаты») on one token.
   return text
-    .split(/\s+/)
-    .filter(Boolean)
+    .split(/ +/)
+    .filter((word) => word.length > 0)
     .map((word, i) => ({ word, key: `${keyPrefix}-${i}-${word}` }));
 }

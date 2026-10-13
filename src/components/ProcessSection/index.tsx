@@ -19,9 +19,9 @@ import {
 } from "@/components/CardSlider";
 import cardSliderStyles from "@/components/CardSlider/style.module.css";
 import { Button } from "@/components/Button";
+import { useConsultation } from "@/components/Consultation/ConsultationContext";
 import { useMatchMedia } from "@/hooks/useMatchMedia";
 import { useLocale } from "@/i18n/LocaleProvider";
-import { localizedPath } from "@/i18n/paths";
 import { ProcessStepCard } from "./ProcessStepCard";
 
 import styles from "./style.module.css";
@@ -40,8 +40,9 @@ const SLIDER_OPTIONS = {
 } as const;
 
 export function ProcessSection() {
-  const { locale, t } = useLocale();
+  const { t } = useLocale();
   const { process } = t;
+  const { openConsultation } = useConsultation();
   const steps = process.steps;
   const isDesktopRow = useMatchMedia(DESKTOP_ROW_QUERY);
   const isMobileCarousel = useMatchMedia(MOBILE_CAROUSEL_QUERY);
@@ -206,12 +207,14 @@ export function ProcessSection() {
           <div className={styles.headerAside}>
             <p className={styles.intro}>{process.intro}</p>
             <Button
-              href={localizedPath(locale, process.cta.href)}
+              type="button"
               variant="accent"
               size="md"
               expandFromIcon
+              expandWhen
               icon={<CalendarCheck strokeWidth={1.75} aria-hidden />}
               className={styles.headerCta}
+              onClick={() => openConsultation("process")}
             >
               {process.cta.label}
             </Button>

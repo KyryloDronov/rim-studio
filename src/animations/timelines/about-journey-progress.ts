@@ -17,10 +17,15 @@ export function runAboutJourneyProgress(
   if (!root || !fill || milestones.length === 0) return undefined;
 
   const count = milestones.length;
+  const isVertical = root.dataset.journeyLayout === "vertical";
 
   const applyProgress = (progress: number) => {
     const p = Math.min(1, Math.max(0, progress));
-    gsap.set(fill, { scaleX: p });
+    if (isVertical) {
+      gsap.set(fill, { scaleY: p, scaleX: 1 });
+    } else {
+      gsap.set(fill, { scaleX: p, scaleY: 1 });
+    }
 
     milestones.forEach((node, index) => {
       const dotAt = index / count;
@@ -34,7 +39,11 @@ export function runAboutJourneyProgress(
     return undefined;
   }
 
-  gsap.set(fill, { scaleX: 0, transformOrigin: "0% 50%" });
+  if (isVertical) {
+    gsap.set(fill, { scaleY: 0, scaleX: 1, transformOrigin: "50% 0%" });
+  } else {
+    gsap.set(fill, { scaleX: 0, scaleY: 1, transformOrigin: "0% 50%" });
+  }
   milestones.forEach((node) => {
     node.dataset.reached = "false";
   });

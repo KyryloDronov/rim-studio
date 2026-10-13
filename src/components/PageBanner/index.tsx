@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { ProductCards } from "@/components/ProductCards";
 import {
+  BANNER_SECTION_NAV_VISIBLE,
   sectionNavItemsToProductCards,
   type PageSectionNavItem,
 } from "@/content/section-nav";
@@ -25,7 +26,7 @@ type PageBannerProps = Readonly<{
 export function PageBanner({
   title,
   lead,
-  eyebrow = "rim/studio",
+  eyebrow = "Rim Studio",
   sectionNavItems = [],
 }: PageBannerProps) {
   const { t } = useLocale();
@@ -62,7 +63,7 @@ export function PageBanner({
           <h1 className={styles.title}>{title}</h1>
           <p className={styles.lead}>{lead}</p>
         </div>
-        {sectionNavCards.length > 0 ? (
+        {BANNER_SECTION_NAV_VISIBLE && sectionNavCards.length > 0 ? (
           <aside
             className={styles.sectionNav}
             aria-label={t.hero.sectionNavLabel}

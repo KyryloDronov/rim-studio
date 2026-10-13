@@ -202,6 +202,56 @@
   color: var(--brand-white);
 }
 
+.cardSummary {
+  margin: 0.55rem 0 0;
+  max-width: 34ch;
+  font-size: clamp(0.8125rem, 0.92vw, 0.9rem);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.008em;
+  color: rgb(255 255 255 / 0.72);
+  text-wrap: pretty;
+}
+
+.cardSummaryWide {
+  max-width: min(48ch, 92%);
+}
+
+.cardSummaryOnHover {
+  overflow: hidden;
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.4rem);
+  transition:
+    opacity 0.34s cubic-bezier(0, 0, 0.5, 1),
+    transform 0.34s cubic-bezier(0, 0, 0.5, 1),
+    max-height 0.4s cubic-bezier(0, 0, 0.5, 1),
+    margin 0.34s cubic-bezier(0, 0, 0.5, 1),
+    visibility 0s linear 0.34s;
+}
+
+.cardLink:hover .cardSummaryOnHover,
+.cardLink:focus-visible .cardSummaryOnHover {
+  max-height: 6.5rem;
+  margin-top: 0.55rem;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity 0.34s cubic-bezier(0, 0, 0.5, 1),
+    transform 0.34s cubic-bezier(0, 0, 0.5, 1),
+    max-height 0.45s cubic-bezier(0, 0, 0.5, 1),
+    margin 0.34s cubic-bezier(0, 0, 0.5, 1),
+    visibility 0s;
+}
+
+.cardLink:hover .cardSummaryWide.cardSummaryOnHover,
+.cardLink:focus-visible .cardSummaryWide.cardSummaryOnHover {
+  max-height: 9rem;
+}
+
 @media (max-width: 767px) {
   .section {
     --showcase-card-width: 309px;
@@ -217,6 +267,14 @@
     line-height: 1.19;
     letter-spacing: 0.011em;
   }
+
+  .cardSummaryOnHover {
+    max-height: none;
+    margin-top: 0.55rem;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -225,6 +283,15 @@
     visibility: visible;
     transform: none;
     will-change: auto;
+  }
+
+  .cardSummaryOnHover {
+    max-height: none;
+    margin-top: 0.55rem;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
   }
 
   .cardLink {

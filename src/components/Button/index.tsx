@@ -68,6 +68,8 @@ type CommonProps = Readonly<{
    * edge while the pill grows to the left (header). Default grows right.
    */
   expandGrowLeft?: boolean;
+  /** Full width; trailing icon stays at the right inset (banner-style). */
+  block?: boolean;
 }>;
 
 type LinkProps = CommonProps &
@@ -111,6 +113,7 @@ function buildClassName(
   expandFromIcon: boolean,
   expandGrowLeft: boolean,
   introDone: boolean,
+  block: boolean,
   extra: string | undefined,
 ) {
   return [
@@ -118,6 +121,7 @@ function buildClassName(
     styles[`variant-${VARIANT_CLASS[variant]}`],
     styles[`size-${size}`],
     hasIcon ? null : styles.noIcon,
+    block ? styles.block : null,
     expandFromIcon && hasIcon ? styles.introFromIcon : null,
     expandFromIcon && hasIcon && expandGrowLeft ? styles.introGrowLeft : null,
     expandFromIcon && hasIcon && introDone
@@ -160,6 +164,7 @@ export const Button = forwardRef<
     expandFromIcon = false,
     expandWhen,
     expandGrowLeft = false,
+    block = false,
   } = props;
 
   const prefersReducedMotion = useReducedMotion();
@@ -223,6 +228,7 @@ export const Button = forwardRef<
     useIntro,
     expandGrowLeft,
     useIntro && introExpanded,
+    block,
     className,
   );
 

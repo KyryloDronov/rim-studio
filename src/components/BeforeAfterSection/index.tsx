@@ -6,9 +6,9 @@ import { useReducedMotion } from "motion/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { runBeforeAfterScrollReveal } from "@/animations";
 import { Button } from "@/components/Button";
+import { useConsultation } from "@/components/Consultation/ConsultationContext";
 import cardSliderStyles from "@/components/CardSlider/style.module.css";
 import { Tabs, type TabItem } from "@/components/Tabs";
-import { BEFORE_AFTER_BOOKING_VIDEO } from "@/content/before-after-pairs";
 import { getBeforeAfterTabCatalog } from "@/content/before-after-catalog";
 import {
   PRICING_TAB_ICONS,
@@ -17,8 +17,6 @@ import {
   type PricingTabId,
 } from "@/content/pricing-tabs";
 import { useLocale } from "@/i18n/LocaleProvider";
-import { localizedPath } from "@/i18n/paths";
-
 import { CategoryMediaPanel } from "./CategoryMediaPanel";
 import styles from "./style.module.css";
 
@@ -37,10 +35,10 @@ export function BeforeAfterSection({
 }: BeforeAfterSectionProps) {
   const { locale, t } = useLocale();
   const { beforeAfter, pricing } = t;
+  const { openConsultation } = useConsultation();
   const prefersReducedMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const layoutRef = useRef<HTMLDivElement>(null);
-  const bookingVideoRef = useRef<HTMLVideoElement>(null);
   const [mounted, setMounted] = useState(false);
   const tabOrder = useMemo(
     () => resolveBeforeAfterTabOrder(featuredTab),
@@ -75,26 +73,6 @@ export function BeforeAfterSection({
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    const video = bookingVideoRef.current;
-    if (!section || !video) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          void video.play().catch(() => {});
-        } else {
-          video.pause();
-        }
-      },
-      { threshold: 0.08, rootMargin: "80px 0px" },
-    );
-
-    observer.observe(section);
-    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -164,21 +142,17 @@ export function BeforeAfterSection({
 
           <aside className={styles.cardCol}>
             <article className={`${styles.bookingCard} ${styles.bookingReveal}`}>
-              <video
-                ref={bookingVideoRef}
-                className={styles.bookingVideo}
-                src={BEFORE_AFTER_BOOKING_VIDEO}
-                muted
-                playsInline
-                loop
-                autoPlay
-                preload="metadata"
-                aria-hidden
-              />
+              <div className={styles.bookingAmbient} aria-hidden>
+                <div className={styles.bookingAmbientBase} />
+                <div className={styles.bookingOrbA} />
+                <div className={styles.bookingOrbB} />
+                <div className={styles.bookingOrbC} />
+                <div className={styles.bookingAmbientShine} />
+              </div>
               <div className={styles.bookingReadability} aria-hidden />
 
               <div className={styles.bookingContent}>
-                <p className={styles.bookingBrand}>rim/studio</p>
+                <p className={styles.bookingBrand}>Rim Studio</p>
 
                 <div className={styles.bookingCopy}>
                   <p className={styles.bookingEyebrow}>{booking.eyebrow}</p>
@@ -192,12 +166,14 @@ export function BeforeAfterSection({
                 </div>
 
                 <Button
-                  href={localizedPath(locale, booking.cta.href)}
+                  type="button"
                   variant="accent"
                   size="md"
                   expandFromIcon
+                  expandWhen
                   icon={<CalendarCheck strokeWidth={1.75} aria-hidden />}
                   className={styles.bookingCta}
+                  onClick={() => openConsultation("beforeAfter")}
                 >
                   {booking.cta.label}
                 </Button>

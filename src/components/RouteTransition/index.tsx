@@ -37,7 +37,7 @@ import {
 
 import styles from "./style.module.css";
 
-const LOGO_TEXT = "rim.studio";
+const LOGO_TEXT = "Rim Studio";
 
 const PILL_WIDTH = "clamp(22rem, 60vw, 40rem)";
 const PILL_HEIGHT = "calc(clamp(22rem, 60vw, 40rem) / 5)";

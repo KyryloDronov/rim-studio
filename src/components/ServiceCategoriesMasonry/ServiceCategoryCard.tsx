@@ -1,8 +1,10 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Plus } from "lucide-react";
 import { useReducedMotion } from "motion/react";
+import { SHOWCASE_CARD_FAB_ON_END } from "@/content/showcase-card-ui";
 import type { ShowcaseServiceCard } from "@/content/showcase-services";
 import {
   useShowcaseCardVideo,
@@ -17,7 +19,6 @@ type ServiceCategoryCardProps = Readonly<{
   layout: "grid" | "carousel";
   placement?: Readonly<{ gridColumn: string; gridRow: string }>;
   openLabel: string;
-  onOpen: () => void;
 }>;
 
 export function ServiceCategoryCard({
@@ -26,7 +27,6 @@ export function ServiceCategoryCard({
   layout,
   placement,
   openLabel,
-  onOpen,
 }: ServiceCategoryCardProps) {
   const prefersReducedMotion = useReducedMotion();
   const hoverVideoEnabled = useShowcaseHoverVideoEnabled(prefersReducedMotion);
@@ -55,13 +55,19 @@ export function ServiceCategoryCard({
         }
       : undefined;
 
+  const fabClass = [
+    styles.openFab,
+    SHOWCASE_CARD_FAB_ON_END.has(card.id) ? styles.openFabEnd : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <article className={cellClass} style={gridStyle}>
-      <button
-        type="button"
+      <Link
+        href={card.href}
         className={styles.cardButton}
         aria-label={`${openLabel}: ${card.title}`}
-        onClick={onOpen}
       >
         <div
           className={styles.cardContent}
@@ -113,13 +119,26 @@ export function ServiceCategoryCard({
           <div className={styles.cardInfo}>
             <p className={styles.cardEyebrow}>{card.category}</p>
             <h3 className={styles.cardTitle}>{card.title}</h3>
+            {card.summary ? (
+              <p
+                className={[
+                  styles.cardSummary,
+                  styles.cardSummaryOnHover,
+                  card.id === "wheelPainting" ? styles.cardSummaryWide : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                {card.summary}
+              </p>
+            ) : null}
           </div>
 
-          <span className={styles.openFab} aria-hidden="true">
+          <span className={fabClass} aria-hidden="true">
             <Plus strokeWidth={2} className={styles.openFabIcon} />
           </span>
         </div>
-      </button>
+      </Link>
     </article>
   );
 }

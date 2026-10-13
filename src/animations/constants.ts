@@ -97,6 +97,22 @@ export const FOOTER_SCROLL = {
 } as const;
 
 /** Process expandable carousel — title + card strip on scroll. */
+/** FAQ accordion block above the footer on service landings. */
+export const FAQ_SCROLL = {
+  triggerStart: "top 84%",
+  defaultsEase: EASE.punchy,
+  header: {
+    yFrom: 20,
+    duration: 0.68,
+  },
+  items: {
+    yFrom: 18,
+    duration: 0.62,
+    stagger: 0.06,
+    overlapHeader: 0.32,
+  },
+} as const;
+
 export const PROCESS_SCROLL = {
   triggerStart: "top 82%",
   defaultsEase: EASE.punchy,

@@ -3,6 +3,7 @@ import type { Dictionary } from "@/i18n/types";
 
 export type MenuServiceKey = keyof Dictionary["menu"]["services"];
 export type MenuStudioKey = keyof Dictionary["menu"]["studio"];
+export type MenuLegalKey = keyof Dictionary["menu"]["legal"];
 export type PageServiceKey = keyof Dictionary["pages"]["services"];
 
 /** Menu + sitemap registry. Each `href` maps to its own route folder under `app/[lang]/services/`. */
@@ -65,9 +66,18 @@ export const MENU_STUDIO_LINKS: ReadonlyArray<
   { href: "/contact", menuKey: "contact" },
 ];
 
+export const MENU_LEGAL_LINKS: ReadonlyArray<
+  Readonly<{ href: string; menuKey: MenuLegalKey }>
+> = [
+  { href: "/legal/privacy", menuKey: "privacy" },
+  { href: "/legal/terms", menuKey: "terms" },
+];
+
 export const PUBLIC_ROUTES = [
   "/",
   "/about",
   "/contact",
+  "/legal/privacy",
+  "/legal/terms",
   ...MENU_SERVICE_LINKS.map((item) => item.href),
 ] as const;

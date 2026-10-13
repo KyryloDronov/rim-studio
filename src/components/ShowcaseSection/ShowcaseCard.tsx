@@ -70,6 +70,19 @@ export function ShowcaseCard({ card }: ShowcaseCardProps) {
           <div className={styles.cardInfo}>
             <p className={styles.cardEyebrow}>{card.category}</p>
             <h3 className={styles.cardTitle}>{card.title}</h3>
+            {card.summary ? (
+              <p
+                className={[
+                  styles.cardSummary,
+                  styles.cardSummaryOnHover,
+                  card.id === "wheelPainting" ? styles.cardSummaryWide : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                {card.summary}
+              </p>
+            ) : null}
           </div>
         </div>
       </Link>

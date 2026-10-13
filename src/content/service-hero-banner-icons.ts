@@ -1,7 +1,9 @@
 import {
   Bike,
   CalendarClock,
+  Camera,
   CircleDot,
+  Clock,
   Crosshair,
   Flame,
   Gauge,
@@ -36,7 +38,9 @@ export type ServiceHeroBannerIconId =
   | "settings"
   | "bike"
   | "sun"
-  | "palette";
+  | "palette"
+  | "camera"
+  | "clock";
 
 export const SERVICE_HERO_BANNER_ICONS: Record<
   ServiceHeroBannerIconId,
@@ -59,4 +63,6 @@ export const SERVICE_HERO_BANNER_ICONS: Record<
   bike: Bike,
   sun: Sun,
   palette: Palette,
+  camera: Camera,
+  clock: Clock,
 };

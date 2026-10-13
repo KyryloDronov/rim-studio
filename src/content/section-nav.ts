@@ -9,6 +9,9 @@ import { PROCESS_SECTION_ID } from "@/components/ProcessSection";
 import { SERVICE_CATEGORIES_SECTION_ID } from "@/components/ServiceCategoriesMasonry";
 import { TESTIMONIALS_SECTION_ID } from "@/components/TestimonialsSection";
 
+/** Fan-out section stack in hero / page banners (bottom-right). Toggle to restore UI. */
+export const BANNER_SECTION_NAV_VISIBLE = false;
+
 /** One entry in the page banner «section stack» — maps to `id` on a `<section>`. */
 export type PageSectionNavItem = Readonly<{
   sectionId: string;
@@ -58,9 +61,9 @@ export function buildHomeSectionNavItems(
 ): ReadonlyArray<PageSectionNavItem> {
   const { sectionNav } = t;
   return withGradients([
+    { sectionId: SERVICE_CATEGORIES_SECTION_ID, title: sectionNav.showcase },
     { sectionId: PRICING_SECTION_ID, title: sectionNav.pricing },
     { sectionId: BEFORE_AFTER_SECTION_ID, title: sectionNav.beforeAfter },
-    { sectionId: SERVICE_CATEGORIES_SECTION_ID, title: sectionNav.showcase },
     { sectionId: LOYALTY_SECTION_ID, title: sectionNav.loyalty },
     { sectionId: ABOUT_SECTION_ID, title: sectionNav.about },
     { sectionId: PROCESS_SECTION_ID, title: sectionNav.process },

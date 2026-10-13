@@ -16,7 +16,7 @@ import { LogoSmall } from "@/icons/logo_small";
 
 import styles from "./style.module.css";
 
-const LOGO_TITLE = "RIM STUDIO";
+const LOGO_TITLE = "Rim Studio";
 
 /** One-way wheel spin: fast smear → smooth deceleration → rest at 0°. */
 const SPIN_TURNS = 20;

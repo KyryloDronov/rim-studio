@@ -37,7 +37,7 @@ import { useLocale } from "@/i18n/LocaleProvider";
 
 import styles from "./style.module.css";
 
-/** Anchor id — hero scroll hint targets this section. */
+/** Anchor id — service landing hero «Листайте» scrolls here; home uses services masonry first. */
 export const PRICING_SECTION_ID = "pricing";
 
 export type PricingSectionProps = Readonly<{

@@ -5,6 +5,8 @@ import { useReducedMotion } from "motion/react";
 import { useEffect, useId, useMemo, useRef } from "react";
 import { runFooterScrollReveal, splitClaimRuns } from "@/animations";
 import { ProductCards } from "@/components/ProductCards";
+import { FOOTER_RECENT_WORKS_VISIBLE } from "@/content/footer-sections";
+import { STUDIO_SOCIAL } from "@/content/studio-location";
 import { SHOWCASE_WORK_CARDS } from "@/content/showcase-cards";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { localizedPath } from "@/i18n/paths";
@@ -27,8 +29,6 @@ type FooterLinkLabels = Readonly<{
 }>;
 
 const STUDIO_LINKS: ReadonlyArray<FooterLink> = [
-  { href: "/", labelKey: "about" },
-  { href: "/work", labelKey: "process" },
   { href: "/contact", labelKey: "contact" },
 ];
 
@@ -37,7 +37,7 @@ const LEGAL_LINKS: ReadonlyArray<FooterLink> = [
   { href: "/legal/terms", labelKey: "terms" },
 ];
 
-/* ---------- Inline social icons (Instagram, X) -------------------------- */
+/* ---------- Inline social icons (Instagram, Facebook) ------------------- */
 
 function InstagramIcon() {
   return (
@@ -63,16 +63,16 @@ function InstagramIcon() {
   );
 }
 
-function XIcon() {
+function FacebookIcon() {
   return (
     <svg
-      viewBox="0 0 17 15"
+      viewBox="0 0 16 16"
       fill="none"
       aria-hidden="true"
       className={styles.socialIcon}
     >
       <path
-        d="M.04 0 6.228 8.278 0 15.009h1.402l5.454-5.893 4.406 5.893h4.771l-6.538-8.744L15.293 0h-1.402L8.868 5.427 4.81 0H.04ZM2.1 1.033h2.191l9.679 12.943h-2.192L2.1 1.033Z"
+        d="M8 0C3.582 0 0 3.582 0 8c0 3.989 2.924 7.301 6.75 7.902V9.781H4.719V8h2.031V6.237c0-2.005 1.194-3.11 3.022-3.11.875 0 1.79.156 1.79.156v1.969h-1.008c-.993 0-1.304.616-1.304 1.248V8h2.22l-.355 2.781h-1.865V15.9C13.076 15.301 16 11.989 16 8c0-4.418-3.582-8-8-8Z"
         fill="currentColor"
       />
     </svg>
@@ -82,7 +82,7 @@ function XIcon() {
 function WordmarkIcon() {
   return (
     <svg
-      viewBox="0 0 120 32"
+      viewBox="0 0 150 32"
       fill="none"
       aria-hidden="true"
       className={styles.wordmark}
@@ -96,7 +96,7 @@ function WordmarkIcon() {
         letterSpacing="-0.02em"
         fill="currentColor"
       >
-        rim/studio
+        Rim Studio
       </text>
     </svg>
   );
@@ -317,7 +317,7 @@ export function Footer({ ready = true }: FooterProps) {
             </p>
             <div className={`${styles.socials} ${styles.revealAlpha}`}>
               <a
-                href="https://instagram.com/rim.studio"
+                href={STUDIO_SOCIAL.instagram}
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Instagram"
@@ -326,13 +326,13 @@ export function Footer({ ready = true }: FooterProps) {
                 <InstagramIcon />
               </a>
               <a
-                href="https://x.com/rimstudio"
+                href={STUDIO_SOCIAL.facebook}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="X (formerly Twitter)"
+                aria-label="Facebook"
                 className={styles.socialLink}
               >
-                <XIcon />
+                <FacebookIcon />
               </a>
             </div>
           </div>
@@ -371,7 +371,14 @@ export function Footer({ ready = true }: FooterProps) {
         </div>
 
         {/* Bottom row: large claim left, product cards right. */}
-        <div className={styles.bottom} ref={bottomRef}>
+        <div
+          className={
+            FOOTER_RECENT_WORKS_VISIBLE
+              ? styles.bottom
+              : `${styles.bottom} ${styles.bottomClaimOnly}`
+          }
+          ref={bottomRef}
+        >
           <p className={styles.claim}>
             {claimSegments.map((seg, i) => (
               <span
@@ -389,11 +396,13 @@ export function Footer({ ready = true }: FooterProps) {
             ))}
           </p>
 
-          <ProductCards
-            cards={SHOWCASE_WORK_CARDS}
-            eyebrowLabel={t.footer.shopNow}
-            className={styles.productCardsBlock}
-          />
+          {FOOTER_RECENT_WORKS_VISIBLE ? (
+            <ProductCards
+              cards={SHOWCASE_WORK_CARDS}
+              eyebrowLabel={t.footer.shopNow}
+              className={styles.productCardsBlock}
+            />
+          ) : null}
         </div>
 
         <div className={styles.copyright}>

@@ -4,13 +4,14 @@
  * is registered before any scroll-linked timelines run.
  */
 
-export { FOOTER_CLAIM, FOOTER_SCROLL, HERO_INTRO, LOYALTY_SCROLL, PROCESS_SCROLL, ABOUT_SCROLL, ABOUT_JOURNEY, CATEGORIES_MASONRY_SCROLL, SHOWCASE_SCROLL, BENEFITS_SCROLL, BEFORE_AFTER_SCROLL, TESTIMONIAL_QUOTE, WORD_BLUR_REVEAL, EASE } from "./constants";
+export { FOOTER_CLAIM, FOOTER_SCROLL, HERO_INTRO, LOYALTY_SCROLL, PROCESS_SCROLL, FAQ_SCROLL, ABOUT_SCROLL, ABOUT_JOURNEY, CATEGORIES_MASONRY_SCROLL, SHOWCASE_SCROLL, BENEFITS_SCROLL, BEFORE_AFTER_SCROLL, TESTIMONIAL_QUOTE, WORD_BLUR_REVEAL, EASE } from "./constants";
 export type {
   AboutRevealClassNames,
   BeforeAfterRevealClassNames,
   BenefitsRevealClassNames,
   CategoriesMasonryRevealClassNames,
   ProcessRevealClassNames,
+  FaqRevealClassNames,
   FooterRevealClassNames,
   FooterScrollRefs,
   HeroIntroClassNames,
@@ -59,6 +60,10 @@ export {
   runProcessScrollReveal,
   setProcessRevealReducedMotion,
 } from "./timelines/process-scroll";
+export {
+  runFaqScrollReveal,
+  setFaqRevealReducedMotion,
+} from "./timelines/faq-scroll";
 export {
   runAboutScrollReveal,
   setAboutRevealReducedMotion,

@@ -166,13 +166,29 @@
   display: inline;
 }
 
-.ledePart[data-lede-join="true"]::before {
-  content: "\00a0";
-}
-
 .ledeAccent {
+  display: inline;
   color: var(--accent);
   font-weight: 500;
+}
+
+/* Rich banner lede — plain copy (no per-word `.word` transforms). */
+.ledeReveal {
+  display: inline;
+  will-change: transform, filter, opacity;
+  filter: blur(10px);
+  transform: translateY(12px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ledeReveal {
+    filter: none;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 /* ---------- Service landing highlights ---------- */

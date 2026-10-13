@@ -19,6 +19,9 @@ export function queryHeroIntroElements(
     ledeWords: root.querySelectorAll<HTMLElement>(
       `[data-anim-group="lede"] .${classes.word}`,
     ),
+    ledeReveal: root.querySelector<HTMLElement>(
+      `[data-anim-group="lede"] .${classes.ledeReveal}`,
+    ),
     serviceHighlightItems: root.querySelectorAll<HTMLElement>(
       `[data-anim-group="service-highlights"] .${classes.serviceRevealItem}`,
     ),
@@ -49,11 +52,24 @@ const trustRevealTween = {
 
 /** Snap everything to end state — `prefers-reduced-motion` path. */
 export function setHeroIntroReducedMotion(el: HeroIntroElements): void {
-  gsap.set([el.titleWords, el.ledeWords], {
+  gsap.set(el.titleWords, {
     filter: "blur(0px)",
     x: 0,
     autoAlpha: 1,
   });
+  if (el.ledeReveal) {
+    gsap.set(el.ledeReveal, {
+      filter: "blur(0px)",
+      y: 0,
+      autoAlpha: 1,
+    });
+  } else {
+    gsap.set(el.ledeWords, {
+      filter: "blur(0px)",
+      x: 0,
+      autoAlpha: 1,
+    });
+  }
   if (el.serviceHighlightItems.length > 0) {
     gsap.set(el.serviceHighlightItems, trustRevealTween);
   }
@@ -109,17 +125,31 @@ export function createHeroIntroTimeline(
     stagger: hi.title.stagger,
   });
 
-  tl.to(
-    el.ledeWords,
-    {
-      filter: "blur(0px)",
-      x: 0,
-      autoAlpha: 1,
-      duration: hi.lede.duration,
-      stagger: hi.lede.stagger,
-    },
-    `-=${hi.lede.overlapPrev}`,
-  );
+  if (el.ledeReveal) {
+    tl.to(
+      el.ledeReveal,
+      {
+        filter: "blur(0px)",
+        y: 0,
+        autoAlpha: 1,
+        duration: hi.lede.duration,
+        ease: EASE.narrative,
+      },
+      `-=${hi.lede.overlapPrev}`,
+    );
+  } else {
+    tl.to(
+      el.ledeWords,
+      {
+        filter: "blur(0px)",
+        x: 0,
+        autoAlpha: 1,
+        duration: hi.lede.duration,
+        stagger: hi.lede.stagger,
+      },
+      `-=${hi.lede.overlapPrev}`,
+    );
+  }
 
   if (el.serviceHighlightItems.length > 0) {
     tl.to(

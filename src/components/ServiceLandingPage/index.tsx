@@ -18,6 +18,7 @@ export function ServiceLandingPage({ pageKey }: ServiceLandingPageProps) {
       <HomePageSections
         featuredTab={featuredTab}
         excludeShowcasePageKey={pageKey}
+        faqPageKey={pageKey}
       />
     </>
   );

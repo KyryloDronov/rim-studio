@@ -145,7 +145,7 @@ export function Header({
         </div>
 
         <div className={styles.center}>
-          <Link href="/" aria-label="rim-studio home" className={styles.logo}>
+          <Link href="/" aria-label="Rim Studio home" className={styles.logo}>
             <AnimatedLogo ready={ready} />
           </Link>
         </div>

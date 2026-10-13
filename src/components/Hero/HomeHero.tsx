@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { buildHomeSectionNavItems } from "@/content/section-nav";
+import { SERVICE_CATEGORIES_SECTION_ID } from "@/components/ServiceCategoriesMasonry";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { Hero } from "./index";
 
@@ -11,5 +12,11 @@ export function HomeHero() {
     () => buildHomeSectionNavItems(t),
     [t],
   );
-  return <Hero sectionNavItems={sectionNavItems} />;
+  return (
+    <Hero
+      sectionNavItems={sectionNavItems}
+      serviceBanner={t.hero.banner}
+      scrollTargetSectionId={SERVICE_CATEGORIES_SECTION_ID}
+    />
+  );
 }
