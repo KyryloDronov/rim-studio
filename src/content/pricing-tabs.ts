@@ -16,8 +16,9 @@ export type PricingTabId = keyof Dictionary["pricing"]["panels"];
 /** Tabs shown in the pricing block (full set stays in i18n for later). */
 export const PRICING_TAB_ORDER: ReadonlyArray<PricingTabId> = [
   "paint",
-  "tire",
+  "diamond",
   "repair",
+  "tire",
 ];
 
 /** Visible tabs in «Примеры наших работ». */

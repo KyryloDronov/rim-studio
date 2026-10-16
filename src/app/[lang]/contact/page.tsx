@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ContentPage } from "@/components/ContentPage";
-import { getDictionary } from "@/i18n/dictionaries";
-import { localizedPath } from "@/i18n/paths";
+import { ContactPageSection } from "@/components/ContactPage";
+import { getSeoCopy } from "@/i18n/seo";
 import { isLocale } from "@/i18n/types";
+import { buildPageMetadata } from "@/lib/seo-metadata";
 
 export async function generateMetadata({
   params,
@@ -11,20 +11,7 @@ export async function generateMetadata({
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
 
-  const { pages, meta } = getDictionary(lang);
-  const title = pages.contact.title;
-
-  return {
-    title,
-    description: pages.contact.lead,
-    alternates: { canonical: localizedPath(lang, "/contact") },
-    openGraph: {
-      title,
-      description: pages.contact.lead,
-      url: localizedPath(lang, "/contact"),
-      siteName: meta.siteName,
-    },
-  };
+  return buildPageMetadata(lang, "/contact", { seo: getSeoCopy(lang).contact });
 }
 
 export default async function ContactPage({
@@ -33,7 +20,5 @@ export default async function ContactPage({
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
 
-  const { pages } = getDictionary(lang);
-
-  return <ContentPage title={pages.contact.title} lead={pages.contact.lead} />;
+  return <ContactPageSection />;
 }

@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentPage } from "@/components/ContentPage";
 import { getDictionary } from "@/i18n/dictionaries";
-import { localizedPath } from "@/i18n/paths";
+import { getSeoCopy } from "@/i18n/seo";
 import { isLocale } from "@/i18n/types";
+import { buildPageMetadata } from "@/lib/seo-metadata";
 
 export async function generateMetadata({
   params,
@@ -11,20 +12,7 @@ export async function generateMetadata({
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
 
-  const { pages, meta } = getDictionary(lang);
-  const title = pages.about.title;
-
-  return {
-    title,
-    description: pages.about.lead,
-    alternates: { canonical: localizedPath(lang, "/about") },
-    openGraph: {
-      title,
-      description: pages.about.lead,
-      url: localizedPath(lang, "/about"),
-      siteName: meta.siteName,
-    },
-  };
+  return buildPageMetadata(lang, "/about", { seo: getSeoCopy(lang).about });
 }
 
 export default async function AboutPage({

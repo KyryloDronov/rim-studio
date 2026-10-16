@@ -1,27 +1,27 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { DEFAULT_LOCALE, LOCALES, type Locale } from "@/i18n/types";
 
 /**
  * Locale-aware URL strategy:
- *   /            → rewrite to /ru   (URL stays as `/`)
- *   /ru          → 308 redirect to / (canonical normalisation)
- *   /ru/foo      → 308 redirect to /foo
- *   /pl          → pass through      (rendered as is)
- *   /pl/foo      → pass through
- *   /foo         → rewrite to /ru/foo (URL stays as `/foo`)
+ *   /            → rewrite to /pl   (URL stays as `/`)
+ *   /pl          → 308 redirect to / (canonical normalisation)
+ *   /pl/foo      → 308 redirect to /foo
+ *   /ru          → pass through      (rendered as is)
+ *   /ru/foo      → pass through
+ *   /foo         → rewrite to /pl/foo (URL stays as `/foo`)
  *
  * We also propagate the resolved locale to the app via the `x-locale`
  * request header so the root server layout can render the correct
  * `<html lang>` on the very first response.
  *
  * SEO contract:
- * - Canonical for Russian = `/`
- * - Canonical for Polish  = `/pl`
+ * - Canonical for Polish  = `/`
+ * - Canonical for Russian = `/ru`
  * - hreflang tags expose both (see app/[lang]/layout metadata).
  */
 
-const SUPPORTED_LOCALES = ["ru", "pl"] as const;
-type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
-const DEFAULT_LOCALE: SupportedLocale = "ru";
+const SUPPORTED_LOCALES = LOCALES;
+type SupportedLocale = Locale;
 const LOCALE_HEADER = "x-locale";
 
 /**
@@ -32,6 +32,8 @@ function shouldBypass(pathname: string): boolean {
     pathname === "/sitemap.xml" ||
     pathname === "/robots.txt" ||
     pathname === "/favicon.ico" ||
+    pathname === "/manifest.webmanifest" ||
+    pathname.startsWith("/favicon/") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/_next") ||
     /\.[a-z0-9]+$/i.test(pathname)
@@ -54,7 +56,7 @@ export function proxy(request: NextRequest) {
   const segments = pathname.split("/").filter(Boolean);
   const first = segments[0];
 
-  /* /ru or /ru/foo → 308 redirect to canonical (no /ru prefix). */
+  /* /pl or /pl/foo → 308 redirect to canonical (no /pl prefix). */
   if (first === DEFAULT_LOCALE) {
     const rest = segments.slice(1).join("/");
     const url = request.nextUrl.clone();
@@ -62,7 +64,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(url, 308);
   }
 
-  /* /pl, /pl/foo → pass through, just attach locale header. */
+  /* /ru, /ru/foo → pass through, just attach locale header. */
   if (
     first &&
     (SUPPORTED_LOCALES as ReadonlyArray<string>).includes(first) &&
@@ -73,7 +75,7 @@ export function proxy(request: NextRequest) {
     });
   }
 
-  /* /, /foo → internal rewrite to /ru, /ru/foo (URL bar unchanged). */
+  /* /, /foo → internal rewrite to /pl, /pl/foo (URL bar unchanged). */
   const url = request.nextUrl.clone();
   url.pathname =
     pathname === "/" ? `/${DEFAULT_LOCALE}` : `/${DEFAULT_LOCALE}${pathname}`;

@@ -17,6 +17,7 @@ export function runCategoriesMasonryScrollReveal(
   triggerEl: HTMLElement,
   classes: CategoriesMasonryRevealClassNames,
   prefersReducedMotion: boolean,
+  options?: Readonly<{ playOnMount?: boolean }>,
 ): void {
   if (prefersReducedMotion) {
     setCategoriesMasonryRevealReducedMotion(classes);
@@ -96,15 +97,22 @@ export function runCategoriesMasonryScrollReveal(
 
   let played = false;
 
+  const playOnce = () => {
+    if (played) return;
+    played = true;
+    tl.play();
+  };
+
+  if (options?.playOnMount) {
+    playOnce();
+    return;
+  }
+
   ScrollTrigger.create({
     trigger: triggerEl,
     start: cm.triggerStart,
     invalidateOnRefresh: true,
-    onEnter: () => {
-      if (played) return;
-      played = true;
-      tl.play();
-    },
+    onEnter: playOnce,
   });
 
   requestAnimationFrame(() => {

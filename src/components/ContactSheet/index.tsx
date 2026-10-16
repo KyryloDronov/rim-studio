@@ -1,7 +1,7 @@
 "use client";
 
 import { useLenis } from "lenis/react";
-import { MapPin, Navigation, Phone, PhoneCall, X } from "lucide-react";
+import { Mail, MapPin, Navigation, Phone, PhoneCall, X } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import {
   useCallback,
@@ -18,12 +18,15 @@ import { createPortal } from "react-dom";
 import { Button } from "@/components/Button";
 import { TextInput } from "@/components/forms/TextInput";
 import { ContactSheetMap } from "@/components/ContactSheet/ContactSheetMap";
+import {
+  PhoneInputMessengerRow,
+  StudioPhoneRow,
+} from "@/components/StudioMessengerLinks";
 import { useContactSheet } from "@/components/ContactSheet/ContactSheetContext";
 import {
   buildGoogleDirectionsUrl,
   STUDIO_COORDINATES,
-  STUDIO_PHONE_DISPLAY,
-  STUDIO_PHONE_HREF,
+  STUDIO_EMAIL,
   STUDIO_SOCIAL,
 } from "@/content/studio-location";
 import { useConsultationPage } from "@/hooks/useConsultationPage";
@@ -319,21 +322,23 @@ export function ContactSheet() {
                     <label className={styles.callbackLabel} htmlFor={`${reactId}-phone`}>
                       {copy.callbackPhoneLabel}
                     </label>
-                    <TextInput
-                      id={`${reactId}-phone`}
-                      name="phone"
-                      type="tel"
-                      autoComplete="tel"
-                      inputMode="tel"
-                      placeholder={copy.callbackPhonePlaceholder}
-                      value={callbackPhone}
-                      invalid={callbackPhoneInvalid}
-                      className={styles.callbackInput}
-                      onChange={(event) => {
-                        setCallbackPhone(event.target.value);
-                        if (callbackPhoneInvalid) setCallbackPhoneInvalid(false);
-                      }}
-                    />
+                    <PhoneInputMessengerRow variant="onLight">
+                      <TextInput
+                        id={`${reactId}-phone`}
+                        name="phone"
+                        type="tel"
+                        autoComplete="tel"
+                        inputMode="tel"
+                        placeholder={copy.callbackPhonePlaceholder}
+                        value={callbackPhone}
+                        invalid={callbackPhoneInvalid}
+                        className={styles.callbackInput}
+                        onChange={(event) => {
+                          setCallbackPhone(event.target.value);
+                          if (callbackPhoneInvalid) setCallbackPhoneInvalid(false);
+                        }}
+                      />
+                    </PhoneInputMessengerRow>
                     {callbackPhoneInvalid ? (
                       <p className={styles.callbackError} role="alert">
                         {copy.callbackPhoneRequired}
@@ -423,15 +428,40 @@ export function ContactSheet() {
                 <h3 id={`${reactId}-phone`} className={styles.blockTitle}>
                   {copy.phoneTitle}
                 </h3>
-                <a className={styles.blockLink} href={STUDIO_PHONE_HREF}>
-                  {STUDIO_PHONE_DISPLAY}
+                <StudioPhoneRow
+                  linkClassName={styles.blockLink}
+                  variant="onLight"
+                />
+              </div>
+            </motion.section>
+
+            <motion.section
+              className={styles.block}
+              custom={5}
+              variants={blockMotion}
+              initial="hidden"
+              animate={panelVisible ? "visible" : "hidden"}
+              aria-labelledby={`${reactId}-email`}
+            >
+              <div className={styles.blockIcon} aria-hidden>
+                <Mail strokeWidth={1.5} />
+              </div>
+              <div className={styles.blockBody}>
+                <h3 id={`${reactId}-email`} className={styles.blockTitle}>
+                  {copy.emailLabel}
+                </h3>
+                <a
+                  className={styles.blockLink}
+                  href={`mailto:${STUDIO_EMAIL}`}
+                >
+                  {STUDIO_EMAIL}
                 </a>
               </div>
             </motion.section>
 
             <motion.section
               className={styles.socialBlock}
-              custom={5}
+              custom={6}
               variants={blockMotion}
               initial="hidden"
               animate={panelVisible ? "visible" : "hidden"}

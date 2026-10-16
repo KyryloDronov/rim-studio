@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/Button";
 import { useContactSheet } from "@/components/ContactSheet";
 import { useLocale } from "@/i18n/LocaleProvider";
+import { localizedPath } from "@/i18n/paths";
 import { AnimatedLogo } from "./AnimatedLogo";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import styles from "./style.module.css";
@@ -33,7 +34,8 @@ export function Header({
   const isMenuOpen = isControlled ? controlledOpen : internalOpen;
   const headerRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
-  const { t } = useLocale();
+  const { locale, t } = useLocale();
+  const homeHref = localizedPath(locale, "/");
   const { openSheet } = useContactSheet();
 
   const handleContactOpen = useCallback(() => {
@@ -145,7 +147,7 @@ export function Header({
         </div>
 
         <div className={styles.center}>
-          <Link href="/" aria-label="Rim Studio home" className={styles.logo}>
+          <Link href={homeHref} aria-label="Rim Studio home" className={styles.logo}>
             <AnimatedLogo ready={ready} />
           </Link>
         </div>

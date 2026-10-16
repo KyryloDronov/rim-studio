@@ -79,6 +79,7 @@ export function BenefitsSection() {
           revealCardMobile: styles.revealCardMobile,
         },
         Boolean(prefersReducedMotion),
+        root,
       );
     }, root);
 

@@ -23,11 +23,18 @@ type PricingTableProps = Readonly<{
   panelKey: string;
   className?: string;
   scrollClassName?: string;
+  scrollHint?: string;
+  currencyDisclaimer?: string;
   /** Delay before header / row cascade (sync with bg blur reveal). */
   enterDelay?: number;
   /** Fires when header + row cascade has finished. */
   onEnterComplete?: () => void;
 }>;
+
+function isUnavailablePrice(value: string): boolean {
+  const trimmed = value.trim();
+  return trimmed === "—" || trimmed === "-" || trimmed === "–";
+}
 
 /** `15000` → `15 000`; leaves already formatted strings as-is. */
 export function formatPriceCell(value: string): string {
@@ -82,6 +89,8 @@ export function PricingTable({
   panelKey,
   className,
   scrollClassName,
+  scrollHint,
+  currencyDisclaimer,
   enterDelay = 0,
   onEnterComplete,
 }: PricingTableProps) {
@@ -130,6 +139,9 @@ export function PricingTable({
             : { opacity: 0, transition: { duration: EXIT_FADE_S, ease: appleEase } }
         }
       >
+        {scrollHint ? (
+          <p className={styles.scrollHint}>{scrollHint}</p>
+        ) : null}
         <div className={scrollClass} tabIndex={-1}>
           <span className={styles.glassSurface} aria-hidden="true" />
           <div className={styles.scrollInner}>
@@ -145,7 +157,11 @@ export function PricingTable({
                     {data.title}
                   </th>
                   {data.columns.map((col) => (
-                    <th key={col} scope="col" className={styles.headCell}>
+                    <th
+                      key={col}
+                      scope="col"
+                      className={`${styles.headCell} ${styles.headCellSize}`}
+                    >
                       {col}
                     </th>
                   ))}
@@ -167,7 +183,11 @@ export function PricingTable({
                     {row.prices.map((price, colIndex) => (
                       <td
                         key={`${row.label}-${data.columns[colIndex] ?? colIndex}`}
-                        className={styles.cell}
+                        className={
+                          isUnavailablePrice(price)
+                            ? `${styles.cell} ${styles.cellUnavailable}`
+                            : styles.cell
+                        }
                       >
                         {formatPriceCell(price)}
                       </td>
@@ -178,6 +198,28 @@ export function PricingTable({
             </table>
           </div>
         </div>
+        {data.extras && data.extras.length > 0 ? (
+          <ul className={styles.extras}>
+            {data.extras.map((item) => (
+              <li key={item.label} className={styles.extraCard}>
+                <span className={styles.extraLabel}>{item.label}</span>
+                <span className={styles.extraValue}>
+                  {formatPriceCell(item.value)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        {(data.footnote || currencyDisclaimer) && (
+          <div className={styles.footnotes}>
+            {data.footnote ? (
+              <p className={styles.footnote}>{data.footnote}</p>
+            ) : null}
+            {currencyDisclaimer ? (
+              <p className={styles.footnote}>{currencyDisclaimer}</p>
+            ) : null}
+          </div>
+        )}
       </motion.div>
     </AnimatePresence>
   );

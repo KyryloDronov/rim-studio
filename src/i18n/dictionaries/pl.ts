@@ -1,10 +1,16 @@
+import {
+  STUDIO_ADDRESS_FULL,
+  STUDIO_ADDRESS_LINE1,
+  STUDIO_ADDRESS_LINE2,
+  STUDIO_EMAIL,
+} from "@/content/studio-location";
 import type { Dictionary } from "../types";
 
 export const pl: Dictionary = {
   meta: {
-    title: "Rim Studio — Kreatywne studio cyfrowe",
+    title: "Lakierowanie i renowacja felg Warszawa | Rim Studio",
     description:
-      "Rim Studio to kreatywne studio cyfrowe tworzące strony, marki i interaktywne produkty.",
+      "Rim Studio w Warszawie — proszkowe lakierowanie felg, naprawa, toczenie diamentowe, wulkanizacja i lakier zacisków. Gwarancja, termin 1–3 dni. Adres: ul. Inwestycyjna 9, 05-800 Pruszków.",
     siteName: "Rim Studio",
   },
   header: {
@@ -345,9 +351,13 @@ export const pl: Dictionary = {
         "Rim Studio — pracownia renowacji i lakierowania felg w Warszawie. Pracujemy starannie, z gwarancją i bez zbędnego pośpiechu.",
     },
     contact: {
+      eyebrow: "Rim Studio · Warszawa",
       title: "Kontakt",
       lead:
-        "Napisz lub zadzwoń — doradzimy w sprawie terminów, kolorów i wyceny. Możesz też przesłać zdjęcia felg do wstępnej oceny.",
+        "Przyjedź do studia, zadzwoń lub zostaw numer — odpowiemy w godzinach pracy i umówimy dogodny termin.",
+      formTitle: "Umów konsultację",
+      formLead:
+        "Podaj imię i telefon — oddzwonimy, doprecyzujemy zakres prac i wycenę.",
     },
     privacy: {
       eyebrow: "Dokumenty",
@@ -558,12 +568,6 @@ export const pl: Dictionary = {
           title: "Termin realizacji",
           subtitle: "1–3 dni",
         },
-        {
-          id: "photo",
-          icon: "camera",
-          title: "Wycena na zdjęciu",
-          subtitle: "na podstawie zdjęć",
-        },
       ],
       ctaPrimary: { label: "Umów konsultację" },
     },
@@ -579,12 +583,6 @@ export const pl: Dictionary = {
         icon: "clock",
         label: "Termin realizacji",
         value: "1–3 dni",
-      },
-      {
-        id: "photo",
-        icon: "camera",
-        label: "Wycena na zdjęciu",
-        value: "na podstawie zdjęć",
       },
     ],
     ctaPrimary: { label: "Umów konsultację" },
@@ -671,6 +669,10 @@ export const pl: Dictionary = {
           body:
             "Oddzwonimy w najbliższym czasie roboczym — doprecyzujemy zadanie i termin wizyty.",
         },
+        contactPage: {
+          body:
+            "Oddzwonimy w najbliższym czasie roboczym i pomóżemy umówić wizytę w studiu.",
+        },
       },
     },
     ctaSecondary: { label: "Zadzwoń", href: "tel:+48786444468" },
@@ -694,8 +696,8 @@ export const pl: Dictionary = {
     mapAriaLabel: "Mapa — lokalizacja studia Rim Studio w Warszawie",
     routeLabel: "Wyznacz trasę",
     addressTitle: "Adres",
-    addressLine1: "ul. Przykładowa 12",
-    addressLine2: "Warszawa, Polska",
+    addressLine1: STUDIO_ADDRESS_LINE1,
+    addressLine2: STUDIO_ADDRESS_LINE2,
     phoneTitle: "Telefon",
     callbackTitle: "Oddzwonienie",
     callbackBody:
@@ -708,15 +710,21 @@ export const pl: Dictionary = {
     callbackSuccessBody: "Oddzwonimy w najbliższym czasie roboczym.",
     socialTitle: "Social media",
     emailLabel: "Email",
+    whatsAppAriaLabel: "Napisz do nas na WhatsApp",
+    instagramDmAriaLabel: "Wyślij wiadomość na Instagramie",
   },
   pricing: {
     tabsAriaLabel: "Kategorie cen",
+    introTitleStrong: "Koszt naszych usług.",
+    currencyDisclaimer:
+      "* Ceny w złotych (zł). Dokładną kwotę ustalamy po diagnostyce — przed rozpoczęciem prac.",
+    scrollHint: "Przewiń tabelę w poziomie →",
     panels: {
       paint: {
         tabLabelLine1: "Lakier",
         tabLabelLine2: "proszkowy",
         table: {
-          title: "Lakierowanie proszkowe felg",
+          title: "Usługa",
           columns: [
             "R13-15",
             "R16",
@@ -731,7 +739,7 @@ export const pl: Dictionary = {
           ],
           rows: [
             {
-              label: "Lakier proszkowy (komplet 4 felgi)",
+              label: "Lakierowanie proszkowe",
               prices: [
                 "900",
                 "900",
@@ -745,14 +753,41 @@ export const pl: Dictionary = {
                 "2800",
               ],
             },
+            {
+              label: "Lakier termiczny (ciecze)",
+              prices: [
+                "1100",
+                "1100",
+                "1260",
+                "1560",
+                "1860",
+                "2100",
+                "2400",
+                "2600",
+                "2800",
+                "3200",
+              ],
+            },
           ],
+          extras: [
+            {
+              label: "Lakierowanie proszkowe felg stalowych",
+              value: "800",
+            },
+            {
+              label: "Lakierowanie zacisków, komplet",
+              value: "od 1000",
+            },
+          ],
+          footnote:
+            "* Usługi wulkanizacji i naprawa felg są płatne oddzielnie.",
         },
       },
       repair: {
         tabLabelLine1: "Prostowanie",
         tabLabelLine2: "felg",
         table: {
-          title: "Prostowanie felgi aluminiowej",
+          title: "Usługa",
           columns: [
             "R13-15",
             "R16",
@@ -767,7 +802,7 @@ export const pl: Dictionary = {
           ],
           rows: [
             {
-              label: "Prostowanie felgi aluminiowej (1 szt.)",
+              label: "Prostowanie felgi aluminiowej",
               prices: [
                 "100",
                 "100",
@@ -782,35 +817,14 @@ export const pl: Dictionary = {
               ],
             },
           ],
+          footnote: "* Usługi wulkanizacji są płatne oddzielnie.",
         },
       },
       diamond: {
-        tabLabelLine1: "Szlifowanie",
-        tabLabelLine2: "diamentowe",
+        tabLabelLine1: "Toczenie",
+        tabLabelLine2: "CNC",
         table: {
-          title: "Diamentowe szlifowanie felg",
-          columns: ["R15-16", "R17-18", "R19-20", "R21+"],
-          rows: [
-            {
-              label: "Toczenie diamentowe bez lakieru (komplet)",
-              prices: ["12000", "14000", "16000", "18000"],
-            },
-            {
-              label: "Toczenie + polerowanie rantów (komplet)",
-              prices: ["15000", "17000", "19000", "21000"],
-            },
-            {
-              label: "Połysk lustrzany (komplet)",
-              prices: ["18000", "20000", "22000", "25000"],
-            },
-          ],
-        },
-      },
-      tire: {
-        tabLabelLine1: "Wymiana",
-        tabLabelLine2: "opon",
-        table: {
-          title: "Wymiana opon / montaż",
+          title: "Usługa",
           columns: [
             "R13-15",
             "R16",
@@ -825,7 +839,90 @@ export const pl: Dictionary = {
           ],
           rows: [
             {
-              label: "Wymiana opon (1 koło)",
+              label: "Toczenie diamentowe",
+              prices: [
+                "—",
+                "800",
+                "800",
+                "900",
+                "1000",
+                "1200",
+                "1300",
+                "1400",
+                "1600",
+                "1800",
+              ],
+            },
+          ],
+          footnote:
+            "* Lakierowanie płatne oddzielnie — zależy od wybranej metody (proszek lub emalia termiczna).",
+        },
+      },
+      tire: {
+        tabLabelLine1: "Wulkanizacja",
+        tabLabelLine2: "opon",
+        table: {
+          title: "Usługa",
+          columns: [
+            "R13-15",
+            "R16",
+            "R17",
+            "R18",
+            "R19",
+            "R20",
+            "R21",
+            "R22",
+            "R23",
+            "R24",
+          ],
+          rows: [
+            {
+              label: "Demontaż / montaż koła",
+              prices: [
+                "15",
+                "15",
+                "15",
+                "20",
+                "20",
+                "25",
+                "25",
+                "30",
+                "30",
+                "35",
+              ],
+            },
+            {
+              label: "Demontaż / montaż opony",
+              prices: [
+                "15",
+                "15",
+                "20",
+                "20",
+                "25",
+                "25",
+                "30",
+                "35",
+                "40",
+                "45",
+              ],
+            },
+            {
+              label: "Wyważanie koła",
+              prices: [
+                "20",
+                "20",
+                "20",
+                "20",
+                "25",
+                "25",
+                "30",
+                "35",
+                "40",
+                "45",
+              ],
+            },
+            {
+              label: "Sezonowa wymiana, 1 koło",
               prices: [
                 "50",
                 "50",
@@ -840,7 +937,7 @@ export const pl: Dictionary = {
               ],
             },
             {
-              label: "Komplet 4 kół",
+              label: "Komplet, 4 koła",
               prices: [
                 "200",
                 "200",
@@ -855,7 +952,7 @@ export const pl: Dictionary = {
               ],
             },
             {
-              label: "SUV (1 koło)",
+              label: "SUV, 1 koło",
               prices: [
                 "55",
                 "55",
@@ -870,7 +967,7 @@ export const pl: Dictionary = {
               ],
             },
             {
-              label: "Komplet 4 kół (SUV / crossover)",
+              label: "Komplet, 4 koła (SUV / crossover)",
               prices: [
                 "220",
                 "220",
@@ -884,22 +981,9 @@ export const pl: Dictionary = {
                 "540",
               ],
             },
-            {
-              label: "Run-flat / niski profil (dopłata za 1 koło)",
-              prices: [
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-              ],
-            },
           ],
+          footnote:
+            "* Opony run-flat i niskoprofilowe: dopłata +10 zł za 1 koło.",
         },
       },
       caliper: {
@@ -1459,7 +1543,7 @@ export const pl: Dictionary = {
     hoursValue: "Pn–Sb · 9:00–19:00",
   },
   footer: {
-    addressLines: ["Warszawa, Polska", "hello@rim.studio"],
+    addressLines: [STUDIO_ADDRESS_FULL, STUDIO_EMAIL],
     columnStudio: "Studio",
     columnServices: "Usługi",
     columnLegal: "Prawne",

@@ -16,6 +16,7 @@ import {
   PL_PHONE_PREFIX,
 } from "@/lib/formatPolishPhone";
 import { submitConsultationRequest } from "@/lib/consultation-request";
+import { PhoneInputMessengerRow } from "@/components/StudioMessengerLinks";
 
 import styles from "./style.module.css";
 
@@ -135,34 +136,36 @@ export function FirstVisitPromoSection() {
                   <label htmlFor={phoneId} className={styles.fieldLabel}>
                     {copy.form.phoneLabel}
                   </label>
-                  <input
-                    id={phoneId}
-                    name="phone"
-                    type="tel"
-                    inputMode="tel"
-                    autoComplete="tel"
-                    className={[
-                      styles.input,
-                      phoneError ? styles.inputInvalid : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
-                    placeholder={copy.form.phonePlaceholder}
-                    value={phone}
-                    onChange={(e) => {
-                      setPhone(formatPolishPhoneInput(e.target.value));
-                      if (phoneError) setPhoneError(null);
-                    }}
-                    onFocus={(e) => {
-                      if (!e.target.value.trim()) {
-                        setPhone(formatPolishPhoneInput(PL_PHONE_PREFIX));
+                  <PhoneInputMessengerRow variant="onLight">
+                    <input
+                      id={phoneId}
+                      name="phone"
+                      type="tel"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      className={[
+                        styles.input,
+                        phoneError ? styles.inputInvalid : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      placeholder={copy.form.phonePlaceholder}
+                      value={phone}
+                      onChange={(e) => {
+                        setPhone(formatPolishPhoneInput(e.target.value));
+                        if (phoneError) setPhoneError(null);
+                      }}
+                      onFocus={(e) => {
+                        if (!e.target.value.trim()) {
+                          setPhone(formatPolishPhoneInput(PL_PHONE_PREFIX));
+                        }
+                      }}
+                      aria-invalid={phoneError ? true : undefined}
+                      aria-describedby={
+                        phoneError ? `${phoneId}-error` : undefined
                       }
-                    }}
-                    aria-invalid={phoneError ? true : undefined}
-                    aria-describedby={
-                      phoneError ? `${phoneId}-error` : undefined
-                    }
-                  />
+                    />
+                  </PhoneInputMessengerRow>
                   {phoneError ? (
                     <p
                       id={`${phoneId}-error`}

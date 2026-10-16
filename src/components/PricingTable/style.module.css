@@ -67,12 +67,22 @@
   white-space: nowrap;
 }
 
+.headCellSize {
+  color: var(--brand-accent-400);
+  text-transform: none;
+  letter-spacing: -0.02em;
+  font-size: clamp(0.78rem, 1.45vw, 0.92rem);
+  font-weight: 700;
+}
+
 .headCell:first-child {
   text-align: left;
   padding-left: clamp(1rem, 2vw, 1.35rem);
   min-width: 14rem;
   width: 22%;
   border-top-left-radius: var(--table-radius-top-left, var(--table-radius));
+  color: rgb(255 255 255 / 0.72);
+  text-transform: uppercase;
 }
 
 .headCell:last-child {
@@ -150,7 +160,95 @@
   border-right: none;
 }
 
+.cellUnavailable {
+  color: rgb(255 255 255 / 0.38);
+  font-weight: 500;
+}
+
+.meta {
+  margin-bottom: clamp(0.65rem, 1.5vh, 0.9rem);
+}
+
+.sectionTitle {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brand-accent-400);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: clamp(0.82rem, 1.45vw, 0.95rem);
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.58);
+}
+
+.scrollHint {
+  display: none;
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  color: rgb(255 255 255 / 0.5);
+}
+
+.extras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+  gap: 0.65rem;
+  margin: clamp(0.85rem, 1.8vh, 1.1rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.extraCard {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: rgb(255 255 255 / 0.04);
+}
+
+.extraLabel {
+  font-size: clamp(0.78rem, 1.35vw, 0.88rem);
+  line-height: 1.35;
+  color: rgb(255 255 255 / 0.78);
+}
+
+.extraValue {
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--brand-white);
+  white-space: nowrap;
+}
+
+.footnotes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: clamp(0.75rem, 1.6vh, 1rem);
+}
+
+.footnote {
+  margin: 0;
+  font-size: clamp(0.78rem, 1.3vw, 0.88rem);
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.52);
+}
+
+.footnote::first-letter {
+  color: var(--brand-accent-400);
+  font-weight: 700;
+}
+
 @media (max-width: 767px) {
+  .scrollHint {
+    display: block;
+  }
   .table {
     min-width: 44rem;
     --table-sticky-head-bg: rgb(38 46 54);

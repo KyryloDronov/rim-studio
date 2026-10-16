@@ -1,11 +1,10 @@
 import type { MetadataRoute } from "next";
 import { PUBLIC_ROUTES } from "@/content/site-pages";
+import { getPublicSiteUrl } from "@/content/studio-location";
 import { localizedPath } from "@/i18n/paths";
 import { LOCALES, LOCALE_BCP47, type Locale } from "@/i18n/types";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ??
-  "http://localhost:3000";
+const SITE_URL = getPublicSiteUrl();
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return PUBLIC_ROUTES.flatMap((route) =>

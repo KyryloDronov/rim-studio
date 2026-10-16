@@ -1,15 +1,16 @@
 "use client";
 
-import { MapPin, Phone, PhoneCall } from "lucide-react";
+import { Mail, MapPin, Phone, PhoneCall } from "lucide-react";
 import { useInView } from "motion/react";
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/Button";
 import { TextInput } from "@/components/forms/TextInput";
 import { StudioMap } from "@/components/StudioMap";
 import {
-  STUDIO_PHONE_DISPLAY,
-  STUDIO_PHONE_HREF,
-} from "@/content/studio-location";
+  PhoneInputMessengerRow,
+  StudioPhoneRow,
+} from "@/components/StudioMessengerLinks";
+import { STUDIO_EMAIL } from "@/content/studio-location";
 import { useConsultationPage } from "@/hooks/useConsultationPage";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { submitConsultationRequest } from "@/lib/consultation-request";
@@ -129,8 +130,21 @@ export function VisitMapSection() {
                 </span>
                 <div>
                   <p className={styles.infoLabel}>{contactSheet.phoneTitle}</p>
-                  <a className={styles.infoLink} href={STUDIO_PHONE_HREF}>
-                    {STUDIO_PHONE_DISPLAY}
+                  <StudioPhoneRow linkClassName={styles.infoLink} />
+                </div>
+              </div>
+
+              <div className={styles.infoRow}>
+                <span className={styles.infoIcon} aria-hidden>
+                  <Mail strokeWidth={1.5} />
+                </span>
+                <div>
+                  <p className={styles.infoLabel}>{contactSheet.emailLabel}</p>
+                  <a
+                    className={styles.infoLink}
+                    href={`mailto:${STUDIO_EMAIL}`}
+                  >
+                    {STUDIO_EMAIL}
                   </a>
                 </div>
               </div>
@@ -164,21 +178,23 @@ export function VisitMapSection() {
                   <label className={styles.formLabel} htmlFor={`${reactId}-phone`}>
                     {contactSheet.callbackPhoneLabel}
                   </label>
-                  <TextInput
-                    id={`${reactId}-phone`}
-                    name="phone"
-                    type="tel"
-                    autoComplete="tel"
-                    inputMode="tel"
-                    placeholder={contactSheet.callbackPhonePlaceholder}
-                    value={phone}
-                    invalid={phoneInvalid}
-                    className={styles.formInput}
-                    onChange={(event) => {
-                      setPhone(event.target.value);
-                      if (phoneInvalid) setPhoneInvalid(false);
-                    }}
-                  />
+                  <PhoneInputMessengerRow>
+                    <TextInput
+                      id={`${reactId}-phone`}
+                      name="phone"
+                      type="tel"
+                      autoComplete="tel"
+                      inputMode="tel"
+                      placeholder={contactSheet.callbackPhonePlaceholder}
+                      value={phone}
+                      invalid={phoneInvalid}
+                      className={styles.formInput}
+                      onChange={(event) => {
+                        setPhone(event.target.value);
+                        if (phoneInvalid) setPhoneInvalid(false);
+                      }}
+                    />
+                  </PhoneInputMessengerRow>
                   {phoneInvalid ? (
                     <p className={styles.formError} role="alert">
                       {contactSheet.callbackPhoneRequired}

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { PageServiceKey } from "@/content/site-pages";
-import { getDictionary } from "@/i18n/dictionaries";
-import { localizedPath } from "@/i18n/paths";
+import { getSeoCopy } from "@/i18n/seo";
 import { isLocale } from "@/i18n/types";
+import { buildPageMetadata } from "@/lib/seo-metadata";
 
 export async function buildServiceLandingMetadata(
   lang: string,
@@ -12,18 +12,7 @@ export async function buildServiceLandingMetadata(
 ): Promise<Metadata> {
   if (!isLocale(lang)) notFound();
 
-  const { pages, meta } = getDictionary(lang);
-  const copy = pages.services[pageKey];
+  const seo = getSeoCopy(lang).services[pageKey];
 
-  return {
-    title: copy.title,
-    description: copy.lead,
-    alternates: { canonical: localizedPath(lang, pathname) },
-    openGraph: {
-      title: copy.title,
-      description: copy.lead,
-      url: localizedPath(lang, pathname),
-      siteName: meta.siteName,
-    },
-  };
+  return buildPageMetadata(lang, pathname, { seo });
 }

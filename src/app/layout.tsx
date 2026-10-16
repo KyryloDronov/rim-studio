@@ -1,3 +1,4 @@
+import type { Metadata, Viewport } from "next";
 import { headers } from "next/headers";
 import { SiteShell } from "@/components/SiteShell";
 import {
@@ -6,7 +7,15 @@ import {
   LOCALE_BCP47,
   type Locale,
 } from "@/i18n/types";
+import { SITE_THEME_COLOR } from "@/content/site-brand";
+import { siteIconsMetadata } from "@/lib/site-icons-metadata";
 import "./globals.css";
+
+export const metadata: Metadata = siteIconsMetadata;
+
+export const viewport: Viewport = {
+  themeColor: SITE_THEME_COLOR,
+};
 
 /**
  * Real root layout. Lives ABOVE the [lang] dynamic segment so that the

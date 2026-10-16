@@ -158,6 +158,13 @@ export function PricingSection({ featuredTab = "paint" }: PricingSectionProps) {
       />
 
       <div className={styles.inner}>
+        <header className={styles.intro}>
+          <h2 className={styles.introTitle}>
+            <span className={styles.introTitleStrong}>
+              {pricing.introTitleStrong}
+            </span>
+          </h2>
+        </header>
         <div
           ref={panelRef}
           className={styles.panel}
@@ -202,6 +209,8 @@ export function PricingSection({ featuredTab = "paint" }: PricingSectionProps) {
             <PricingTable
               data={activePanel.table}
               panelKey={activeTab}
+              currencyDisclaimer={pricing.currencyDisclaimer}
+              scrollHint={pricing.scrollHint}
               enterDelay={tableEnterDelay}
               className={styles.tableArea}
               scrollClassName={styles.tableScroll}

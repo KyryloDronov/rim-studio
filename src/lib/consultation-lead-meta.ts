@@ -63,6 +63,7 @@ const TELEGRAM_SECTION_LABELS_RU: Record<
   firstVisitPromo: "Скидка на первый визит",
   visitMap: "Запись и контакты (карта)",
   contactSheet: "Контакты (шторка)",
+  contactPage: "Страница контактов",
 };
 
 const BANNER_SOURCE_IDS: ReadonlySet<ConsultationSourceId> = new Set([

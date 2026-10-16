@@ -5,13 +5,33 @@ import { BENEFITS_SCROLL } from "@/animations/constants";
 import type { BenefitsRevealClassNames } from "@/animations/types";
 
 export function setBenefitsRevealReducedMotion(
+  scopeEl: HTMLElement,
   classes: BenefitsRevealClassNames,
 ): void {
-  gsap.set(`.${classes.revealTitle}`, { y: 0, x: 0, scale: 1, autoAlpha: 1 });
-  gsap.set(`.${classes.revealCardLeft}`, { x: 0, y: 0, autoAlpha: 1 });
-  gsap.set(`.${classes.revealCardRight}`, { x: 0, y: 0, autoAlpha: 1 });
-  gsap.set(`.${classes.revealCardMobile}`, { x: 0, y: 0, autoAlpha: 1 });
-  gsap.set(`.${classes.revealCenter}`, { y: 0, scale: 1, autoAlpha: 1 });
+  const title = scopeEl.querySelector<HTMLElement>(`.${classes.revealTitle}`);
+  if (title) {
+    gsap.set(title, { y: 0, x: 0, scale: 1, autoAlpha: 1 });
+  }
+  gsap.set(scopeEl.querySelectorAll(`.${classes.revealCardLeft}`), {
+    x: 0,
+    y: 0,
+    autoAlpha: 1,
+  });
+  gsap.set(scopeEl.querySelectorAll(`.${classes.revealCardRight}`), {
+    x: 0,
+    y: 0,
+    autoAlpha: 1,
+  });
+  gsap.set(scopeEl.querySelectorAll(`.${classes.revealCardMobile}`), {
+    x: 0,
+    y: 0,
+    autoAlpha: 1,
+  });
+  gsap.set(scopeEl.querySelectorAll(`.${classes.revealCenter}`), {
+    y: 0,
+    scale: 1,
+    autoAlpha: 1,
+  });
 }
 
 /** Run inside `gsap.context(fn, root)` from `<BenefitsSection>`. */
@@ -19,13 +39,16 @@ export function runBenefitsScrollReveal(
   triggerEl: HTMLElement,
   classes: BenefitsRevealClassNames,
   prefersReducedMotion: boolean,
+  scopeEl?: HTMLElement,
 ): void {
+  const scope = scopeEl ?? triggerEl;
   if (prefersReducedMotion) {
-    setBenefitsRevealReducedMotion(classes);
+    setBenefitsRevealReducedMotion(scope, classes);
     return;
   }
 
   const bs = BENEFITS_SCROLL;
+  const title = scope.querySelector<HTMLElement>(`.${classes.revealTitle}`);
   const leftCards = triggerEl.querySelectorAll<HTMLElement>(
     `.${classes.revealCardLeft}`,
   );
@@ -37,10 +60,12 @@ export function runBenefitsScrollReveal(
   );
   const center = triggerEl.querySelector<HTMLElement>(`.${classes.revealCenter}`);
 
-  gsap.set(`.${classes.revealTitle}`, {
-    y: bs.title.yFrom,
-    autoAlpha: 0,
-  });
+  if (title) {
+    gsap.set(title, {
+      y: bs.title.yFrom,
+      autoAlpha: 0,
+    });
+  }
 
   if (leftCards.length) {
     gsap.set(leftCards, {
@@ -79,11 +104,13 @@ export function runBenefitsScrollReveal(
     defaults: { ease: bs.defaultsEase },
   });
 
-  tl.to(`.${classes.revealTitle}`, {
-    y: 0,
-    autoAlpha: 1,
-    duration: bs.title.duration,
-  });
+  if (title) {
+    tl.to(title, {
+      y: 0,
+      autoAlpha: 1,
+      duration: bs.title.duration,
+    });
+  }
 
   if (center) {
     tl.to(
@@ -94,7 +121,7 @@ export function runBenefitsScrollReveal(
         autoAlpha: 1,
         duration: bs.center.duration,
       },
-      `-=${bs.center.overlapTitle}`,
+      title ? `-=${bs.center.overlapTitle}` : 0,
     );
   }
 

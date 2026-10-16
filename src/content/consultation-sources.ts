@@ -10,7 +10,8 @@ export type ConsultationSourceId =
   | "beforeAfter"
   | "firstVisitPromo"
   | "visitMap"
-  | "contactSheet";
+  | "contactSheet"
+  | "contactPage";
 
 export const CONSULTATION_SOURCE_IDS: ReadonlyArray<ConsultationSourceId> = [
   "home",
@@ -28,6 +29,7 @@ export const CONSULTATION_SOURCE_IDS: ReadonlyArray<ConsultationSourceId> = [
   "firstVisitPromo",
   "visitMap",
   "contactSheet",
+  "contactPage",
 ];
 
 const PHONE_ONLY_CONSULTATION_SOURCES: ReadonlySet<ConsultationSourceId> =

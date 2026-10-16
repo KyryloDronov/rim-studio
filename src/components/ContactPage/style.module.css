@@ -1,0 +1,347 @@
+/* Contact page — full-bleed map + dual glass panels */
+
+.section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  isolation: isolate;
+  color: var(--brand-white);
+  background: var(--brand-ink-700);
+}
+
+.mapLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.mapCanvas {
+  width: 100%;
+  height: 100%;
+}
+
+.mapScrim {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    rgb(25 31 36 / 0.82) 0%,
+    rgb(25 31 36 / 0.55) 38%,
+    rgb(25 31 36 / 0.22) 62%,
+    rgb(25 31 36 / 0.35) 100%
+  );
+}
+
+.overlay {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  align-items: center;
+  padding: clamp(5.5rem, 12vh, 7rem) clamp(1.25rem, 4vw, 2.5rem)
+    clamp(2rem, 5vh, 3rem);
+  pointer-events: none;
+}
+
+.grid {
+  display: grid;
+  width: min(100%, 72rem);
+  margin: 0 auto;
+  gap: clamp(1rem, 2.5vw, 1.35rem);
+  pointer-events: none;
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: stretch;
+  }
+}
+
+.infoCard,
+.formCard {
+  pointer-events: auto;
+  padding: clamp(1.25rem, 2.8vw, 1.75rem);
+  border-radius: 20px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: rgb(22 26 30 / 0.62);
+  -webkit-backdrop-filter: blur(22px) saturate(1.12);
+  backdrop-filter: blur(22px) saturate(1.12);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.08),
+    0 16px 48px rgb(0 0 0 / 0.28);
+}
+
+.formCard {
+  border-color: rgb(255 153 0 / 0.18);
+  background: rgb(18 20 22 / 0.68);
+}
+
+.infoHeader {
+  margin-bottom: clamp(1rem, 2.5vh, 1.35rem);
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-accent-400);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.lead {
+  margin: 0.65rem 0 0;
+  max-width: 28rem;
+  font-size: clamp(0.88rem, 1.2vw, 0.98rem);
+  line-height: 1.55;
+  color: rgb(255 255 255 / 0.62);
+  text-wrap: pretty;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.infoItem {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.infoIcon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: rgb(255 255 255 / 0.05);
+  color: var(--brand-accent-400);
+}
+
+.infoIcon svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.infoLabel {
+  margin: 0 0 0.15rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.45);
+}
+
+.infoText {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.infoMuted {
+  margin: 0.1rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.58);
+}
+
+.infoLink {
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--brand-white);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.infoLink:hover {
+  color: var(--brand-accent-400);
+}
+
+.infoActions {
+  margin-top: clamp(1rem, 2.5vh, 1.35rem);
+}
+
+.social {
+  margin-top: clamp(1rem, 2.5vh, 1.25rem);
+  padding-top: 1rem;
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.socialLabel {
+  margin: 0 0 0.55rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.45);
+}
+
+.socialRow {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.socialLink {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: rgb(255 255 255 / 0.05);
+  color: var(--brand-white);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.socialLink:hover {
+  border-color: rgb(255 153 0 / 0.35);
+  background: rgb(255 153 0 / 0.1);
+  color: var(--brand-accent-300);
+}
+
+.socialLink svg {
+  display: block;
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.formHeader {
+  margin-bottom: clamp(0.85rem, 2vh, 1.1rem);
+}
+
+.formEyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-accent-500);
+}
+
+.formTitle {
+  margin: 0;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.formLead {
+  margin: 0.45rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: rgb(255 255 255 / 0.6);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.form label {
+  color: var(--brand-white);
+}
+
+.formInput {
+  background: rgb(255 255 255 / 0.07);
+  border-color: rgb(255 255 255 / 0.14);
+  color: var(--brand-white);
+}
+
+.formInput::placeholder {
+  color: rgb(255 255 255 / 0.34);
+}
+
+.formError {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  color: rgb(255 160 160);
+}
+
+.privacy {
+  margin: 0.15rem 0 0.35rem;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.48);
+}
+
+.privacyLink {
+  color: rgb(255 255 255 / 0.72);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.privacyLink:hover {
+  color: var(--brand-accent-400);
+}
+
+.formSuccess {
+  padding: 1rem 1.05rem;
+  border-radius: 14px;
+  border: 1px solid rgb(255 153 0 / 0.22);
+  background: rgb(255 153 0 / 0.1);
+}
+
+.formSuccessTitle {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--brand-accent-400);
+}
+
+.formSuccessBody {
+  margin: 0.35rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.72);
+}
+
+@media (max-width: 899px) {
+  .overlay {
+    align-items: flex-end;
+    padding-top: clamp(4.5rem, 10vh, 5.5rem);
+  }
+
+  .mapScrim {
+    background: linear-gradient(
+      180deg,
+      rgb(25 31 36 / 0.5) 0%,
+      rgb(25 31 36 / 0.78) 55%,
+      rgb(25 31 36 / 0.92) 100%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .infoLink,
+  .socialLink {
+    transition: none;
+  }
+}

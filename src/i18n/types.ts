@@ -1,16 +1,16 @@
 /**
  * Supported locales.
- * `ru` is the default — it sits at the prefix-less root (`/`), `pl` lives
- * under `/pl`. English was deprecated in favour of these two markets.
+ * `pl` is the default — it sits at the prefix-less root (`/`), `ru` lives
+ * under `/ru`. English was deprecated in favour of these two markets.
  */
 import type { ConsultationSourceId } from "@/content/consultation-sources";
 import type { ServiceHeroBannerIconId } from "@/content/service-hero-banner-icons";
 
-export const LOCALES = ["ru", "pl"] as const;
+export const LOCALES = ["pl", "ru"] as const;
 
 export type Locale = (typeof LOCALES)[number];
 
-export const DEFAULT_LOCALE: Locale = "ru";
+export const DEFAULT_LOCALE: Locale = "pl";
 
 export const LOCALE_LABEL: Record<Locale, string> = {
   ru: "RU",
@@ -134,7 +134,13 @@ export type Dictionary = Readonly<{
       >
     >;
     about: Readonly<{ title: string; lead: string }>;
-    contact: Readonly<{ title: string; lead: string }>;
+    contact: Readonly<{
+      eyebrow: string;
+      title: string;
+      lead: string;
+      formTitle: string;
+      formLead: string;
+    }>;
     privacy: Readonly<LegalDocumentCopy>;
     terms: Readonly<LegalDocumentCopy>;
   }>;
@@ -223,6 +229,10 @@ export type Dictionary = Readonly<{
   /** Full-viewport pricing block below the hero. */
   pricing: Readonly<{
     tabsAriaLabel: string;
+    introTitleStrong: string;
+    /** Shown as * footnote under every pricing table. */
+    currencyDisclaimer: string;
+    scrollHint: string;
     panels: Readonly<
       Record<
         | "paint"
@@ -236,6 +246,8 @@ export type Dictionary = Readonly<{
           tabLabelLine1: string;
           tabLabelLine2: string;
           table: Readonly<{
+            sectionTitle?: string;
+            subtitle?: string;
             title: string;
             columns: ReadonlyArray<string>;
             rows: ReadonlyArray<
@@ -244,6 +256,13 @@ export type Dictionary = Readonly<{
                 prices: ReadonlyArray<string>;
               }>
             >;
+            extras?: ReadonlyArray<
+              Readonly<{
+                label: string;
+                value: string;
+              }>
+            >;
+            footnote?: string;
           }>;
         }>
       >
@@ -550,6 +569,8 @@ export type Dictionary = Readonly<{
     callbackSuccessBody: string;
     socialTitle: string;
     emailLabel: string;
+    whatsAppAriaLabel: string;
+    instagramDmAriaLabel: string;
   }>;
   footer: Readonly<{
     addressLines: ReadonlyArray<string>;

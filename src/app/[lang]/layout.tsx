@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { SiteJsonLd } from "@/components/Seo/SiteJsonLd";
+import { getPublicSiteUrl } from "@/content/studio-location";
 import { getDictionary } from "@/i18n/dictionaries";
-import { localizedPath } from "@/i18n/paths";
-import {
-  DEFAULT_LOCALE,
-  isLocale,
-  LOCALES,
-  LOCALE_BCP47,
-  LOCALE_OG,
-} from "@/i18n/types";
+import { getSeoCopy } from "@/i18n/seo";
+import { isLocale, LOCALES } from "@/i18n/types";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:3000";
+const SITE_URL = getPublicSiteUrl();
 
 export function generateStaticParams() {
   return LOCALES.map((lang) => ({ lang }));
@@ -24,48 +19,31 @@ export async function generateMetadata({
   if (!isLocale(lang)) notFound();
 
   const dict = getDictionary(lang);
-  const canonical = localizedPath(lang, "/");
-
-  /* hreflang map for the home page across all locales + x-default. */
-  const languageAlternates = LOCALES.reduce<Record<string, string>>(
-    (acc, code) => {
-      acc[LOCALE_BCP47[code]] = localizedPath(code, "/");
-      return acc;
-    },
-    { "x-default": localizedPath(DEFAULT_LOCALE, "/") },
-  );
+  const homeSeo = getSeoCopy(lang).home;
 
   return {
     metadataBase: new URL(SITE_URL),
     title: {
-      default: dict.meta.title,
+      default: homeSeo.title,
       template: `%s · ${dict.meta.siteName}`,
     },
-    description: dict.meta.description,
+    description: homeSeo.description,
     applicationName: dict.meta.siteName,
-    alternates: {
-      canonical,
-      languages: languageAlternates,
+    creator: dict.meta.siteName,
+    publisher: dict.meta.siteName,
+    formatDetection: {
+      telephone: false,
+      email: false,
+      address: false,
     },
     openGraph: {
       type: "website",
       siteName: dict.meta.siteName,
-      title: dict.meta.title,
-      description: dict.meta.description,
-      url: canonical,
-      locale: LOCALE_OG[lang],
-      alternateLocale: LOCALES.filter((code) => code !== lang).map(
-        (code) => LOCALE_OG[code],
-      ),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: dict.meta.title,
-      description: dict.meta.description,
     },
     robots: {
       index: true,
       follow: true,
+      googleBot: { index: true, follow: true },
     },
   };
 }
@@ -82,5 +60,10 @@ export default async function LangLayout({
 }: LayoutProps<"/[lang]">) {
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
-  return children;
+  return (
+    <>
+      <SiteJsonLd locale={lang} />
+      {children}
+    </>
+  );
 }

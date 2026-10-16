@@ -1,10 +1,16 @@
+import {
+  STUDIO_ADDRESS_FULL,
+  STUDIO_ADDRESS_LINE1,
+  STUDIO_ADDRESS_LINE2,
+  STUDIO_EMAIL,
+} from "@/content/studio-location";
 import type { Dictionary } from "../types";
 
 export const ru: Dictionary = {
   meta: {
-    title: "Rim Studio — Креативная студия",
+    title: "Покраска и реставрация дисков Варшава | Rim Studio",
     description:
-      "Rim Studio — креативная студия, создающая сайты, бренды и интерактивные продукты.",
+      "Rim Studio в Варшаве — порошковая покраска дисков, ремонт, алмазная проточка, шиномонтаж и покраска суппортов. Гарантия, срок 1–3 дня. Адрес: ul. Inwestycyjna 9, 05-800 Pruszków, Polska.",
     siteName: "Rim Studio",
   },
   header: {
@@ -347,9 +353,13 @@ export const ru: Dictionary = {
         "Rim Studio — студия реставрации и покраски дисков в Варшаве. Работаем аккуратно, с гарантией и без лишней суеты.",
     },
     contact: {
+      eyebrow: "Rim Studio · Варшава",
       title: "Контакты",
       lead:
-        "Напишите или позвоните — подскажем по срокам, цветам и стоимости. Можно прислать фото дисков для первичной оценки.",
+        "Приезжайте в студию, звоните или оставьте номер — ответим в рабочие часы и подберём удобное время.",
+      formTitle: "Записаться на консультацию",
+      formLead:
+        "Оставьте имя и телефон — перезвоним, уточним задачу и ориентировочную стоимость.",
     },
     privacy: {
       eyebrow: "Документы",
@@ -564,12 +574,6 @@ export const ru: Dictionary = {
           title: "Срок выполнения",
           subtitle: "1–3 дня",
         },
-        {
-          id: "photo",
-          icon: "camera",
-          title: "Оценка по фото",
-          subtitle: "за фото",
-        },
       ],
       ctaPrimary: { label: "Записаться на консультацию" },
     },
@@ -585,12 +589,6 @@ export const ru: Dictionary = {
         icon: "clock",
         label: "Срок выполнения",
         value: "1–3 дня",
-      },
-      {
-        id: "photo",
-        icon: "camera",
-        label: "Оценка по фото",
-        value: "за фото",
       },
     ],
     ctaPrimary: { label: "Записаться на консультацию" },
@@ -677,6 +675,10 @@ export const ru: Dictionary = {
           body:
             "Перезвоним в ближайшее рабочее время — уточним задачу и подберём время визита.",
         },
+        contactPage: {
+          body:
+            "Перезвоним в ближайшее рабочее время и поможем записаться в студию.",
+        },
       },
     },
     ctaSecondary: { label: "Позвонить", href: "tel:+48786444468" },
@@ -700,8 +702,8 @@ export const ru: Dictionary = {
     mapAriaLabel: "Карта — расположение студии Rim Studio в Варшаве",
     routeLabel: "Проложить маршрут",
     addressTitle: "Адрес",
-    addressLine1: "ul. Przykładowa 12",
-    addressLine2: "Варшава, Польша",
+    addressLine1: STUDIO_ADDRESS_LINE1,
+    addressLine2: STUDIO_ADDRESS_LINE2,
     phoneTitle: "Телефон",
     callbackTitle: "Обратный звонок",
     callbackBody:
@@ -714,15 +716,21 @@ export const ru: Dictionary = {
     callbackSuccessBody: "Мы перезвоним вам в ближайшее рабочее время.",
     socialTitle: "Соцсети",
     emailLabel: "Email",
+    whatsAppAriaLabel: "Написать нам в WhatsApp",
+    instagramDmAriaLabel: "Написать в Instagram",
   },
   pricing: {
     tabsAriaLabel: "Категории цен",
+    introTitleStrong: "Стоимость наших услуг.",
+    currencyDisclaimer:
+      "* Цены в злотых (zł). Точная стоимость фиксируется после диагностики, до начала работ.",
+    scrollHint: "Листайте таблицу вбок →",
     panels: {
       paint: {
         tabLabelLine1: "Порошковая",
         tabLabelLine2: "покраска",
         table: {
-          title: "Порошковая покраска дисков",
+          title: "Услуга",
           columns: [
             "R13-15",
             "R16",
@@ -737,7 +745,7 @@ export const ru: Dictionary = {
           ],
           rows: [
             {
-              label: "Порошковая покраска (комплект 4 диска)",
+              label: "Порошковая покраска",
               prices: [
                 "900",
                 "900",
@@ -751,14 +759,41 @@ export const ru: Dictionary = {
                 "2800",
               ],
             },
+            {
+              label: "Покраска жидкими термоэмалями",
+              prices: [
+                "1100",
+                "1100",
+                "1260",
+                "1560",
+                "1860",
+                "2100",
+                "2400",
+                "2600",
+                "2800",
+                "3200",
+              ],
+            },
           ],
+          extras: [
+            {
+              label: "Порошковая покраска железных дисков",
+              value: "800",
+            },
+            {
+              label: "Порошковая покраска суппортов, комплект",
+              value: "от 1000",
+            },
+          ],
+          footnote:
+            "* Шиномонтажные услуги и ремонт дисков оплачиваются отдельно.",
         },
       },
       repair: {
         tabLabelLine1: "Правка",
         tabLabelLine2: "дисков",
         table: {
-          title: "Правка литого диска",
+          title: "Услуга",
           columns: [
             "R13-15",
             "R16",
@@ -773,7 +808,7 @@ export const ru: Dictionary = {
           ],
           rows: [
             {
-              label: "Правка литого диска (1 диск)",
+              label: "Правка литого диска",
               prices: [
                 "100",
                 "100",
@@ -788,35 +823,14 @@ export const ru: Dictionary = {
               ],
             },
           ],
+          footnote: "* Шиномонтажные услуги оплачиваются отдельно.",
         },
       },
       diamond: {
         tabLabelLine1: "Алмазная",
-        tabLabelLine2: "шлифовка",
+        tabLabelLine2: "проточка",
         table: {
-          title: "Алмазная шлифовка дисков",
-          columns: ["R15-16", "R17-18", "R19-20", "R21+"],
-          rows: [
-            {
-              label: "Алмазная проточка без покраски (комплект)",
-              prices: ["12000", "14000", "16000", "18000"],
-            },
-            {
-              label: "Проточка + полировка полок (комплект)",
-              prices: ["15000", "17000", "19000", "21000"],
-            },
-            {
-              label: "Зеркальный блеск (комплект)",
-              prices: ["18000", "20000", "22000", "25000"],
-            },
-          ],
-        },
-      },
-      tire: {
-        tabLabelLine1: "Переобувка",
-        tabLabelLine2: "шин",
-        table: {
-          title: "Переобувка / шиномонтаж",
+          title: "Услуга",
           columns: [
             "R13-15",
             "R16",
@@ -831,7 +845,90 @@ export const ru: Dictionary = {
           ],
           rows: [
             {
-              label: "Переобувка (1 колесо)",
+              label: "Алмазная проточка",
+              prices: [
+                "—",
+                "800",
+                "800",
+                "900",
+                "1000",
+                "1200",
+                "1300",
+                "1400",
+                "1600",
+                "1800",
+              ],
+            },
+          ],
+          footnote:
+            "* Покраска оплачивается отдельно и зависит от выбранного вида покраски (порошковая или термоэмаль).",
+        },
+      },
+      tire: {
+        tabLabelLine1: "Шино",
+        tabLabelLine2: "монтаж",
+        table: {
+          title: "Услуга",
+          columns: [
+            "R13-15",
+            "R16",
+            "R17",
+            "R18",
+            "R19",
+            "R20",
+            "R21",
+            "R22",
+            "R23",
+            "R24",
+          ],
+          rows: [
+            {
+              label: "Снятие / установка колеса",
+              prices: [
+                "15",
+                "15",
+                "15",
+                "20",
+                "20",
+                "25",
+                "25",
+                "30",
+                "30",
+                "35",
+              ],
+            },
+            {
+              label: "Демонтаж / монтаж шины",
+              prices: [
+                "15",
+                "15",
+                "20",
+                "20",
+                "25",
+                "25",
+                "30",
+                "35",
+                "40",
+                "45",
+              ],
+            },
+            {
+              label: "Балансировка колеса",
+              prices: [
+                "20",
+                "20",
+                "20",
+                "20",
+                "25",
+                "25",
+                "30",
+                "35",
+                "40",
+                "45",
+              ],
+            },
+            {
+              label: "Переобувка, 1 колесо",
               prices: [
                 "50",
                 "50",
@@ -846,7 +943,7 @@ export const ru: Dictionary = {
               ],
             },
             {
-              label: "Комплекс 4 колеса",
+              label: "Комплекс, 4 колеса",
               prices: [
                 "200",
                 "200",
@@ -861,7 +958,7 @@ export const ru: Dictionary = {
               ],
             },
             {
-              label: "Внедорожник (1 колесо)",
+              label: "Внедорожник, 1 колесо",
               prices: [
                 "55",
                 "55",
@@ -876,7 +973,7 @@ export const ru: Dictionary = {
               ],
             },
             {
-              label: "Комплекс 4 колеса (кроссовер, внедорожник)",
+              label: "Комплекс, 4 колеса (кроссовер, внедорожник)",
               prices: [
                 "220",
                 "220",
@@ -890,22 +987,9 @@ export const ru: Dictionary = {
                 "540",
               ],
             },
-            {
-              label: "Run-flat / низкий профиль (доплата за 1 колесо)",
-              prices: [
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-                "10",
-              ],
-            },
           ],
+          footnote:
+            "* Шины Run-flat и низкопрофильные: +10 zł за 1 колесо.",
         },
       },
       caliper: {
@@ -1465,7 +1549,7 @@ export const ru: Dictionary = {
     hoursValue: "Пн–Сб · 9:00–19:00",
   },
   footer: {
-    addressLines: ["Варшава, Польша", "hello@rim.studio"],
+    addressLines: [STUDIO_ADDRESS_FULL, STUDIO_EMAIL],
     columnStudio: "Студия",
     columnServices: "Услуги",
     columnLegal: "Правовое",

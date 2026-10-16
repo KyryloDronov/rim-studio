@@ -77,6 +77,7 @@ export const PUBLIC_ROUTES = [
   "/",
   "/about",
   "/contact",
+  "/services",
   "/legal/privacy",
   "/legal/terms",
   ...MENU_SERVICE_LINKS.map((item) => item.href),

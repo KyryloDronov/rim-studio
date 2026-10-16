@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LegalPage } from "@/components/LegalPage";
 import { getDictionary } from "@/i18n/dictionaries";
-import { localizedPath } from "@/i18n/paths";
+import { getSeoCopy } from "@/i18n/seo";
 import { isLocale } from "@/i18n/types";
+import { buildPageMetadata } from "@/lib/seo-metadata";
 
 export async function generateMetadata({
   params,
@@ -11,21 +12,9 @@ export async function generateMetadata({
   const { lang } = await params;
   if (!isLocale(lang)) notFound();
 
-  const { pages, meta } = getDictionary(lang);
-  const title = pages.privacy.title;
-
-  return {
-    title,
-    description: pages.privacy.lead,
-    alternates: { canonical: localizedPath(lang, "/legal/privacy") },
-    openGraph: {
-      title,
-      description: pages.privacy.lead,
-      url: localizedPath(lang, "/legal/privacy"),
-      siteName: meta.siteName,
-    },
-    robots: { index: true, follow: true },
-  };
+  return buildPageMetadata(lang, "/legal/privacy", {
+    seo: getSeoCopy(lang).privacy,
+  });
 }
 
 export default async function PrivacyPage({

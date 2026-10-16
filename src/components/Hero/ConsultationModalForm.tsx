@@ -20,6 +20,7 @@ import { useConsultationPage } from "@/hooks/useConsultationPage";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { localizedPath } from "@/i18n/paths";
 import { submitConsultationRequest } from "@/lib/consultation-request";
+import { PhoneInputMessengerRow } from "@/components/StudioMessengerLinks";
 import {
   formatPolishPhoneInput,
   PL_PHONE_PREFIX,
@@ -243,31 +244,33 @@ export function ConsultationModalForm({
               label={formCopy.fields.phoneLabel}
               error={errors.phone}
             >
-              <TextInput
-                id={`${reactId}-phone`}
-                name="phone"
-                type="tel"
-                inputMode="tel"
-                autoComplete="tel"
-                value={phone}
-                onChange={(event) =>
-                  setPhone(formatPolishPhoneInput(event.target.value))
-                }
-                onFocus={() => {
-                  if (!phone) setPhone(PL_PHONE_PREFIX);
-                }}
-                onBlur={() => {
-                  if (phone === PL_PHONE_PREFIX) setPhone("");
-                }}
-                placeholder={formCopy.fields.phonePlaceholder}
-                invalid={Boolean(errors.phone)}
-                aria-invalid={Boolean(errors.phone)}
-                aria-describedby={fieldDescribedBy(
-                  `${reactId}-phone`,
-                  false,
-                  Boolean(errors.phone),
-                )}
-              />
+              <PhoneInputMessengerRow variant="onLight">
+                <TextInput
+                  id={`${reactId}-phone`}
+                  name="phone"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  value={phone}
+                  onChange={(event) =>
+                    setPhone(formatPolishPhoneInput(event.target.value))
+                  }
+                  onFocus={() => {
+                    if (!phone) setPhone(PL_PHONE_PREFIX);
+                  }}
+                  onBlur={() => {
+                    if (phone === PL_PHONE_PREFIX) setPhone("");
+                  }}
+                  placeholder={formCopy.fields.phonePlaceholder}
+                  invalid={Boolean(errors.phone)}
+                  aria-invalid={Boolean(errors.phone)}
+                  aria-describedby={fieldDescribedBy(
+                    `${reactId}-phone`,
+                    false,
+                    Boolean(errors.phone),
+                  )}
+                />
+              </PhoneInputMessengerRow>
             </FormField>
           </motion.div>
 

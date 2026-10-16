@@ -16,6 +16,14 @@
   isolation: isolate;
 }
 
+/* `/services` — no hero banner; clear the fixed header + breathing room. */
+.sectionPage {
+  min-height: 100dvh;
+  box-sizing: border-box;
+  padding-top: clamp(5.25rem, 13vh, 6.85rem);
+  padding-bottom: clamp(2.75rem, 6vh, 4rem);
+}
+
 .inner {
   width: min(100%, var(--categories-max));
   margin: 0 auto;

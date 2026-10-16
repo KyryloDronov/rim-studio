@@ -1,6 +1,6 @@
 "use client";
 
-import { STUDIO_PHONE_DISPLAY } from "@/content/studio-location";
+import { StudioPhoneRow } from "@/components/StudioMessengerLinks";
 import type { Dictionary } from "@/i18n/types";
 
 import styles from "./style.module.css";
@@ -30,7 +30,7 @@ export function FirstVisitPromoCardStack({
             <span className={styles.cardBrand}>{card.brand}</span>
             <span className={styles.cardBackBadge}>{card.securedLabel}</span>
           </header>
-          <p className={styles.cardPhone}>{STUDIO_PHONE_DISPLAY}</p>
+          <StudioPhoneRow linkClassName={styles.cardPhone} />
           <p className={styles.cardPhoneCaption}>{card.phoneCaption}</p>
         </article>
 

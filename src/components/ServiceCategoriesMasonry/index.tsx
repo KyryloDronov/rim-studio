@@ -22,7 +22,14 @@ export const SERVICE_CATEGORIES_SECTION_ID = "service-categories";
 
 const MOBILE_CAROUSEL_QUERY = "(max-width: 767px)";
 
-export function ServiceCategoriesMasonry() {
+type ServiceCategoriesMasonryProps = Readonly<{
+  /** Home stack vs dedicated `/services` hub (extra top inset for fixed header). */
+  variant?: "home" | "page";
+}>;
+
+export function ServiceCategoriesMasonry({
+  variant = "home",
+}: ServiceCategoriesMasonryProps) {
   const { locale, t } = useLocale();
   const { showcase } = t;
   const cards = useMemo(
@@ -50,11 +57,12 @@ export function ServiceCategoriesMasonry() {
           controlsReveal: cardSliderStyles.controlsReveal,
         },
         Boolean(prefersReducedMotion),
+        variant === "page" ? { playOnMount: true } : undefined,
       );
     }, root);
 
     return () => ctx.revert();
-  }, [cards.length, isMobileCarousel, prefersReducedMotion, locale]);
+  }, [cards.length, isMobileCarousel, prefersReducedMotion, locale, variant]);
 
   if (cards.length === 0) return null;
 
@@ -62,18 +70,30 @@ export function ServiceCategoriesMasonry() {
     <section
       ref={sectionRef}
       id={SERVICE_CATEGORIES_SECTION_ID}
-      className={styles.section}
+      className={
+        variant === "page" ? `${styles.section} ${styles.sectionPage}` : styles.section
+      }
       aria-labelledby={`${SERVICE_CATEGORIES_SECTION_ID}-title`}
     >
       <div className={styles.inner}>
         <header className={styles.header}>
-          <h2
-            id={`${SERVICE_CATEGORIES_SECTION_ID}-title`}
-            className={`${styles.title} ${styles.titleReveal}`}
-          >
-            <span className={styles.titleStrong}>{showcase.titleStrong}</span>
-            <span className={styles.titleMuted}>{showcase.titleMuted}</span>
-          </h2>
+          {variant === "page" ? (
+            <h1
+              id={`${SERVICE_CATEGORIES_SECTION_ID}-title`}
+              className={`${styles.title} ${styles.titleReveal}`}
+            >
+              <span className={styles.titleStrong}>{showcase.titleStrong}</span>
+              <span className={styles.titleMuted}>{showcase.titleMuted}</span>
+            </h1>
+          ) : (
+            <h2
+              id={`${SERVICE_CATEGORIES_SECTION_ID}-title`}
+              className={`${styles.title} ${styles.titleReveal}`}
+            >
+              <span className={styles.titleStrong}>{showcase.titleStrong}</span>
+              <span className={styles.titleMuted}>{showcase.titleMuted}</span>
+            </h2>
+          )}
         </header>
 
         <div ref={stageRef} className={styles.stage}>

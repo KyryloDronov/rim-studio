@@ -144,6 +144,30 @@
   align-items: flex-start;
   width: 100%;
   min-height: 0;
+  gap: clamp(1.25rem, 3vh, 2rem);
+}
+
+.intro {
+  width: 100%;
+  max-width: 42rem;
+  margin-bottom: clamp(0.25rem, 1vh, 0.5rem);
+}
+
+.introTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  margin: 0;
+  max-width: 42rem;
+  font-size: clamp(1.65rem, 3.8vw, 2.65rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+}
+
+.introTitleStrong {
+  color: var(--brand-white);
+  font-weight: 600;
 }
 
 .panel {

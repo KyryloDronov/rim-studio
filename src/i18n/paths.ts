@@ -28,7 +28,7 @@ export function detectLocaleFromPath(pathname: string): Locale {
 
 /**
  * Builds a public URL pathname for a given locale.
- * Default locale (en): no prefix → `/`, `/work`.
+ * Default locale: no prefix → `/`, `/work`.
  * Other locales: prefixed → `/ru`, `/ru/work`.
  */
 export function localizedPath(locale: Locale, pathname: string): string {

@@ -1,0 +1,89 @@
+.root {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.compact {
+  gap: 0.35rem;
+}
+
+.chip {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: rgb(255 255 255 / 0.06);
+  color: var(--brand-white);
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.compact .chip {
+  width: 2.35rem;
+  height: 2.35rem;
+}
+
+.chip:hover {
+  border-color: rgb(255 153 0 / 0.4);
+  background: rgb(255 153 0 / 0.12);
+  color: var(--brand-accent-300);
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+.chip svg {
+  display: block;
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.onLight .chip {
+  border-color: rgb(0 0 0 / 0.1);
+  background: rgb(0 0 0 / 0.04);
+  color: var(--brand-ink-700);
+}
+
+.onLight .chip:hover {
+  border-color: rgb(255 153 0 / 0.45);
+  background: rgb(255 153 0 / 0.1);
+  color: var(--brand-ink-700);
+}
+
+.phoneLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+}
+
+.phoneRow {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.phoneInputWrap {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip {
+    transition: none;
+  }
+
+  .chip:active {
+    transform: none;
+  }
+}

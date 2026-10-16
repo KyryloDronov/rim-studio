@@ -1,4 +1,5 @@
 import {
+  STUDIO_ADDRESS_FULL,
   STUDIO_EMAIL,
   STUDIO_PHONE_DISPLAY,
 } from "@/content/studio-location";
@@ -12,10 +13,10 @@ export const LEGAL_ENTITY = {
   companyName: "Rim Studio Sp. z o.o.",
   email: STUDIO_EMAIL,
   phone: STUDIO_PHONE_DISPLAY,
-  city: "Warszawa",
+  city: "Pruszków",
   country: "Polska",
   /** Pełny adres siedziby (ulica, kod, miasto). */
-  registeredAddress: "Warszawa, Polska — adres siedziby do uzupełnienia",
+  registeredAddress: STUDIO_ADDRESS_FULL,
   nip: "0000000000",
   krs: "0000000000",
   regon: "000000000",
