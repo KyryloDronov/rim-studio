@@ -220,6 +220,14 @@ export function ContactSheet() {
     ],
   );
 
+  const handleCallbackSendAgain = useCallback(() => {
+    setCallbackSent(false);
+    setCallbackPhone("");
+    setCallbackPhoneInvalid(false);
+    setCallbackSubmitError(null);
+    setCallbackSubmitting(false);
+  }, []);
+
   const handleCancel = useCallback(
     (e: SyntheticEvent<HTMLDialogElement>) => {
       e.preventDefault();
