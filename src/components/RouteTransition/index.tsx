@@ -15,6 +15,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { closeAllNavigationOverlays } from "@/lib/navigation-overlays";
 import { lockScroll } from "@/lib/scrollLock";
 import {
   computeCoverRadiusPx,
@@ -44,10 +45,16 @@ const PILL_HEIGHT = "calc(clamp(22rem, 60vw, 40rem) / 5)";
 
 type RouteTransitionContextValue = Readonly<{
   isTransitioning: boolean;
+  navigate: (href: string, origin?: { x: number; y: number }) => void;
 }>;
 
 const RouteTransitionContext = createContext<RouteTransitionContextValue>({
   isTransitioning: false,
+  navigate: (href) => {
+    if (typeof window !== "undefined") {
+      window.location.assign(href);
+    }
+  },
 });
 
 export function useRouteTransition(): RouteTransitionContextValue {
@@ -313,6 +320,8 @@ export function RouteTransition({
   const startNavigation = useCallback(
     async (href: string, origin: { x: number; y: number }) => {
       if (busyRef.current || !introBootstrapped) {
+        closeAllNavigationOverlays();
+        onNavigationStart?.();
         router.push(href);
         return;
       }
@@ -321,6 +330,7 @@ export function RouteTransition({
       const current = normalizePathname(pathname);
       if (target === current) return;
 
+      closeAllNavigationOverlays();
       onNavigationStart?.();
 
       busyRef.current = true;
@@ -457,7 +467,21 @@ export function RouteTransition({
     return () => document.removeEventListener("click", onClick, true);
   }, [introBootstrapped, startNavigation]);
 
-  const value = useMemo(() => ({ isTransitioning }), [isTransitioning]);
+  const navigate = useCallback(
+    (href: string, origin?: { x: number; y: number }) => {
+      const point = origin ?? {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+      };
+      void startNavigation(href, point);
+    },
+    [startNavigation],
+  );
+
+  const value = useMemo(
+    () => ({ isTransitioning, navigate }),
+    [isTransitioning, navigate],
+  );
 
   return (
     <RouteTransitionContext.Provider value={value}>

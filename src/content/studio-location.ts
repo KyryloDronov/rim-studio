@@ -16,7 +16,7 @@ export const STUDIO_COORDINATES = {
 export const STUDIO_PHONE_E164 = "+48786444468";
 export const STUDIO_PHONE_DISPLAY = "+48 786 444 468";
 export const STUDIO_PHONE_HREF = `tel:${STUDIO_PHONE_E164}`;
-export const STUDIO_EMAIL = "hello@rim-studio.pl";
+export const STUDIO_EMAIL = "rim.studio.pl@gmail.com";
 
 /** Production site — used when `NEXT_PUBLIC_SITE_URL` is unset. */
 export const STUDIO_PUBLIC_SITE_URL = "https://rim-studio.pl";

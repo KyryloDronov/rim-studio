@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import {
   Clock,
   Mail,
@@ -12,6 +11,8 @@ import {
 import { useCallback, useEffect, useId, useState, type FormEvent } from "react";
 import { Button } from "@/components/Button";
 import { FormField } from "@/components/forms/FormField";
+import { FormPrivacyNotice } from "@/components/forms/FormPrivacyNotice";
+import { FormSuccessState } from "@/components/forms/FormSuccessState";
 import { TextInput } from "@/components/forms/TextInput";
 import { StudioMap } from "@/components/StudioMap";
 import {
@@ -27,7 +28,10 @@ import {
   formatPolishPhoneInput,
   PL_PHONE_PREFIX,
 } from "@/lib/formatPolishPhone";
-import { submitConsultationRequest } from "@/lib/consultation-request";
+import {
+  consultationSubmitErrorMessage,
+  submitConsultationRequest,
+} from "@/lib/consultation-request";
 import {
   PhoneInputMessengerRow,
   StudioPhoneRow,
@@ -124,12 +128,22 @@ export function ContactPageSection() {
     setSubmitting(false);
 
     if (!result.ok) {
-      setErrors({ submit: formCopy.errors.submitFailed });
+      setErrors({
+        submit: consultationSubmitErrorMessage(result, formCopy.errors),
+      });
       return;
     }
 
     setSubmitted(true);
   };
+
+  const handleSendAgain = useCallback(() => {
+    setSubmitted(false);
+    setName("");
+    setPhone("");
+    setErrors({});
+    setSubmitting(false);
+  }, []);
 
   return (
     <section className={styles.section} aria-labelledby={`${reactId}-title`}>
@@ -252,10 +266,15 @@ export function ContactPageSection() {
             </header>
 
             {submitted ? (
-              <div className={styles.formSuccess}>
-                <p className={styles.formSuccessTitle}>{formCopy.successTitle}</p>
-                <p className={styles.formSuccessBody}>{formCopy.successBody}</p>
-              </div>
+              <FormSuccessState
+                title={formCopy.successTitle}
+                body={formCopy.successBody}
+                sendAgainLabel={formCopy.sendAgainLabel}
+                onSendAgain={handleSendAgain}
+                className={styles.formSuccess}
+                titleClassName={styles.formSuccessTitle}
+                bodyClassName={styles.formSuccessBody}
+              />
             ) : (
               <form className={styles.form} onSubmit={handleSubmit} noValidate>
                 <FormField
@@ -310,16 +329,14 @@ export function ContactPageSection() {
                   <p className={styles.formError} role="alert">{errors.submit}</p>
                 ) : null}
 
-                <p className={styles.privacy}>
-                  {formCopy.privacyBefore}
-                  <Link
-                    href={localizedPath(locale, formCopy.privacyHref)}
-                    className={styles.privacyLink}
-                  >
-                    {formCopy.privacyLinkLabel}
-                  </Link>
-                  {formCopy.privacyAfter}
-                </p>
+                <FormPrivacyNotice
+                  before={formCopy.privacyBefore}
+                  linkHref={localizedPath(locale, formCopy.privacyHref)}
+                  linkLabel={formCopy.privacyLinkLabel}
+                  after={formCopy.privacyAfter}
+                  className={styles.privacy}
+                  linkClassName={styles.privacyLink}
+                />
 
                 <Button
                   type="submit"

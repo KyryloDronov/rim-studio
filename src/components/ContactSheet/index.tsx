@@ -31,7 +31,12 @@ import {
 } from "@/content/studio-location";
 import { useConsultationPage } from "@/hooks/useConsultationPage";
 import { useLocale } from "@/i18n/LocaleProvider";
-import { submitConsultationRequest } from "@/lib/consultation-request";
+import { FormSuccessState } from "@/components/forms/FormSuccessState";
+import {
+  consultationSubmitErrorMessage,
+  submitConsultationRequest,
+} from "@/lib/consultation-request";
+import { useRegisterCloseOnNavigate } from "@/lib/navigation-overlays";
 import { lockScroll } from "@/lib/scrollLock";
 
 import styles from "./style.module.css";
@@ -175,6 +180,8 @@ export function ContactSheet() {
     closeSheet();
   }, [closeSheet]);
 
+  useRegisterCloseOnNavigate(requestClose, open);
+
   const handleCallbackSubmit = useCallback(
     async (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -305,14 +312,15 @@ export function ContactSheet() {
                 </h3>
                 <p className={styles.blockMuted}>{copy.callbackBody}</p>
                 {callbackSent ? (
-                  <div className={styles.callbackSuccess}>
-                    <p className={styles.callbackSuccessTitle}>
-                      {copy.callbackSuccessTitle}
-                    </p>
-                    <p className={styles.callbackSuccessBody}>
-                      {copy.callbackSuccessBody}
-                    </p>
-                  </div>
+                  <FormSuccessState
+                    title={copy.callbackSuccessTitle}
+                    body={copy.callbackSuccessBody}
+                    sendAgainLabel={t.hero.consultationModal.sendAgainLabel}
+                    onSendAgain={handleCallbackSendAgain}
+                    className={styles.callbackSuccess}
+                    titleClassName={styles.callbackSuccessTitle}
+                    bodyClassName={styles.callbackSuccessBody}
+                  />
                 ) : (
                   <form
                     className={styles.callbackForm}
@@ -322,12 +330,11 @@ export function ContactSheet() {
                     <label className={styles.callbackLabel} htmlFor={`${reactId}-phone`}>
                       {copy.callbackPhoneLabel}
                     </label>
-                    <PhoneInputMessengerRow variant="onLight">
+                    <PhoneInputMessengerRow variant="onDark">
                       <TextInput
                         id={`${reactId}-phone`}
                         name="phone"
                         type="tel"
-                        autoComplete="tel"
                         inputMode="tel"
                         placeholder={copy.callbackPhonePlaceholder}
                         value={callbackPhone}
@@ -430,7 +437,7 @@ export function ContactSheet() {
                 </h3>
                 <StudioPhoneRow
                   linkClassName={styles.blockLink}
-                  variant="onLight"
+                  variant="onDark"
                 />
               </div>
             </motion.section>

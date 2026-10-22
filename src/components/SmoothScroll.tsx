@@ -3,13 +3,29 @@
 import "@/animations/register";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ReactLenis, type LenisRef } from "lenis/react";
+import { ReactLenis, useLenis, type LenisRef } from "lenis/react";
 import { useEffect, useRef } from "react";
 import "lenis/dist/lenis.css";
 
 type SmoothScrollProps = Readonly<{
   children: React.ReactNode;
 }>;
+
+/** Keeps ScrollTrigger in sync with Lenis (must render inside `<ReactLenis>`). */
+function ScrollTriggerLenisSync() {
+  const lenis = useLenis();
+
+  useEffect(() => {
+    if (!lenis) return;
+    const onScroll = () => ScrollTrigger.update();
+    lenis.on("scroll", onScroll);
+    return () => {
+      lenis.off("scroll", onScroll);
+    };
+  }, [lenis]);
+
+  return null;
+}
 
 /**
  * Smooth-scroll provider for the whole app.
@@ -42,13 +58,8 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
 
-    const onScroll = () => ScrollTrigger.update();
-    const lenis = lenisRef.current?.lenis;
-    lenis?.on("scroll", onScroll);
-
     return () => {
       gsap.ticker.remove(update);
-      lenis?.off("scroll", onScroll);
     };
   }, []);
 
@@ -65,6 +76,7 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       }}
       ref={lenisRef}
     >
+      <ScrollTriggerLenisSync />
       {children}
     </ReactLenis>
   );

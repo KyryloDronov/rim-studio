@@ -185,6 +185,7 @@ export type Dictionary = Readonly<{
       submitLabel: string;
       successTitle: string;
       successBody: string;
+      sendAgainLabel: string;
       privacyBefore: string;
       privacyLinkLabel: string;
       privacyAfter: string;
@@ -199,6 +200,7 @@ export type Dictionary = Readonly<{
         nameRequired: string;
         phoneRequired: string;
         submitFailed: string;
+        rateLimitExceeded: string;
       }>;
       contexts: Readonly<
         Record<ConsultationSourceId, Readonly<{ body: string }>>
@@ -497,10 +499,6 @@ export type Dictionary = Readonly<{
     form: Readonly<{
       phoneLabel: string;
       phonePlaceholder: string;
-      consentRequiredBefore: string;
-      consentRequiredLinkLabel: string;
-      consentRequiredAfter: string;
-      privacyHref: string;
       consentMarketing: string;
       submitLabel: string;
       termsLabel: string;
@@ -509,7 +507,6 @@ export type Dictionary = Readonly<{
       successBody: string;
       errors: Readonly<{
         phoneRequired: string;
-        consentRequired: string;
       }>;
     }>;
   }>;

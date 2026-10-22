@@ -16,6 +16,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 
+import { useRegisterCloseOnNavigate } from "@/lib/navigation-overlays";
 import { lockScroll } from "@/lib/scrollLock";
 
 import styles from "./style.module.css";
@@ -218,6 +219,8 @@ export function Modal({
   const requestClose = useCallback(() => {
     onOpenChange(false);
   }, [onOpenChange]);
+
+  useRegisterCloseOnNavigate(requestClose, open);
 
   const handleCancel = useCallback(
     (e: SyntheticEvent<HTMLDialogElement>) => {

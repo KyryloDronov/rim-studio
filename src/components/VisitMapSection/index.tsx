@@ -13,7 +13,11 @@ import {
 import { STUDIO_EMAIL } from "@/content/studio-location";
 import { useConsultationPage } from "@/hooks/useConsultationPage";
 import { useLocale } from "@/i18n/LocaleProvider";
-import { submitConsultationRequest } from "@/lib/consultation-request";
+import { FormSuccessState } from "@/components/forms/FormSuccessState";
+import {
+  consultationSubmitErrorMessage,
+  submitConsultationRequest,
+} from "@/lib/consultation-request";
 
 import styles from "./style.module.css";
 
@@ -68,19 +72,24 @@ export function VisitMapSection() {
       setSubmitting(false);
 
       if (!result.ok) {
-        setSubmitError(t.hero.consultationModal.errors.submitFailed);
+        setSubmitError(
+          consultationSubmitErrorMessage(result, t.hero.consultationModal.errors),
+        );
         return;
       }
 
       setSent(true);
     },
-    [
-      consultationPage,
-      locale,
-      phone,
-      t.hero.consultationModal.errors.submitFailed,
-    ],
+    [consultationPage, locale, phone, t.hero.consultationModal.errors],
   );
+
+  const handleSendAgain = useCallback(() => {
+    setSent(false);
+    setPhone("");
+    setPhoneInvalid(false);
+    setSubmitError(null);
+    setSubmitting(false);
+  }, []);
 
   return (
     <section
@@ -165,14 +174,15 @@ export function VisitMapSection() {
               <p className={styles.bookingLead}>{contactSheet.callbackBody}</p>
 
               {sent ? (
-                <div className={styles.formSuccess}>
-                  <p className={styles.formSuccessTitle}>
-                    {contactSheet.callbackSuccessTitle}
-                  </p>
-                  <p className={styles.formSuccessBody}>
-                    {contactSheet.callbackSuccessBody}
-                  </p>
-                </div>
+                <FormSuccessState
+                  title={contactSheet.callbackSuccessTitle}
+                  body={contactSheet.callbackSuccessBody}
+                  sendAgainLabel={t.hero.consultationModal.sendAgainLabel}
+                  onSendAgain={handleSendAgain}
+                  className={styles.formSuccess}
+                  titleClassName={styles.formSuccessTitle}
+                  bodyClassName={styles.formSuccessBody}
+                />
               ) : (
                 <form className={styles.form} onSubmit={handleSubmit} noValidate>
                   <label className={styles.formLabel} htmlFor={`${reactId}-phone`}>

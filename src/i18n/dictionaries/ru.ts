@@ -598,9 +598,11 @@ export const ru: Dictionary = {
       successTitle: "Заявка отправлена",
       successBody:
         "Мы свяжемся с вами в ближайшее рабочее время и уточним детали.",
-      privacyBefore: "Нажимая «Отправить», вы соглашаетесь с ",
-      privacyLinkLabel: "политикой конфиденциальности",
-      privacyAfter: "",
+      sendAgainLabel: "Отправить повторно",
+      privacyBefore:
+        "Отправляя форму, вы соглашаетесь с тем, что ваши персональные данные будут обрабатываться в целях обработки вашего запроса. Подробную информацию вы найдёте в нашей ",
+      privacyLinkLabel: "Политике конфиденциальности",
+      privacyAfter: ".",
       privacyHref: "/legal/privacy",
       fields: {
         nameLabel: "Имя",
@@ -613,6 +615,8 @@ export const ru: Dictionary = {
         phoneRequired: "Укажите номер телефона",
         submitFailed:
           "Не удалось отправить заявку. Позвоните нам или попробуйте позже.",
+        rateLimitExceeded:
+          "С этой браузера уже отправлено 5 заявок за 24 часа. Попробуйте позже или позвоните нам.",
       },
       contexts: {
         home: {
@@ -1473,11 +1477,6 @@ export const ru: Dictionary = {
     form: {
       phoneLabel: "Номер телефона",
       phonePlaceholder: "+48 600 000 000",
-      consentRequiredBefore:
-        "Согласен(на) на обработку номера телефона компанией Rim Studio Sp. z o.o. для начисления и проверки скидки. ",
-      consentRequiredLinkLabel: "Политика конфиденциальности",
-      consentRequiredAfter: "",
-      privacyHref: "/legal/privacy",
       consentMarketing:
         "Хочу получать SMS-напоминания о сезонной переобувке и акциях (необязательно)",
       submitLabel: "Получить скидку",
@@ -1488,7 +1487,6 @@ export const ru: Dictionary = {
         "Мы свяжемся с вами по указанному номеру и подтвердим скидку на первый визит.",
       errors: {
         phoneRequired: "Укажите номер телефона",
-        consentRequired: "Нужно согласие на обработку номера",
       },
     },
   },
@@ -1546,7 +1544,7 @@ export const ru: Dictionary = {
     contactsTitle: "Как нас найти",
     bookingEyebrow: "Сервис",
     hoursLabel: "Часы работы",
-    hoursValue: "Пн–Сб · 9:00–19:00",
+    hoursValue: "Пн–Пт · 09:00–18:00, Сб · 09:00–15:00",
   },
   footer: {
     addressLines: [STUDIO_ADDRESS_FULL, STUDIO_EMAIL],

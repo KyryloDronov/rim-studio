@@ -3,6 +3,7 @@ import type { PageServiceKey } from "@/content/site-pages";
 import { AboutSection } from "@/components/AboutSection";
 import { BeforeAfterSection } from "@/components/BeforeAfterSection";
 import { BenefitsSection } from "@/components/BenefitsSection";
+import { FirstVisitPromoSection } from "@/components/FirstVisitPromoSection";
 import { LoyaltySection } from "@/components/LoyaltySection";
 import { LOYALTY_SECTION_VISIBLE } from "@/content/home-sections";
 import { ServiceCategoriesMasonry } from "@/components/ServiceCategoriesMasonry";
@@ -28,7 +29,7 @@ type HomePageSectionsProps = Readonly<{
 /**
  * Main page section stack — same order on home and service landings:
  * Home: categories masonry sits directly above work examples (see `page.tsx`).
- * 1 pricing → 2 categories masonry → 3 work examples → 4 services carousel (landings) → …
+ * 1 pricing → 2 first-visit promo (or loyalty) → … masonry / before-after / showcase → …
  */
 export function HomePageSections({
   featuredTab,
@@ -39,12 +40,16 @@ export function HomePageSections({
   return (
     <div className={styles.stack}>
       <PricingSection featuredTab={featuredTab} />
+      {LOYALTY_SECTION_VISIBLE ? (
+        <LoyaltySection />
+      ) : (
+        <FirstVisitPromoSection />
+      )}
       {hideShowcaseSection ? <ServiceCategoriesMasonry /> : null}
       <BeforeAfterSection featuredTab={featuredTab} />
       {hideShowcaseSection ? null : (
         <ShowcaseSection excludePageKey={excludeShowcasePageKey} />
       )}
-      {LOYALTY_SECTION_VISIBLE ? <LoyaltySection /> : null}
       <AboutSection />
       <ProcessSection />
       <BenefitsSection />

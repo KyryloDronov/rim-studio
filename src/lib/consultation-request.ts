@@ -2,6 +2,10 @@ import type { ConsultationSourceId } from "@/content/consultation-sources";
 import { isPhoneOnlyConsultationSource } from "@/content/consultation-sources";
 import type { ConsultationPageId } from "@/lib/consultation-lead-meta";
 import type { Locale } from "@/i18n/types";
+import {
+  isConsultationRateLimitExceeded,
+  recordConsultationFormSubmission,
+} from "@/lib/consultation-form-rate-limit";
 
 export function normalizePhoneDigits(phone: string): string {
   return phone.replace(/\D/g, "");
@@ -23,7 +27,22 @@ export type SubmitConsultationInput = Readonly<{
 
 export type SubmitConsultationResult =
   | Readonly<{ ok: true }>
-  | Readonly<{ ok: false; reason: "network" | "server" }>;
+  | Readonly<{
+      ok: false;
+      reason: "network" | "server" | "rateLimit";
+    }>;
+
+export function consultationSubmitErrorMessage(
+  result: SubmitConsultationResult,
+  errors: Readonly<{
+    submitFailed: string;
+    rateLimitExceeded: string;
+  }>,
+): string {
+  if (result.ok) return "";
+  if (result.reason === "rateLimit") return errors.rateLimitExceeded;
+  return errors.submitFailed;
+}
 
 export async function submitConsultationRequest(
   input: SubmitConsultationInput,
@@ -37,6 +56,10 @@ export async function submitConsultationRequest(
 
   if (!isValidConsultationPhone(trimmedPhone)) {
     return { ok: false, reason: "server" };
+  }
+
+  if (isConsultationRateLimitExceeded()) {
+    return { ok: false, reason: "rateLimit" };
   }
 
   try {
@@ -57,6 +80,7 @@ export async function submitConsultationRequest(
       return { ok: false, reason: "server" };
     }
 
+    recordConsultationFormSubmission();
     return { ok: true };
   } catch {
     return { ok: false, reason: "network" };

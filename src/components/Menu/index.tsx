@@ -8,6 +8,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import {
   MENU_SERVICE_LINKS,
   MENU_STUDIO_LINKS,
+  MENU_STUDIO_SECTION_VISIBLE,
 } from "@/content/site-pages";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { localizedPath } from "@/i18n/paths";
@@ -22,8 +23,7 @@ type MenuNavItem = Readonly<{
   label: string;
 }>;
 
-const DEFAULT_VIDEO_SRC =
-  "/video/AQOL1_T9nhEKraqwl0FgmPsloL3H8ZcS7BogR6PvGEDdVl7aeMwfoGBC3maKYXrII99duizlL6DLEhsaePv8rkgA0kcqpbwj1CZ-uos.mp4";
+const DEFAULT_VIDEO_SRC = "/video/home_1.mp4";
 const DEFAULT_VIDEO_POSTER: string | null = null;
 
 type MenuProps = Readonly<{
@@ -132,10 +132,12 @@ export function Menu({
 
   const studioLinks = useMemo<ReadonlyArray<MenuNavItem>>(
     () =>
-      MENU_STUDIO_LINKS.map((item) => ({
-        href: localizedPath(locale, item.href),
-        label: t.menu.studio[item.menuKey],
-      })),
+      MENU_STUDIO_SECTION_VISIBLE
+        ? MENU_STUDIO_LINKS.map((item) => ({
+            href: localizedPath(locale, item.href),
+            label: t.menu.studio[item.menuKey],
+          }))
+        : [],
     [locale, t.menu.studio],
   );
 
@@ -397,23 +399,25 @@ export function Menu({
               </ul>
             </motion.section>
 
-            <motion.section
-              className={`${styles.section} ${styles.sectionStudio}`}
-              custom={1}
-              variants={sectionVariants}
-              initial="closed"
-              animate={
-                !isOpen ? "closed" : !hasEntered ? "open" : "neutral"
-              }
-              aria-label={t.menu.studioHeading}
-            >
-              <h2 className={styles.sectionTitle}>{t.menu.studioHeading}</h2>
-              <ul className={styles.sectionList}>
-                {studioLinks.map((link, i) =>
-                  renderLink(link, serviceLinks.length + i, "studio"),
-                )}
-              </ul>
-            </motion.section>
+            {MENU_STUDIO_SECTION_VISIBLE ? (
+              <motion.section
+                className={`${styles.section} ${styles.sectionStudio}`}
+                custom={1}
+                variants={sectionVariants}
+                initial="closed"
+                animate={
+                  !isOpen ? "closed" : !hasEntered ? "open" : "neutral"
+                }
+                aria-label={t.menu.studioHeading}
+              >
+                <h2 className={styles.sectionTitle}>{t.menu.studioHeading}</h2>
+                <ul className={styles.sectionList}>
+                  {studioLinks.map((link, i) =>
+                    renderLink(link, serviceLinks.length + i, "studio"),
+                  )}
+                </ul>
+              </motion.section>
+            ) : null}
           </div>
         </div>
       </div>

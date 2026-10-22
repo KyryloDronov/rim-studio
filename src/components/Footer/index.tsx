@@ -237,6 +237,7 @@ export function Footer({ ready = true }: FooterProps) {
      from one ScrollTrigger so the staggered delays line up consistently. */
   useEffect(() => {
     if (globalThis.window === undefined) return;
+    if (!ready) return;
     const root = rootRef.current;
     if (!root) return;
 
@@ -263,6 +264,7 @@ export function Footer({ ready = true }: FooterProps) {
     // The claim text is locale-dependent — re-arming the timeline on locale
     // change keeps the new words in sync with the GSAP selector.
   }, [
+    ready,
     prefersReducedMotion,
     locale,
     t.footer.claimRuns,

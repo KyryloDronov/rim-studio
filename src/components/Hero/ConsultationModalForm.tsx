@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Send } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import {
@@ -19,7 +18,12 @@ import type { ConsultationSourceId } from "@/content/consultation-sources";
 import { useConsultationPage } from "@/hooks/useConsultationPage";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { localizedPath } from "@/i18n/paths";
-import { submitConsultationRequest } from "@/lib/consultation-request";
+import { FormPrivacyNotice } from "@/components/forms/FormPrivacyNotice";
+import { FormSuccessState } from "@/components/forms/FormSuccessState";
+import {
+  consultationSubmitErrorMessage,
+  submitConsultationRequest,
+} from "@/lib/consultation-request";
 import { PhoneInputMessengerRow } from "@/components/StudioMessengerLinks";
 import {
   formatPolishPhoneInput,
@@ -124,12 +128,23 @@ export function ConsultationModalForm({
     setSubmitting(false);
 
     if (!result.ok) {
-      setErrors({ submit: formCopy.errors.submitFailed });
+      setErrors({
+        submit: consultationSubmitErrorMessage(result, formCopy.errors),
+      });
       return;
     }
 
     setSubmitted(true);
   };
+
+  const handleSendAgain = useCallback(() => {
+    setSubmitted(false);
+    setName("");
+    setPhone("");
+    setErrors({});
+    setSubmitting(false);
+    setMotionKey((key) => key + 1);
+  }, []);
 
   const titleReveal = (
     <MotionLetterReveal
@@ -197,13 +212,19 @@ export function ConsultationModalForm({
     >
       {submitted ? (
         <motion.div
-          className={styles.success}
           initial={motionEnabled ? { opacity: 0, y: 10 } : false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: MOTION_EASE }}
         >
-          <p className={styles.successTitle}>{formCopy.successTitle}</p>
-          <p className={styles.successBody}>{formCopy.successBody}</p>
+          <FormSuccessState
+            title={formCopy.successTitle}
+            body={formCopy.successBody}
+            sendAgainLabel={formCopy.sendAgainLabel}
+            onSendAgain={handleSendAgain}
+            className={styles.success}
+            titleClassName={styles.successTitle}
+            bodyClassName={styles.successBody}
+          />
         </motion.div>
       ) : (
         <motion.form
@@ -278,16 +299,15 @@ export function ConsultationModalForm({
             <p className={styles.submitError} role="alert">{errors.submit}</p>
           ) : null}
 
-          <p className={styles.privacy}>
-            {formCopy.privacyBefore}
-            <Link
-              href={localizedPath(locale, formCopy.privacyHref)}
-              className={styles.privacyLink}
-            >
-              {formCopy.privacyLinkLabel}
-            </Link>
-            {formCopy.privacyAfter}
-          </p>
+          <FormPrivacyNotice
+            before={formCopy.privacyBefore}
+            linkHref={localizedPath(locale, formCopy.privacyHref)}
+            linkLabel={formCopy.privacyLinkLabel}
+            after={formCopy.privacyAfter}
+            className={styles.privacy}
+            linkClassName={styles.privacyLink}
+            onBeforeNavigate={() => onOpenChange(false)}
+          />
         </motion.form>
       )}
     </Modal>

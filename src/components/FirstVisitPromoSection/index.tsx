@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { Percent } from "lucide-react";
+import { FormPrivacyNotice } from "@/components/forms/FormPrivacyNotice";
+import { FormSuccessState } from "@/components/forms/FormSuccessState";
 import { useReducedMotion } from "motion/react";
 import { useCallback, useId, useState, type FormEvent } from "react";
 import { FirstVisitPromoCardStack } from "./FirstVisitPromoCardStack";
@@ -15,7 +17,10 @@ import {
   formatPolishPhoneInput,
   PL_PHONE_PREFIX,
 } from "@/lib/formatPolishPhone";
-import { submitConsultationRequest } from "@/lib/consultation-request";
+import {
+  consultationSubmitErrorMessage,
+  submitConsultationRequest,
+} from "@/lib/consultation-request";
 import { PhoneInputMessengerRow } from "@/components/StudioMessengerLinks";
 
 import styles from "./style.module.css";
@@ -30,14 +35,12 @@ export function FirstVisitPromoSection() {
   const stackMotionEnabled = !prefersReducedMotion;
   const formId = useId();
   const phoneId = `${formId}-phone`;
-  const consentId = `${formId}-consent`;
   const marketingId = `${formId}-marketing`;
+  const formPrivacy = t.hero.consultationModal;
 
   const [phone, setPhone] = useState("");
-  const [consent, setConsent] = useState(false);
   const [marketing, setMarketing] = useState(false);
   const [phoneError, setPhoneError] = useState<string | null>(null);
-  const [consentError, setConsentError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -53,13 +56,6 @@ export function FirstVisitPromoSection() {
         hasError = true;
       } else {
         setPhoneError(null);
-      }
-
-      if (!consent) {
-        setConsentError(copy.form.errors.consentRequired);
-        hasError = true;
-      } else {
-        setConsentError(null);
       }
 
       if (hasError) return;
@@ -79,22 +75,32 @@ export function FirstVisitPromoSection() {
       setSubmitting(false);
 
       if (!result.ok) {
-        setSubmitError(t.hero.consultationModal.errors.submitFailed);
+        setSubmitError(
+          consultationSubmitErrorMessage(result, t.hero.consultationModal.errors),
+        );
         return;
       }
 
       setSubmitted(true);
     },
     [
-      consent,
       consultationPage,
-      copy.form.errors,
+      copy.form.errors.phoneRequired,
       locale,
       marketing,
       phone,
-      t.hero.consultationModal.errors.submitFailed,
+      t.hero.consultationModal.errors,
     ],
   );
+
+  const handleSendAgain = useCallback(() => {
+    setSubmitted(false);
+    setPhone("");
+    setMarketing(false);
+    setPhoneError(null);
+    setSubmitError(null);
+    setSubmitting(false);
+  }, []);
 
   return (
     <section
@@ -126,10 +132,15 @@ export function FirstVisitPromoSection() {
             <p className={styles.body}>{copy.body}</p>
 
             {submitted ? (
-              <div className={styles.success} role="status">
-                <p className={styles.successTitle}>{copy.form.successTitle}</p>
-                <p className={styles.successBody}>{copy.form.successBody}</p>
-              </div>
+              <FormSuccessState
+                title={copy.form.successTitle}
+                body={copy.form.successBody}
+                sendAgainLabel={formPrivacy.sendAgainLabel}
+                onSendAgain={handleSendAgain}
+                className={styles.success}
+                titleClassName={styles.successTitle}
+                bodyClassName={styles.successBody}
+              />
             ) : (
               <form className={styles.form} onSubmit={handleSubmit} noValidate>
                 <div className={styles.field}>
@@ -177,33 +188,14 @@ export function FirstVisitPromoSection() {
                   ) : null}
                 </div>
 
-                <label className={styles.checkRow}>
-                  <input
-                    id={consentId}
-                    type="checkbox"
-                    className={styles.checkInput}
-                    checked={consent}
-                    onChange={(e) => {
-                      setConsent(e.target.checked);
-                      if (consentError) setConsentError(null);
-                    }}
-                  />
-                  <span className={styles.checkCopy}>
-                    {copy.form.consentRequiredBefore}
-                    <Link
-                      href={localizedPath(locale, copy.form.privacyHref)}
-                      className={styles.inlineLink}
-                    >
-                      {copy.form.consentRequiredLinkLabel}
-                    </Link>
-                    {copy.form.consentRequiredAfter}
-                  </span>
-                </label>
-                {consentError ? (
-                  <p className={styles.fieldError} role="alert">
-                    {consentError}
-                  </p>
-                ) : null}
+                <FormPrivacyNotice
+                  before={formPrivacy.privacyBefore}
+                  linkHref={localizedPath(locale, formPrivacy.privacyHref)}
+                  linkLabel={formPrivacy.privacyLinkLabel}
+                  after={formPrivacy.privacyAfter}
+                  className={styles.privacy}
+                  linkClassName={styles.privacyLink}
+                />
 
                 <label className={styles.checkRow}>
                   <input

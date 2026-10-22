@@ -4,10 +4,12 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
+import { registerOverlayCloseOnNavigate } from "@/lib/navigation-overlays";
 import { ConsultationModalForm } from "@/components/Hero/ConsultationModalForm";
 import type { ConsultationSourceId } from "@/content/consultation-sources";
 
@@ -27,6 +29,10 @@ export function ConsultationProvider({ children }: { children: ReactNode }) {
   const openConsultation = useCallback((nextSource: ConsultationSourceId) => {
     setSource(nextSource);
     setOpen(true);
+  }, []);
+
+  useEffect(() => {
+    return registerOverlayCloseOnNavigate(() => setOpen(false));
   }, []);
 
   const value = useMemo(

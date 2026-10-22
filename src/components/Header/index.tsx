@@ -3,11 +3,18 @@
 import { motion, useReducedMotion } from "motion/react";
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+} from "react";
 import { Button } from "@/components/Button";
 import { useContactSheet } from "@/components/ContactSheet";
 import { useLocale } from "@/i18n/LocaleProvider";
-import { localizedPath } from "@/i18n/paths";
+import { localizedPath, stripLocaleFromPath } from "@/i18n/paths";
 import { AnimatedLogo } from "./AnimatedLogo";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import styles from "./style.module.css";
@@ -34,6 +41,7 @@ export function Header({
   const isMenuOpen = isControlled ? controlledOpen : internalOpen;
   const headerRef = useRef<HTMLElement>(null);
   const prefersReducedMotion = useReducedMotion();
+  const pathname = usePathname();
   const { locale, t } = useLocale();
   const homeHref = localizedPath(locale, "/");
   const { openSheet } = useContactSheet();
@@ -88,6 +96,18 @@ export function Header({
     if (!isControlled) setInternalOpen(next);
     onMenuToggle?.(next);
   }, [isControlled, isMenuOpen, onMenuToggle]);
+
+  const handleLogoClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>) => {
+      if (!isMenuOpen) return;
+      if (!isControlled) setInternalOpen(false);
+      onMenuToggle?.(false);
+      if (stripLocaleFromPath(pathname) === "/") {
+        event.preventDefault();
+      }
+    },
+    [isControlled, isMenuOpen, onMenuToggle, pathname],
+  );
 
   return (
     /* IMPORTANT: the <header> itself MUST NOT carry any `transform`,
@@ -147,7 +167,12 @@ export function Header({
         </div>
 
         <div className={styles.center}>
-          <Link href={homeHref} aria-label="Rim Studio home" className={styles.logo}>
+          <Link
+            href={homeHref}
+            aria-label="Rim Studio home"
+            className={styles.logo}
+            onClick={handleLogoClick}
+          >
             <AnimatedLogo ready={ready} />
           </Link>
         </div>

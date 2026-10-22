@@ -592,9 +592,11 @@ export const pl: Dictionary = {
       successTitle: "Zgłoszenie wysłane",
       successBody:
         "Skontaktujemy się w najbliższym czasie roboczym i doprecyzujemy szczegóły.",
-      privacyBefore: "Klikając „Wyślij”, akceptujesz ",
-      privacyLinkLabel: "politykę prywatności",
-      privacyAfter: "",
+      sendAgainLabel: "Wyślij ponownie",
+      privacyBefore:
+        "Wysyłając formularz, przyjmujesz do wiadomości, że Twoje dane osobowe będą przetwarzane w celu obsługi Twojego zapytania. Szczegółowe informacje znajdziesz w naszej ",
+      privacyLinkLabel: "Polityce prywatności",
+      privacyAfter: ".",
       privacyHref: "/legal/privacy",
       fields: {
         nameLabel: "Imię",
@@ -607,6 +609,8 @@ export const pl: Dictionary = {
         phoneRequired: "Podaj numer telefonu",
         submitFailed:
           "Nie udało się wysłać zgłoszenia. Zadzwoń do nas lub spróbuj później.",
+        rateLimitExceeded:
+          "Osiągnięto limit 5 zgłoszeń na 24 godziny z tej przeglądarki. Spróbuj później lub zadzwoń do nas.",
       },
       contexts: {
         home: {
@@ -1467,11 +1471,6 @@ export const pl: Dictionary = {
     form: {
       phoneLabel: "Numer telefonu",
       phonePlaceholder: "+48 600 000 000",
-      consentRequiredBefore:
-        "Wyrażam zgodę na przetwarzanie numeru telefonu przez Rim Studio Sp. z o.o. w celu naliczenia i weryfikacji zniżki. ",
-      consentRequiredLinkLabel: "Polityka prywatności",
-      consentRequiredAfter: "",
-      privacyHref: "/legal/privacy",
       consentMarketing:
         "Chcę SMS o sezonowej wymianie opon i promocjach (opcjonalnie)",
       submitLabel: "Odbierz zniżkę",
@@ -1482,7 +1481,6 @@ export const pl: Dictionary = {
         "Skontaktujemy się pod podanym numerem i potwierdzimy zniżkę na pierwszą wizytę.",
       errors: {
         phoneRequired: "Podaj numer telefonu",
-        consentRequired: "Wymagana zgoda na przetwarzanie numeru",
       },
     },
   },
@@ -1540,7 +1538,7 @@ export const pl: Dictionary = {
     contactsTitle: "Jak nas znaleźć",
     bookingEyebrow: "Serwis",
     hoursLabel: "Godziny otwarcia",
-    hoursValue: "Pn–Sb · 9:00–19:00",
+    hoursValue: "Pn–Pt · 09:00–18:00, Sob · 09:00–15:00",
   },
   footer: {
     addressLines: [STUDIO_ADDRESS_FULL, STUDIO_EMAIL],

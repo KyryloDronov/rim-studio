@@ -59,6 +59,9 @@ export const MENU_SERVICE_LINKS: ReadonlyArray<
   },
 ];
 
+/** Main menu — studio column (about, contact). Toggle without deleting copy. */
+export const MENU_STUDIO_SECTION_VISIBLE = false;
+
 export const MENU_STUDIO_LINKS: ReadonlyArray<
   Readonly<{ href: string; menuKey: MenuStudioKey }>
 > = [

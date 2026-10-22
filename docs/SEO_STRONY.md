@@ -263,7 +263,7 @@
 
 ## JSON-LD (на всех страницах)
 
-**AutoRepair** (`#localbusiness`): Rim Studio, URL сайта, телефон +48786444468, hello@rim-studio.pl, адрес ul. Inwestycyjna 9, 05-800 Pruszków, geo 52.1924159 / 20.8130378, areaServed Warszawa, часы Пн–Сб 09:00–19:00, priceRange $$, inLanguage по странице (pl-PL / ru-RU), image: [].
+**AutoRepair** (`#localbusiness`): Rim Studio, URL сайта, телефон +48786444468, rim.studio.pl@gmail.com, адрес ul. Inwestycyjna 9, 05-800 Pruszków, geo 52.1924159 / 20.8130378, areaServed Warszawa, часы Пн–Пт 09:00–18:00, Сб 09:00–15:00, priceRange $$, inLanguage по странице (pl-PL / ru-RU), image: [].
 
 **Organization** (`#organization`): имя, URL, email, телефон, адрес, sameAs: Instagram, Facebook.
 

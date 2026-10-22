@@ -11,6 +11,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import { createPortal } from "react-dom";
+import { useRegisterCloseOnNavigate } from "@/lib/navigation-overlays";
 import { lockScroll } from "@/lib/scrollLock";
 
 import styles from "./lightbox.module.css";
@@ -82,6 +83,8 @@ export function GalleryLightbox({
       lenis?.start();
     };
   }, [lenis, open]);
+
+  useRegisterCloseOnNavigate(onClose, open);
 
   useEffect(() => {
     if (!open || !activeItem) return;
