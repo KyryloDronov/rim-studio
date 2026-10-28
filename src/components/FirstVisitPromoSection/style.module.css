@@ -210,6 +210,15 @@
   max-width: 14rem;
 }
 
+.cardValidUntil {
+  margin-top: 0.15rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(255 153 0 / 0.88);
+}
+
 .cardAudience {
   margin-bottom: 0.85rem;
   padding-top: 0.85rem;
@@ -293,10 +302,18 @@
 }
 
 .body {
-  margin: 0 0 1.5rem;
+  margin: 0 0 0.65rem;
   font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
   line-height: 1.55;
   color: rgb(255 255 255 / 0.72);
+}
+
+.validityNote {
+  margin: 0 0 1.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgb(255 255 255 / 0.52);
 }
 
 .form {

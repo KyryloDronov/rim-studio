@@ -184,7 +184,14 @@ export function CategoryMediaPanel({
 
   return (
     <div className={styles.mediaStack}>
-      <div className={styles.mediaViewport}>
+      <div
+        className={[
+          styles.mediaViewport,
+          isGallery ? styles.mediaViewportGallery : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
         <AnimatePresence initial={false}>
           <motion.div
             key={tabId}

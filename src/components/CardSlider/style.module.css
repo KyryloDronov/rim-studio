@@ -10,6 +10,8 @@
   --slide-overflow-pad: 1rem;
   position: relative;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .viewport {
@@ -69,8 +71,11 @@
 
 .navBtn:disabled {
   cursor: not-allowed;
-  opacity: 0.42;
+  opacity: 0.32;
   pointer-events: none;
+  background: rgb(255 255 255 / 0.22);
+  border-color: rgb(171 171 171 / 0.22);
+  box-shadow: none;
 }
 
 .navBtn {
@@ -180,7 +185,6 @@
 
 @media (max-width: 767px) {
   .root {
-    --slide-size: 309px;
     --slide-overflow-pad: 0.75rem;
   }
 

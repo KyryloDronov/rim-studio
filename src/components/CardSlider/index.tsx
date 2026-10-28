@@ -85,6 +85,7 @@ export function useCardSlider(options: CardSliderOptions = DEFAULT_OPTIONS) {
     emblaApi.on("select", updateControls);
     emblaApi.on("reInit", updateControls);
     emblaApi.on("init", updateControls);
+    updateControls();
     return () => {
       emblaApi.off("select", updateControls);
       emblaApi.off("reInit", updateControls);

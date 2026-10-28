@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { useReducedMotion } from "motion/react";
-import { useEffect, useId, useMemo, useRef } from "react";
+import { Fragment, useEffect, useId, useMemo, useRef } from "react";
 import { runFooterScrollReveal, splitClaimRuns } from "@/animations";
 import { ProductCards } from "@/components/ProductCards";
 import { FOOTER_RECENT_WORKS_VISIBLE } from "@/content/footer-sections";
@@ -383,18 +383,21 @@ export function Footer({ ready = true }: FooterProps) {
         >
           <p className={styles.claim}>
             {claimSegments.map((seg, i) => (
-              <span
-                key={seg.key}
-                className={styles.claimWordWrap}
-                data-group={seg.group}
-              >
-                <span className={styles.claimWord}>{seg.word}</span>
-                {seg.lineBreakAfter ? (
-                  <br />
-                ) : i < claimSegments.length - 1 ? (
-                  " "
+              <Fragment key={seg.key}>
+                {i > 0 ? (
+                  claimSegments[i - 1]!.lineBreakAfter ? (
+                    <br />
+                  ) : (
+                    " "
+                  )
                 ) : null}
-              </span>
+                <span
+                  className={styles.claimWordWrap}
+                  data-group={seg.group}
+                >
+                  <span className={styles.claimWord}>{seg.word}</span>
+                </span>
+              </Fragment>
             ))}
           </p>
 

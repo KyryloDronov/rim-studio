@@ -699,6 +699,14 @@ export const pl: Dictionary = {
     closeLabel: "Zamknij panel kontaktowy",
     mapAriaLabel: "Mapa — lokalizacja studia Rim Studio w Warszawie",
     routeLabel: "Wyznacz trasę",
+    addressActionLabel: "Pokaż trasę do studia w Mapach Google",
+    directionsModalTitle: "Trasa w Mapach Google",
+    directionsModalBody:
+      "Wyznaczymy trasę do Rim Studio pod poniższym adresem. Mapy otworzą się w nowej karcie.",
+    directionsModalHint:
+      "Możesz też skopiować adres i wkleić go w dowolnej aplikacji nawigacyjnej.",
+    directionsModalCancelLabel: "Nie teraz",
+    directionsModalCloseLabel: "Zamknij",
     addressTitle: "Adres",
     addressLine1: STUDIO_ADDRESS_LINE1,
     addressLine2: STUDIO_ADDRESS_LINE2,
@@ -1454,11 +1462,13 @@ export const pl: Dictionary = {
     title: "Poznaj Rim Studio — 20% mniej na dowolną usługę",
     body:
       "Pierwszy raz zawsze trudno oddać felgi nowemu fachowcu. Dlatego na start — zniżka: oceń jakość i zdecyduj, czy zostajesz z nami.",
+    validityNote: "Promocja obowiązuje do 31 grudnia 2026 r.",
     card: {
       brand: "Rim Studio",
       badge: "Pierwsza wizyta",
       discount: "20%",
       discountLabel: "zniżki na dowolną usługę",
+      validUntil: "do 31.12.2026",
       audienceLabel: "Dla kogo",
       audience: "nowi klienci studia",
       perks: [

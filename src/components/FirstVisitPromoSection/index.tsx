@@ -130,6 +130,7 @@ export function FirstVisitPromoSection() {
               {copy.title}
             </h2>
             <p className={styles.body}>{copy.body}</p>
+            <p className={styles.validityNote}>{copy.validityNote}</p>
 
             {submitted ? (
               <FormSuccessState

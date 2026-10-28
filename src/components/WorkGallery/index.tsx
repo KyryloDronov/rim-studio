@@ -1,6 +1,6 @@
 "use client";
 
-import { Expand } from "lucide-react";
+import { Expand, Search } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -88,21 +88,29 @@ export function WorkGallery({
         onClick={onOpenLightbox}
         aria-label={openLabel}
       >
-        <motion.img
-          key={visibleSrc}
-          src={visibleSrc}
-          alt={alt}
-          className={styles.image}
-          initial={prefersReducedMotion ? false : { opacity: 0.88, scale: 1.02 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={
-            prefersReducedMotion
-              ? { duration: 0 }
-              : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
-          }
-          draggable={false}
-        />
-        <span className={styles.sheen} aria-hidden />
+        <span className={styles.mediaWrap}>
+          <motion.img
+            key={visibleSrc}
+            src={visibleSrc}
+            alt={alt}
+            className={styles.image}
+            sizes="(max-width: 900px) 100vw, 50vw"
+            initial={prefersReducedMotion ? false : { opacity: 0.88 }}
+            animate={{ opacity: 1 }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.45, ease: [0.22, 1, 0.36, 1] }
+            }
+            draggable={false}
+          />
+          <span className={styles.sheen} aria-hidden />
+          <span className={styles.zoomHint} aria-hidden>
+            <span className={styles.zoomHintIcon}>
+              <Search strokeWidth={1.75} />
+            </span>
+          </span>
+        </span>
         <span className={styles.expandHint} aria-hidden>
           <Expand strokeWidth={1.75} />
         </span>

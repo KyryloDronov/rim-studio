@@ -5,6 +5,7 @@ import { Award } from "lucide-react";
 import Link from "next/link";
 import { useReducedMotion } from "motion/react";
 import {
+  Fragment,
   useCallback,
   useEffect,
   useId,
@@ -128,18 +129,21 @@ export function LoyaltySection() {
 
             <h2 id={`${LOYALTY_SECTION_ID}-title`} className={styles.claim}>
               {claimSegments.map((seg, i) => (
-                <span
-                  key={seg.key}
-                  className={styles.claimWordWrap}
-                  data-group={seg.group}
-                >
-                  <span className={styles.claimWord}>{seg.word}</span>
-                  {seg.lineBreakAfter ? (
-                    <br />
-                  ) : i < claimSegments.length - 1 ? (
-                    " "
+                <Fragment key={seg.key}>
+                  {i > 0 ? (
+                    claimSegments[i - 1]!.lineBreakAfter ? (
+                      <br />
+                    ) : (
+                      " "
+                    )
                   ) : null}
-                </span>
+                  <span
+                    className={styles.claimWordWrap}
+                    data-group={seg.group}
+                  >
+                    <span className={styles.claimWord}>{seg.word}</span>
+                  </span>
+                </Fragment>
               ))}
             </h2>
 

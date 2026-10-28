@@ -484,12 +484,16 @@ export type Dictionary = Readonly<{
     eyebrow: string;
     title: string;
     body: string;
+    /** Promo end date — shown under the lead copy. */
+    validityNote: string;
     carouselAriaLabel: string;
     card: Readonly<{
       brand: string;
       badge: string;
       discount: string;
       discountLabel: string;
+      /** Compact validity line under the discount on the promo card. */
+      validUntil: string;
       audienceLabel: string;
       audience: string;
       perks: ReadonlyArray<string>;
@@ -552,6 +556,13 @@ export type Dictionary = Readonly<{
     closeLabel: string;
     mapAriaLabel: string;
     routeLabel: string;
+    /** Opens directions modal from the address row. */
+    addressActionLabel: string;
+    directionsModalTitle: string;
+    directionsModalBody: string;
+    directionsModalHint: string;
+    directionsModalCancelLabel: string;
+    directionsModalCloseLabel: string;
     addressTitle: string;
     addressLine1: string;
     addressLine2: string;

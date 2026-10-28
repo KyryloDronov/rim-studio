@@ -124,6 +124,9 @@ export function ServiceCategoriesMasonry({
                 canScrollNext={slider.canScrollNext}
                 onPrev={slider.scrollPrev}
                 onNext={slider.scrollNext}
+                layout="bar"
+                persistArrows
+                className={styles.sliderNav}
               />
             </div>
           ) : (

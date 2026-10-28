@@ -705,6 +705,13 @@ export const ru: Dictionary = {
     closeLabel: "Закрыть панель контактов",
     mapAriaLabel: "Карта — расположение студии Rim Studio в Варшаве",
     routeLabel: "Проложить маршрут",
+    addressActionLabel: "Показать маршрут до студии в Google Картах",
+    directionsModalTitle: "Маршрут в Google Картах",
+    directionsModalBody:
+      "Построим маршрут до Rim Studio по адресу ниже. Карты откроются в новой вкладке.",
+    directionsModalHint: "Можно также скопировать адрес и вставить в любое приложение навигации.",
+    directionsModalCancelLabel: "Не сейчас",
+    directionsModalCloseLabel: "Закрыть",
     addressTitle: "Адрес",
     addressLine1: STUDIO_ADDRESS_LINE1,
     addressLine2: STUDIO_ADDRESS_LINE2,
@@ -1460,11 +1467,13 @@ export const ru: Dictionary = {
     title: "Знакомство с Rim Studio — минус 20% на любую услугу",
     body:
       "Первый раз всегда страшно доверять диски новому мастеру. Поэтому знакомство — со скидкой: оцените качество и решите, остаться ли с нами.",
+    validityNote: "Акция действует до 31 декабря 2026 года.",
     card: {
       brand: "Rim Studio",
       badge: "Первый визит",
       discount: "20%",
       discountLabel: "скидка на любую услугу",
+      validUntil: "до 31.12.2026",
       audienceLabel: "Для кого",
       audience: "новые клиенты студии",
       perks: [

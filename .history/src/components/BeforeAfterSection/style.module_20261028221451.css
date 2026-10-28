@@ -1,0 +1,571 @@
+.section {
+  position: relative;
+  width: 100%;
+  --before-after-gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --before-after-max: 88rem;
+  padding: clamp(3.5rem, 9vh, 6rem) 0 clamp(3rem, 8vh, 5rem);
+  background: var(--brand-ink-700);
+  color: var(--brand-white);
+  isolation: isolate;
+}
+
+.inner {
+  width: min(100%, var(--before-after-max));
+  margin: 0 auto;
+  padding: 0 var(--before-after-gutter);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
+}
+
+.tabsBar {
+  flex: 0 1 auto;
+  align-self: flex-start;
+  width: min(100%, 54rem);
+  margin: 0;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12em;
+  margin: 0;
+  min-width: 0;
+  max-width: min(100%, 26rem);
+  flex: 0 1 auto;
+  font-size: clamp(1.65rem, 3.8vw, 2.65rem);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.titleStrong,
+.titleMuted {
+  display: block;
+  white-space: nowrap;
+}
+
+.titleStrong {
+  color: var(--brand-white);
+  font-weight: 600;
+}
+
+.titleMuted {
+  color: rgb(255 255 255 / 0.52);
+  font-weight: 400;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 1.75rem);
+  align-items: stretch;
+  min-height: 0;
+  height: min(75vh, 75dvh);
+  max-height: min(75vh, 75dvh);
+}
+
+.sliderCol {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.mediaShell {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.mediaStack {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  flex: 1 1 auto;
+  gap: clamp(0.5rem, 1vw, 0.85rem);
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.mediaViewport {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 900px) {
+  .mediaViewport {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .mediaViewportGallery {
+    aspect-ratio: auto;
+    height: auto;
+  }
+
+  .mediaViewportGallery .compareWrap {
+    flex: none;
+    height: auto;
+  }
+
+  .mediaViewportGallery .mediaMainLayer {
+    position: relative;
+    inset: auto;
+    height: auto;
+  }
+
+  .mediaStack {
+    height: auto;
+    grid-template-rows: auto auto;
+  }
+}
+
+.mediaMainLayer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.thumbSlot {
+  --card-size: clamp(64px, 5.5vw, 96px);
+  width: 100%;
+  align-self: end;
+}
+
+.mediaPanel {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1vw, 0.85rem);
+  min-width: 0;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.compareWrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.mediaShellReveal {
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.compareReveal {
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.cardCol {
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.bookingCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+  height: 100%;
+  padding: clamp(1.15rem, 2.2vw, 2rem);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: clamp(22px, 2.2vw, 28px);
+  overflow: hidden;
+  background: rgb(12 14 16 / 0.92);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
+}
+
+.bookingReveal {
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.bookingAmbient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bookingAmbientBase {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    155deg,
+    rgb(22 26 30 / 1) 0%,
+    rgb(14 16 18 / 1) 52%,
+    rgb(10 11 13 / 1) 100%
+  );
+}
+
+.bookingOrbA,
+.bookingOrbB,
+.bookingOrbC {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(52px);
+  will-change: transform;
+  animation: bookingOrbDrift 18s ease-in-out infinite;
+}
+
+.bookingOrbA {
+  width: 78%;
+  height: 62%;
+  top: -22%;
+  right: -24%;
+  background: radial-gradient(
+    circle at 42% 42%,
+    rgb(255 153 0 / 0.5) 0%,
+    rgb(255 120 0 / 0.14) 42%,
+    transparent 72%
+  );
+  animation-duration: 17s;
+}
+
+.bookingOrbB {
+  width: 68%;
+  height: 58%;
+  bottom: -28%;
+  left: -22%;
+  background: radial-gradient(
+    circle at 55% 55%,
+    rgb(255 176 72 / 0.28) 0%,
+    rgb(255 140 40 / 0.08) 48%,
+    transparent 74%
+  );
+  animation-duration: 23s;
+  animation-delay: -6s;
+}
+
+.bookingOrbC {
+  width: 52%;
+  height: 46%;
+  top: 38%;
+  left: 8%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgb(255 153 0 / 0.22) 0%,
+    transparent 68%
+  );
+  animation-duration: 20s;
+  animation-delay: -11s;
+}
+
+.bookingAmbientShine {
+  position: absolute;
+  inset: -45%;
+  opacity: 0.85;
+  background: conic-gradient(
+    from 200deg at 50% 50%,
+    transparent 0deg,
+    rgb(255 153 0 / 0.07) 52deg,
+    transparent 104deg,
+    rgb(255 190 100 / 0.05) 168deg,
+    transparent 248deg
+  );
+  animation: bookingAmbientSpin 32s linear infinite;
+}
+
+@keyframes bookingOrbDrift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate3d(5%, -4%, 0) scale(1.07);
+  }
+
+  66% {
+    transform: translate3d(-4%, 3%, 0) scale(0.94);
+  }
+}
+
+@keyframes bookingAmbientSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.bookingReadability {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(10 12 14 / 0.35) 0%,
+    rgb(10 12 14 / 0.12) 40%,
+    rgb(10 12 14 / 0.5) 100%
+  );
+}
+
+.bookingContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  min-height: 0;
+  gap: clamp(1rem, 2vh, 1.5rem);
+}
+
+.bookingBrand {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--brand-white);
+}
+
+.bookingCopy {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.55rem, 1vh, 0.75rem);
+  margin-top: auto;
+}
+
+.bookingEyebrow {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.5);
+}
+
+.bookingTitle {
+  margin: 0;
+  font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: var(--brand-white);
+  text-wrap: pretty;
+}
+
+.bookingTitleAccent {
+  color: rgb(255 255 255 / 0.65);
+}
+
+.bookingBody {
+  margin: 0;
+  max-width: 22rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: rgb(255 255 255 / 0.55);
+  text-wrap: pretty;
+}
+
+.bookingCta {
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+.thumbRegion {
+  --card-size: clamp(64px, 5.5vw, 96px);
+  --card-radius: clamp(0.7rem, 1.2vw, 1.4rem);
+  --card-padding: clamp(3px, 0.5vw, 7px);
+  --card-border-w: max(1px, 0.075vw);
+
+  position: relative;
+  flex: none;
+  width: 100%;
+}
+
+.thumbSlider {
+  --slide-size: var(--card-size);
+  --slide-gap: calc(var(--card-size) * 0.125);
+  --slide-inset: 0px;
+  --slide-overflow-pad: 0.55rem;
+  width: 100%;
+}
+
+.thumbItem {
+  display: flex;
+  width: var(--card-size);
+  height: var(--card-size);
+}
+
+.thumbReveal {
+  display: flex;
+  width: var(--card-size);
+  height: var(--card-size);
+  opacity: 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.thumb {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: var(--card-padding);
+  border: var(--card-border-w) solid rgb(138 138 138 / 0.22);
+  border-radius: var(--card-radius);
+  background-color: rgb(33 33 33 / 0.69);
+  -webkit-backdrop-filter: blur(19px) saturate(1.1);
+  backdrop-filter: blur(19px) saturate(1.1);
+  cursor: pointer;
+  will-change: transform;
+  transition:
+    background-color 0.3s cubic-bezier(0.65, 0, 0.35, 1),
+    border-color 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.thumb:hover,
+.thumb:focus-visible {
+  background-color: rgb(50 50 50 / 0.72);
+}
+
+.thumb:focus-visible {
+  outline: 2px solid var(--brand-accent-400);
+  outline-offset: 3px;
+}
+
+.thumbActive {
+  background-color: rgb(50 50 50 / 0.72);
+  border-color: var(--brand-accent-500);
+}
+
+.thumbImage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--card-radius) - var(--card-padding));
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.thumbImage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 0.08) 0%,
+    rgb(255 255 255 / 0) 45%
+  );
+  pointer-events: none;
+}
+
+@media (max-width: 991px) {
+  .thumbRegion {
+    --card-size: clamp(56px, 8vw, 80px);
+  }
+
+  .thumbSlot {
+    --card-size: clamp(56px, 8vw, 80px);
+  }
+}
+
+@media (max-width: 479px) {
+  .thumbRegion {
+    --card-size: clamp(56px, 14vw, 72px);
+  }
+
+  .thumbSlot {
+    --card-size: clamp(56px, 14vw, 72px);
+  }
+}
+
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .titleStrong,
+  .titleMuted {
+    white-space: normal;
+  }
+
+  .tabsBar {
+    align-self: stretch;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    height: auto;
+    max-height: none;
+  }
+
+  .sliderCol {
+    height: auto;
+  }
+
+  .mediaShell {
+    height: auto;
+  }
+
+  .compareWrap {
+    flex: none;
+    height: 100%;
+  }
+
+  .cardCol {
+    height: auto;
+  }
+
+  .bookingCard {
+    min-height: clamp(18rem, 52vw, 24rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumb {
+    transition: none;
+  }
+
+  .bookingOrbA,
+  .bookingOrbB,
+  .bookingOrbC,
+  .bookingAmbientShine {
+    animation: none;
+  }
+
+  .mediaShellReveal,
+  .compareReveal,
+  .thumbReveal,
+  .bookingReveal {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    will-change: auto;
+  }
+}

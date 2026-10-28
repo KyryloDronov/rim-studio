@@ -44,6 +44,7 @@ export function FirstVisitPromoCardStack({
           <div className={styles.cardHero}>
             <span className={styles.cardDiscountValue}>{card.discount}</span>
             <span className={styles.cardDiscountLabel}>{card.discountLabel}</span>
+            <span className={styles.cardValidUntil}>{card.validUntil}</span>
           </div>
 
           <div className={styles.cardAudience}>

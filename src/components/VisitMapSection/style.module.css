@@ -96,6 +96,64 @@
   align-items: flex-start;
 }
 
+.infoBody {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.addressTrigger {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.35rem 0.45rem 0.35rem 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.addressTrigger:hover {
+  background: rgb(255 255 255 / 0.06);
+}
+
+.addressTrigger:focus-visible {
+  outline: 2px solid var(--brand-accent-400);
+  outline-offset: 2px;
+}
+
+.addressCopy {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.addressCopy .infoText,
+.addressCopy .infoMuted {
+  display: block;
+}
+
+.addressChevron {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: rgb(255 255 255 / 0.42);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.addressTrigger:hover .addressChevron {
+  color: var(--brand-accent-400);
+  transform: translateX(2px);
+}
+
 .infoIcon {
   display: grid;
   flex: none;

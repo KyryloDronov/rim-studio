@@ -2,6 +2,8 @@
   --gallery-radius: 18px;
   position: relative;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 100%;
   min-height: 0;
   border-radius: var(--gallery-radius);
@@ -11,17 +13,35 @@
 }
 
 .frame {
-  all: unset;
+  appearance: none;
   box-sizing: border-box;
   position: relative;
   display: block;
   width: 100%;
+  max-width: 100%;
   height: 100%;
+  min-width: 0;
+  margin: 0;
   padding: 0;
   border: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
   cursor: zoom-in;
   opacity: 1;
+  background: transparent;
   transition: opacity 0.28s ease;
+}
+
+.mediaWrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  line-height: 0;
 }
 
 .frame:focus-visible {
@@ -36,6 +56,8 @@
 .image {
   display: block;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: 100%;
   object-fit: cover;
   object-position: center;
@@ -81,6 +103,35 @@
   height: 1rem;
 }
 
+.zoomHint {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.zoomHintIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(3rem, 14vw, 3.75rem);
+  height: clamp(3rem, 14vw, 3.75rem);
+  border-radius: 999px;
+  background: rgb(0 0 0 / 0.38);
+  color: rgb(255 255 255 / 0.92);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 24px rgb(0 0 0 / 0.18);
+}
+
+.zoomHintIcon svg {
+  width: 42%;
+  height: 42%;
+}
+
 .frame:hover .expandHint,
 .frame:focus-visible .expandHint {
   opacity: 1;
@@ -102,6 +153,45 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .root {
+    height: auto;
+    min-height: 0;
+    background: rgb(18 20 22 / 0.65);
+  }
+
+  .frame {
+    height: auto;
+    min-height: 0;
+  }
+
+  .mediaWrap {
+    height: auto;
+    overflow: hidden;
+    border-radius: calc(var(--gallery-radius) - 1px);
+  }
+
+  .image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center top;
+  }
+
+  .zoomHint {
+    display: flex;
+  }
+
+  .expandHint {
+    display: none;
+  }
+
+  .sheen {
+    opacity: 0.55;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

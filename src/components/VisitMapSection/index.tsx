@@ -1,6 +1,6 @@
 "use client";
 
-import { Mail, MapPin, Phone, PhoneCall } from "lucide-react";
+import { ChevronRight, Mail, MapPin, Phone, PhoneCall } from "lucide-react";
 import { useInView } from "motion/react";
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/Button";
@@ -11,6 +11,7 @@ import {
   StudioPhoneRow,
 } from "@/components/StudioMessengerLinks";
 import { STUDIO_EMAIL } from "@/content/studio-location";
+import { StudioDirectionsModal } from "@/components/StudioDirectionsModal";
 import { useConsultationPage } from "@/hooks/useConsultationPage";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { FormSuccessState } from "@/components/forms/FormSuccessState";
@@ -41,6 +42,7 @@ export function VisitMapSection() {
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [directionsOpen, setDirectionsOpen] = useState(false);
 
   useEffect(() => {
     if (!sectionInView || mapMountedRef.current) return;
@@ -126,10 +128,28 @@ export function VisitMapSection() {
                 <span className={styles.infoIcon} aria-hidden>
                   <MapPin strokeWidth={1.5} />
                 </span>
-                <div>
+                <div className={styles.infoBody}>
                   <p className={styles.infoLabel}>{contactSheet.addressTitle}</p>
-                  <p className={styles.infoText}>{contactSheet.addressLine1}</p>
-                  <p className={styles.infoMuted}>{contactSheet.addressLine2}</p>
+                  <button
+                    type="button"
+                    className={styles.addressTrigger}
+                    onClick={() => setDirectionsOpen(true)}
+                    aria-label={contactSheet.addressActionLabel}
+                  >
+                    <span className={styles.addressCopy}>
+                      <span className={styles.infoText}>
+                        {contactSheet.addressLine1}
+                      </span>
+                      <span className={styles.infoMuted}>
+                        {contactSheet.addressLine2}
+                      </span>
+                    </span>
+                    <ChevronRight
+                      className={styles.addressChevron}
+                      strokeWidth={1.75}
+                      aria-hidden
+                    />
+                  </button>
                 </div>
               </div>
 
@@ -234,6 +254,12 @@ export function VisitMapSection() {
           </aside>
         </div>
       </div>
+
+      <StudioDirectionsModal
+        open={directionsOpen}
+        onOpenChange={setDirectionsOpen}
+        copy={contactSheet}
+      />
     </section>
   );
 }
