@@ -1,5 +1,10 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname } from "node:path";
+import {
+  TELEGRAM_REMINDERS_FILE_DEFAULT,
+  telegramRemindersFilePath,
+} from "@/lib/telegram/data-paths";
+import { readJsonStore } from "@/lib/telegram/read-json-store";
 
 export type ReminderKind = "visit" | "callback";
 
@@ -20,16 +25,12 @@ type ReminderFile = Readonly<{
 
 const REMINDER_LEAD_MS = 15 * 60_000;
 
-function storePath(): string {
-  return (
-    process.env.TELEGRAM_REMINDERS_FILE?.trim() ||
-    join(process.cwd(), "data", "telegram-reminders.json")
-  );
-}
-
 async function load(): Promise<ReminderFile> {
   try {
-    const raw = await readFile(storePath(), "utf8");
+    const raw = await readJsonStore(
+      TELEGRAM_REMINDERS_FILE_DEFAULT,
+      process.env.TELEGRAM_REMINDERS_FILE,
+    );
     return JSON.parse(raw) as ReminderFile;
   } catch {
     return { reminders: [] };
@@ -37,7 +38,7 @@ async function load(): Promise<ReminderFile> {
 }
 
 async function save(data: ReminderFile): Promise<void> {
-  const path = storePath();
+  const path = telegramRemindersFilePath();
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 }

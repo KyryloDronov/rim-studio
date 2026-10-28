@@ -1,5 +1,10 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { dirname, join } from "node:path";
+import { mkdir, writeFile } from "node:fs/promises";
+import { dirname } from "node:path";
+import {
+  TELEGRAM_PENDING_FILE_DEFAULT,
+  telegramPendingFilePath,
+} from "@/lib/telegram/data-paths";
+import { readJsonStore } from "@/lib/telegram/read-json-store";
 import type { PlanKind } from "@/lib/telegram/lead-plan";
 
 export type PendingSchedule = Readonly<{
@@ -12,16 +17,12 @@ export type PendingSchedule = Readonly<{
   createdAt: number;
 }>;
 
-function storePath(): string {
-  return (
-    process.env.TELEGRAM_PENDING_FILE?.trim() ||
-    join(process.cwd(), "data", "telegram-pending.json")
-  );
-}
-
 async function load(): Promise<PendingSchedule[]> {
   try {
-    const raw = await readFile(storePath(), "utf8");
+    const raw = await readJsonStore(
+      TELEGRAM_PENDING_FILE_DEFAULT,
+      process.env.TELEGRAM_PENDING_FILE,
+    );
     const parsed = JSON.parse(raw) as { pending?: PendingSchedule[] };
     return parsed.pending ?? [];
   } catch {
@@ -30,7 +31,7 @@ async function load(): Promise<PendingSchedule[]> {
 }
 
 async function save(pending: PendingSchedule[]): Promise<void> {
-  const path = storePath();
+  const path = telegramPendingFilePath();
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, `${JSON.stringify({ pending }, null, 2)}\n`, "utf8");
 }
